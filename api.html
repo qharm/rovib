@@ -82,6 +82,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#rovib.rigid_rotor_hamiltonian.RigidRotorHamiltonian.rotational_constants"><code class="docutils literal notranslate"><span class="pre">RigidRotorHamiltonian.rotational_constants</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#rovib.anharmonic_potential.AnharmonicPotential"><code class="docutils literal notranslate"><span class="pre">AnharmonicPotential</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rovib.anharmonic_potential.AnharmonicPotential.frequencies"><code class="docutils literal notranslate"><span class="pre">AnharmonicPotential.frequencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rovib.anharmonic_potential.AnharmonicPotential.cubic"><code class="docutils literal notranslate"><span class="pre">AnharmonicPotential.cubic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rovib.anharmonic_potential.AnharmonicPotential.quartic"><code class="docutils literal notranslate"><span class="pre">AnharmonicPotential.quartic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rovib.anharmonic_potential.AnharmonicPotential.nvib"><code class="docutils literal notranslate"><span class="pre">AnharmonicPotential.nvib</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-rovib.harmonic_hamiltonian_elements">Matrix Elements</a><ul>
@@ -89,6 +96,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#rovib.harmonic_hamiltonian_elements.harmonic_non_zero_indices"><code class="docutils literal notranslate"><span class="pre">harmonic_non_zero_indices()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.rigid_rotor_hamiltonian_elements.rigid_rotor_matrix_element"><code class="docutils literal notranslate"><span class="pre">rigid_rotor_matrix_element()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.rigid_rotor_hamiltonian_elements.rigid_rotor_non_zero_indices"><code class="docutils literal notranslate"><span class="pre">rigid_rotor_non_zero_indices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rovib.anharmonic_potential_elements.anharmonic_matrix_element"><code class="docutils literal notranslate"><span class="pre">anharmonic_matrix_element()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rovib.anharmonic_potential_elements.anharmonic_non_zero_indices"><code class="docutils literal notranslate"><span class="pre">anharmonic_non_zero_indices()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.hamiltonian_matrix.non_zero_indices"><code class="docutils literal notranslate"><span class="pre">non_zero_indices()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.hamiltonian_matrix.matrix_element"><code class="docutils literal notranslate"><span class="pre">matrix_element()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.hamiltonian_matrix.build_hamiltonian_matrix"><code class="docutils literal notranslate"><span class="pre">build_hamiltonian_matrix()</span></code></a></li>
@@ -106,7 +115,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.water_molecule"><code class="docutils literal notranslate"><span class="pre">water_molecule()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.water_normal_modes"><code class="docutils literal notranslate"><span class="pre">water_normal_modes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.water_harmonic_frequencies"><code class="docutils literal notranslate"><span class="pre">water_harmonic_frequencies()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.water_cubic_force_constants"><code class="docutils literal notranslate"><span class="pre">water_cubic_force_constants()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.water_quartic_force_constants"><code class="docutils literal notranslate"><span class="pre">water_quartic_force_constants()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.harmonic_analysis"><code class="docutils literal notranslate"><span class="pre">harmonic_analysis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.anharmonic_force_constants"><code class="docutils literal notranslate"><span class="pre">anharmonic_force_constants()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.water_params.is_water"><code class="docutils literal notranslate"><span class="pre">is_water()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.constants.HARTREE_TO_CM"><code class="docutils literal notranslate"><span class="pre">HARTREE_TO_CM</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rovib.constants.AMU_TO_ME"><code class="docutils literal notranslate"><span class="pre">AMU_TO_ME</span></code></a></li>
@@ -473,6 +485,84 @@ or if any rotational constant is not positive.</p>
 
 </dd></dl>
 
+<p id="module-rovib.anharmonic_potential">Defines the AnharmonicPotential class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rovib.anharmonic_potential.AnharmonicPotential">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rovib.anharmonic_potential.</span></span><span class="sig-name descname"><span class="pre">AnharmonicPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quartic</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rovib.anharmonic_potential.AnharmonicPotential" title="Link to this definition"></a></dt>
+<dd><p>The anharmonic potential <span class="math notranslate nohighlight">\(\Vanharm\)</span>.</p>
+<p>The force constants are the derivatives of the potential with respect to
+the mass-weighted normal coordinates, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[\Vanharm = \frac{1}{3!}\sum_{ijk=1}^{\Nvib}
+            g_{ijk}\qop_i\qop_j\qop_k +
+            \frac{1}{4!}\sum_{ijkl=1}^{\Nvib}
+            h_{ijkl}\qop_i\qop_j\qop_k\qop_l\]</div>
+<p>The harmonic frequencies are needed because the matrix elements of
+<span class="math notranslate nohighlight">\(\qop_i\)</span> depend on <span class="math notranslate nohighlight">\(\omega_i\)</span>. All inputs are stored as
+read-only arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequencies</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>numpy.ndarray</em></a>) – The harmonic frequencies <span class="math notranslate nohighlight">\(\omegavec\)</span> in hartree. The
+shape is (number of vibrational modes,).</p></li>
+<li><p><strong>cubic</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>numpy.ndarray</em></a>) – The cubic force constants <span class="math notranslate nohighlight">\(g_{ijk}\)</span> in atomic units.
+The shape is (<code class="docutils literal notranslate"><span class="pre">nvib</span></code>, <code class="docutils literal notranslate"><span class="pre">nvib</span></code>, <code class="docutils literal notranslate"><span class="pre">nvib</span></code>).</p></li>
+<li><p><strong>quartic</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>numpy.ndarray</em></a>) – The quartic force constants <span class="math notranslate nohighlight">\(h_{ijkl}\)</span> in atomic
+units. The shape is (<code class="docutils literal notranslate"><span class="pre">nvib</span></code>, <code class="docutils literal notranslate"><span class="pre">nvib</span></code>, <code class="docutils literal notranslate"><span class="pre">nvib</span></code>, <code class="docutils literal notranslate"><span class="pre">nvib</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">frequencies</span></code> is not a non-empty vector, if any
+frequency is not positive, or if <code class="docutils literal notranslate"><span class="pre">cubic</span></code> or <code class="docutils literal notranslate"><span class="pre">quartic</span></code> has the
+wrong shape or is not symmetric under permutation of its indices.</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="rovib.anharmonic_potential.AnharmonicPotential.frequencies">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequencies</span></span><a class="headerlink" href="#rovib.anharmonic_potential.AnharmonicPotential.frequencies" title="Link to this definition"></a></dt>
+<dd><p>The harmonic frequencies <span class="math notranslate nohighlight">\(\omegavec\)</span> in hartree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rovib.anharmonic_potential.AnharmonicPotential.cubic">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cubic</span></span><a class="headerlink" href="#rovib.anharmonic_potential.AnharmonicPotential.cubic" title="Link to this definition"></a></dt>
+<dd><p>The cubic force constants <span class="math notranslate nohighlight">\(g_{ijk}\)</span> in atomic units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rovib.anharmonic_potential.AnharmonicPotential.quartic">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">quartic</span></span><a class="headerlink" href="#rovib.anharmonic_potential.AnharmonicPotential.quartic" title="Link to this definition"></a></dt>
+<dd><p>The quartic force constants <span class="math notranslate nohighlight">\(h_{ijkl}\)</span> in atomic units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rovib.anharmonic_potential.AnharmonicPotential.nvib">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nvib</span></span><a class="headerlink" href="#rovib.anharmonic_potential.AnharmonicPotential.nvib" title="Link to this definition"></a></dt>
+<dd><p>The number of vibrational modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-rovib.harmonic_hamiltonian_elements">
 <span id="matrix-elements"></span><h2>Matrix Elements<a class="headerlink" href="#module-rovib.harmonic_hamiltonian_elements" title="Link to this heading"></a></h2>
@@ -597,6 +687,76 @@ quantum numbers and <span class="math notranslate nohighlight">\(J\)</span>, and
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" title="(in Python v3.15)">collections.abc.Iterator</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-rovib.anharmonic_potential_elements">Matrix elements of the anharmonic potential.</p>
+<p><span class="math notranslate nohighlight">\(\Vanharm\)</span> is diagonal in <span class="math notranslate nohighlight">\(J\)</span> and <span class="math notranslate nohighlight">\(K\)</span>. Grouping the terms of the
+cubic and quartic sums that are equal because the <span class="math notranslate nohighlight">\(\qop_i\)</span> commute
+gives:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\braket{\vvec',J',K'\mid\Vanharm\mid\vvec,J,K} =&amp;
+   \delta_{J',J}\delta_{K',K}\left[
+   \sum_{i\le j\le k}^{\Nvib}
+   \frac{g_{ijk}}{\prod_{n=1}^{\Nvib} p_n!}
+   \prod_{n=1}^{\Nvib}\mathcal{Q}^{(p_n)}_{v'_n,v_n}\right.\\
+   &amp;+\left.\sum_{i\le j\le k\le l}^{\Nvib}
+   \frac{h_{ijkl}}{\prod_{n=1}^{\Nvib} p_n!}
+   \prod_{n=1}^{\Nvib}\mathcal{Q}^{(p_n)}_{v'_n,v_n}\right]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p_n\)</span> is the number of times <span class="math notranslate nohighlight">\(n\)</span> appears in the indices of
+the force constant and
+<span class="math notranslate nohighlight">\(\mathcal{Q}^{(p)}_{v'_n,v_n} = \braket{v'_n\mid\qop_n^p\mid v_n}\)</span>
+(<span class="math notranslate nohighlight">\(\mathcal{Q}^{(0)}_{v'_n,v_n} = \delta_{v'_n,v_n}\)</span>). See
+<a class="reference internal" href="background/anharmonic_potential.html#anharmonic-potential"><span class="std std-ref">Anharmonic Potential</span></a> and <a class="reference internal" href="background/vibrational_wavefunction.html#vibrational-wavefunction"><span class="std std-ref">Vibrational Wavefunction</span></a> for the
+derivation.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rovib.anharmonic_potential_elements.anharmonic_matrix_element">
+<span class="sig-prename descclassname"><span class="pre">rovib.anharmonic_potential_elements.</span></span><span class="sig-name descname"><span class="pre">anharmonic_matrix_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rovib.anharmonic_potential_elements.anharmonic_matrix_element" title="Link to this definition"></a></dt>
+<dd><p>Computes a single matrix element of <span class="math notranslate nohighlight">\(\Vanharm\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bra</strong> (<a class="reference internal" href="#rovib.rovibrational_basis_function.RovibrationalBasisFunction" title="rovib.rovibrational_basis_function.RovibrationalBasisFunction"><em>RovibrationalBasisFunction</em></a>) – The basis function in the bra.</p></li>
+<li><p><strong>term</strong> (<a class="reference internal" href="#rovib.anharmonic_potential.AnharmonicPotential" title="rovib.anharmonic_potential.AnharmonicPotential"><em>AnharmonicPotential</em></a>) – The anharmonic potential.</p></li>
+<li><p><strong>ket</strong> (<a class="reference internal" href="#rovib.rovibrational_basis_function.RovibrationalBasisFunction" title="rovib.rovibrational_basis_function.RovibrationalBasisFunction"><em>RovibrationalBasisFunction</em></a>) – The basis function in the ket.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matrix element in hartree.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#complex" title="(in Python v3.15)">complex</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rovib.anharmonic_potential_elements.anharmonic_non_zero_indices">
+<span class="sig-prename descclassname"><span class="pre">rovib.anharmonic_potential_elements.</span></span><span class="sig-name descname"><span class="pre">anharmonic_non_zero_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bra_space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ket_space</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rovib.anharmonic_potential_elements.anharmonic_non_zero_indices" title="Link to this definition"></a></dt>
+<dd><p>Generates the bra-ket pairs with non-zero matrix elements of <span class="math notranslate nohighlight">\(\Vanharm\)</span>.</p>
+<p>For a term with <span class="math notranslate nohighlight">\(\qop_n^{p_n}\)</span>, an element is non-zero only if
+<span class="math notranslate nohighlight">\(v'_n - v_n\)</span> is one of <span class="math notranslate nohighlight">\(-p_n, -p_n+2, \ldots, p_n\)</span> and
+every mode not in the term has the same quantum number in the bra and
+ket. The bra and ket must also have the same <span class="math notranslate nohighlight">\(J\)</span> and <span class="math notranslate nohighlight">\(K\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bra_space</strong> (<a class="reference internal" href="#rovib.rovibrational_ansatz.RovibrationalAnsatz" title="rovib.rovibrational_ansatz.RovibrationalAnsatz"><em>RovibrationalAnsatz</em></a>) – The space the bra basis functions come from.</p></li>
+<li><p><strong>term</strong> (<a class="reference internal" href="#rovib.anharmonic_potential.AnharmonicPotential" title="rovib.anharmonic_potential.AnharmonicPotential"><em>AnharmonicPotential</em></a>) – The anharmonic potential.</p></li>
+<li><p><strong>ket_space</strong> (<a class="reference internal" href="#rovib.rovibrational_ansatz.RovibrationalAnsatz" title="rovib.rovibrational_ansatz.RovibrationalAnsatz"><em>RovibrationalAnsatz</em></a>) – The space the ket basis functions come from.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A generator of (bra, ket) pairs of
+<a class="reference internal" href="#rovib.rovibrational_basis_function.RovibrationalBasisFunction" title="rovib.rovibrational_basis_function.RovibrationalBasisFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">RovibrationalBasisFunction</span></code></a> objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" title="(in Python v3.15)">collections.abc.Iterator</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If either space has a different number of
+vibrational modes than <code class="docutils literal notranslate"><span class="pre">term</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -891,6 +1051,36 @@ mode).</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="rovib.water_params.water_cubic_force_constants">
+<span class="sig-prename descclassname"><span class="pre">rovib.water_params.</span></span><span class="sig-name descname"><span class="pre">water_cubic_force_constants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rovib.water_params.water_cubic_force_constants" title="Link to this definition"></a></dt>
+<dd><p>Returns the cubic force constants <span class="math notranslate nohighlight">\(g_{klm}\)</span> of water.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The cubic force constants with respect to the mass-weighted
+normal coordinates, in atomic units. The shape is (3, 3, 3).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rovib.water_params.water_quartic_force_constants">
+<span class="sig-prename descclassname"><span class="pre">rovib.water_params.</span></span><span class="sig-name descname"><span class="pre">water_quartic_force_constants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rovib.water_params.water_quartic_force_constants" title="Link to this definition"></a></dt>
+<dd><p>Returns the quartic force constants <span class="math notranslate nohighlight">\(h_{jklm}\)</span> of water.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The quartic force constants with respect to the mass-weighted
+normal coordinates, in atomic units. The shape is (3, 3, 3, 3).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="rovib.water_params.harmonic_analysis">
 <span class="sig-prename descclassname"><span class="pre">rovib.water_params.</span></span><span class="sig-name descname"><span class="pre">harmonic_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rovib.water_params.harmonic_analysis" title="Link to this definition"></a></dt>
 <dd><p>Performs the harmonic analysis of a molecule.</p>
@@ -903,6 +1093,29 @@ diagonalize the mass-weighted Hessian.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The normal-mode matrix <span class="math notranslate nohighlight">\(\Lvec\)</span>, indexed by (atom, axis, mode),
 and the harmonic frequencies <span class="math notranslate nohighlight">\(\omegavec\)</span> in hartree.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a> of (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a>)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">molecule</span></code> is not water.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rovib.water_params.anharmonic_force_constants">
+<span class="sig-prename descclassname"><span class="pre">rovib.water_params.</span></span><span class="sig-name descname"><span class="pre">anharmonic_force_constants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rovib.water_params.anharmonic_force_constants" title="Link to this definition"></a></dt>
+<dd><p>Computes the cubic and quartic force constants of a molecule.</p>
+<p>The results are hard-coded for water. A general implementation would
+differentiate the potential energy surface along the normal modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>molecule</strong> (<a class="reference internal" href="#rovib.molecule.Molecule" title="rovib.molecule.Molecule"><em>Molecule</em></a>) – The molecule, at its minimum energy geometry.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cubic and quartic force constants with respect to the
+mass-weighted normal coordinates, in atomic units.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a> of (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)">numpy.ndarray</a>)</p>

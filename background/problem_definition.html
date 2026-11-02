@@ -57,7 +57,9 @@
 <li class="toctree-l3"><a class="reference internal" href="coordinate_system.html">Coordinate System</a></li>
 <li class="toctree-l3"><a class="reference internal" href="watson_mu.html">Watson mu Tensor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="angular_wavefunction.html">Angular Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vibrational_wavefunction.html">Vibrational Wavefunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rigid_rotor.html">Rigid Rotor Hamiltonian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="anharmonic_potential.html">Anharmonic Potential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vibration_coriolis.html">Vibrational-Coriolis Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="watson.html">Watson Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rovibrational_coupling.html">Rovibrational Coupling Hamiltonian</a></li>
@@ -164,7 +166,7 @@ term is also zero). Truncating the series at the quartic term gives:</p>
 \Vharm \equiv&amp; \frac{1}{2}\sum_{i}^{\Nvib}\omega_i^2 \qop_i^2 \\
 \Vanharm \equiv&amp; \frac{1}{6}\sum_{i,j,k}^{\Nvib}g_{i,j,k}
                    \qop_i \qop_j \qop_k +
-           \frac{1}{24}\sum_{i,j,k,\ell}^{\Nvib}F_{i,j,k,\ell}
+           \frac{1}{24}\sum_{i,j,k,\ell}^{\Nvib}h_{i,j,k,\ell}
              \qop_i \qop_j \qop_k \qop_\ell\end{split}\]</div>
 <p>where we used the fact that the harmonic force constants are diagonal in the
 normal coordinate basis and introduced the third- and fourth-order force
@@ -242,6 +244,24 @@ rotational constants of the molecule and:</p>
 <div class="math notranslate nohighlight">
 \[C^\pm_{J,K} = \sqrt{J(J+1) - K(K\pm1)}.\]</div>
 </section>
+<section id="anharmonic-matrix-elements">
+<h3>Anharmonic Matrix Elements<a class="headerlink" href="#anharmonic-matrix-elements" title="Link to this heading"></a></h3>
+<p>Main article: <a class="reference internal" href="anharmonic_potential.html#anharmonic-potential"><span class="std std-ref">Anharmonic Potential</span></a>.</p>
+<p>In the <span class="math notranslate nohighlight">\(\ket{\vvec,J,K}\)</span> basis, the anharmonic potential energy,
+<span class="math notranslate nohighlight">\(\Vanharm\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\braket{\vvec', J', K' \mid \Vanharm\mid\vvec, J, K} =&amp;
+ \delta_{J',J}\delta_{K',K}\left[
+    \sum_{i&lt;j&lt;k}^{\Nvib} g_{ijk}T^{(111)}_{ijk}\right.\\
+ &amp;+ \frac{1}{2}\sum_{i\neq j}^{\Nvib} g_{iij}T^{(210)}_{ij}\\
+ &amp;+ \frac{1}{3!}\sum_{i=1}^{\Nvib} g_{iii}T^{(300)}_{i}\\
+ &amp;+ \sum_{i&lt;j&lt;k&lt;l}^{\Nvib} h_{ijkl}T^{(1111)}_{ijkl}\\
+ &amp;+ \frac{1}{2}\sum_{i=1}^{\Nvib}\sum_{\substack{j&lt;k\\ j,k\neq i}}^{\Nvib}
+    h_{iijk}T^{(211)}_{ijk}\\
+ &amp;+ \frac{1}{4}\sum_{i&lt;j}^{\Nvib} h_{iijj}T^{(22)}_{ij}\\
+ &amp;+ \frac{1}{3!}\sum_{i\neq j}^{\Nvib} h_{iiij}T^{(31)}_{ij}\\
+ &amp;+ \left.\frac{1}{4!}\sum_{i=1}^{\Nvib} h_{iiii}T^{(4)}_{i}\right]\end{split}\]</div>
+</section>
 <section id="watson-matrix-elements">
 <h3>Watson Matrix Elements<a class="headerlink" href="#watson-matrix-elements" title="Link to this heading"></a></h3>
 <p>Main article: <a class="reference internal" href="watson.html#watson-hamiltonian"><span class="std std-ref">Watson Hamiltonian</span></a>.</p>
@@ -297,34 +317,7 @@ product of one <span class="math notranslate nohighlight">\(\ket{v}\)</span> per
 <p><span class="math notranslate nohighlight">\(\HvibCor\)</span> and <span class="math notranslate nohighlight">\(\Hrovib\)</span> are sums of products of
 <span class="math notranslate nohighlight">\(\qop_k\)</span>, <span class="math notranslate nohighlight">\(\pop_k\)</span>, and <span class="math notranslate nohighlight">\(\jop_\alpha\)</span>, so their matrix
 elements follow from those of the individual operators.</p>
-<p>In mass-weighted normal coordinates
-<span class="math notranslate nohighlight">\(\qop_k = \sqrt{\frac{\hbar}{2\omega_k}}
-\left(\aop_k + \aop_k^\dagger\right)\)</span> and
-<span class="math notranslate nohighlight">\(\pop_k = i\sqrt{\frac{\hbar\omega_k}{2}}
-\left(\aop_k^\dagger - \aop_k\right)\)</span>,
-where <span class="math notranslate nohighlight">\(\aop_k\)</span> and <span class="math notranslate nohighlight">\(\aop_k^\dagger\)</span> are the ladder operators of
-mode <span class="math notranslate nohighlight">\(k\)</span>. The single-mode matrix elements are therefore:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\braket{v'_k\mid \qop_k\mid v_k} =&amp; \sqrt{\frac{\hbar}{2\omega_k}}
-   \left(\sqrt{v_k+1}\,\delta_{v'_k,v_k+1} +
-         \sqrt{v_k}\,\delta_{v'_k,v_k-1}\right)\\
-\braket{v'_k\mid \pop_k\mid v_k} =&amp; i\sqrt{\frac{\hbar\omega_k}{2}}
-   \left(\sqrt{v_k+1}\,\delta_{v'_k,v_k+1} -
-         \sqrt{v_k}\,\delta_{v'_k,v_k-1}\right)\end{split}\]</div>
-<p>Operators on different modes commute, so the matrix element of a product of
-<span class="math notranslate nohighlight">\(\qop\)</span> and <span class="math notranslate nohighlight">\(\pop\)</span> operators factors into one matrix element per
-mode:</p>
-<div class="math notranslate nohighlight">
-\[\braket{\vvec'\mid \op{O}_1 \op{O}_2\cdots \op{O}_p\mid\vvec} =
-   \prod_{k=1}^{\Nvib}\braket{v'_k\mid \op{O}^{(k)}\mid v_k}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\op{O}^{(k)}\)</span> is the product, in the original order, of the
-factors that act on mode <span class="math notranslate nohighlight">\(k\)</span> (the identity if there are none).
-Single-mode products are evaluated by inserting
-<span class="math notranslate nohighlight">\(\sum_{v''_k}\ket{v''_k}\bra{v''_k}\)</span> between factors. Each factor changes
-one quantum number by <span class="math notranslate nohighlight">\(\pm 1\)</span>, so a product of <span class="math notranslate nohighlight">\(p\)</span> factors only
-connects states with
-<span class="math notranslate nohighlight">\(\sum_k\left|v'_k - v_k\right| \le p\)</span> and
-<span class="math notranslate nohighlight">\(\sum_k\left(v'_k - v_k\right) \equiv p \pmod 2\)</span>.</p>
+<p>I</p>
 <p>The reversed action of <span class="math notranslate nohighlight">\(\jop_\pm\)</span> does not change the magnitude of the
 <span class="math notranslate nohighlight">\(\HRR\)</span> matrix elements, which only involve <span class="math notranslate nohighlight">\(\jop_+^2 + \jop_-^2\)</span>, but it
 fixes the signs below. Using

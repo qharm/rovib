@@ -82,6 +82,7 @@
  | <a href="#J"><strong>J</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -93,6 +94,16 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.constants.AMU_TO_ME">AMU_TO_ME (in module rovib.constants)</a>
+</li>
+      <li><a href="api.html#rovib.water_params.anharmonic_force_constants">anharmonic_force_constants() (in module rovib.water_params)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#rovib.anharmonic_potential_elements.anharmonic_matrix_element">anharmonic_matrix_element() (in module rovib.anharmonic_potential_elements)</a>
+</li>
+      <li><a href="api.html#rovib.anharmonic_potential_elements.anharmonic_non_zero_indices">anharmonic_non_zero_indices() (in module rovib.anharmonic_potential_elements)</a>
+</li>
+      <li><a href="api.html#rovib.anharmonic_potential.AnharmonicPotential">AnharmonicPotential (class in rovib.anharmonic_potential)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -115,6 +126,10 @@
       <li><a href="api.html#rovib.molecule.Molecule.coords">coords (rovib.molecule.Molecule property)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#rovib.anharmonic_potential.AnharmonicPotential.cubic">cubic (rovib.anharmonic_potential.AnharmonicPotential property)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="D">D</h2>
@@ -128,8 +143,12 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#rovib.harmonic_hamiltonian.HarmonicHamiltonian.frequencies">frequencies (rovib.harmonic_hamiltonian.HarmonicHamiltonian property)</a>
+      <li><a href="api.html#rovib.anharmonic_potential.AnharmonicPotential.frequencies">frequencies (rovib.anharmonic_potential.AnharmonicPotential property)</a>
+
+      <ul>
+        <li><a href="api.html#rovib.harmonic_hamiltonian.HarmonicHamiltonian.frequencies">(rovib.harmonic_hamiltonian.HarmonicHamiltonian property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -190,6 +209,10 @@
     module
 
       <ul>
+        <li><a href="api.html#module-rovib.anharmonic_potential">rovib.anharmonic_potential</a>
+</li>
+        <li><a href="api.html#module-rovib.anharmonic_potential_elements">rovib.anharmonic_potential_elements</a>
+</li>
         <li><a href="api.html#module-rovib.constants">rovib.constants</a>
 </li>
         <li><a href="api.html#module-rovib.driver">rovib.driver</a>
@@ -233,9 +256,11 @@
 </li>
       <li><a href="api.html#rovib.hamiltonian_matrix.non_zero_indices">non_zero_indices() (in module rovib.hamiltonian_matrix)</a>
 </li>
-      <li><a href="api.html#rovib.harmonic_hamiltonian.HarmonicHamiltonian.nvib">nvib (rovib.harmonic_hamiltonian.HarmonicHamiltonian property)</a>
+      <li><a href="api.html#rovib.anharmonic_potential.AnharmonicPotential.nvib">nvib (rovib.anharmonic_potential.AnharmonicPotential property)</a>
 
       <ul>
+        <li><a href="api.html#rovib.harmonic_hamiltonian.HarmonicHamiltonian.nvib">(rovib.harmonic_hamiltonian.HarmonicHamiltonian property)</a>
+</li>
         <li><a href="api.html#rovib.molecule.Molecule.nvib">(rovib.molecule.Molecule property)</a>
 </li>
         <li><a href="api.html#rovib.rovibrational_ansatz.RovibrationalAnsatz.nvib">(rovib.rovibrational_ansatz.RovibrationalAnsatz property)</a>
@@ -243,6 +268,14 @@
         <li><a href="api.html#rovib.rovibrational_basis_function.RovibrationalBasisFunction.nvib">(rovib.rovibrational_basis_function.RovibrationalBasisFunction property)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#rovib.anharmonic_potential.AnharmonicPotential.quartic">quartic (rovib.anharmonic_potential.AnharmonicPotential property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -259,6 +292,20 @@
 </li>
       <li><a href="api.html#rovib.inertia.rotational_constants">rotational_constants() (in module rovib.inertia)</a>
 </li>
+      <li>
+    rovib.anharmonic_potential
+
+      <ul>
+        <li><a href="api.html#module-rovib.anharmonic_potential">module</a>
+</li>
+      </ul></li>
+      <li>
+    rovib.anharmonic_potential_elements
+
+      <ul>
+        <li><a href="api.html#module-rovib.anharmonic_potential_elements">module</a>
+</li>
+      </ul></li>
       <li>
     rovib.constants
 
@@ -301,6 +348,8 @@
         <li><a href="api.html#module-rovib.harmonic_hamiltonian">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     rovib.harmonic_hamiltonian_elements
 
@@ -308,8 +357,6 @@
         <li><a href="api.html#module-rovib.harmonic_hamiltonian_elements">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     rovib.inertia
 
@@ -395,6 +442,8 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#rovib.water_params.water_cubic_force_constants">water_cubic_force_constants() (in module rovib.water_params)</a>
+</li>
       <li><a href="api.html#rovib.water_params.water_harmonic_frequencies">water_harmonic_frequencies() (in module rovib.water_params)</a>
 </li>
   </ul></td>
@@ -402,6 +451,8 @@
       <li><a href="api.html#rovib.water_params.water_molecule">water_molecule() (in module rovib.water_params)</a>
 </li>
       <li><a href="api.html#rovib.water_params.water_normal_modes">water_normal_modes() (in module rovib.water_params)</a>
+</li>
+      <li><a href="api.html#rovib.water_params.water_quartic_force_constants">water_quartic_force_constants() (in module rovib.water_params)</a>
 </li>
   </ul></td>
 </tr></table>

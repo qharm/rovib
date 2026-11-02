@@ -43,6 +43,9 @@ Classes
 .. automodule:: rovib.rigid_rotor_hamiltonian
    :members:
 
+.. automodule:: rovib.anharmonic_potential
+   :members:
+
 ***************
 Matrix Elements
 ***************
@@ -51,6 +54,9 @@ Matrix Elements
    :members:
 
 .. automodule:: rovib.rigid_rotor_hamiltonian_elements
+   :members:
+
+.. automodule:: rovib.anharmonic_potential_elements
    :members:
 
 .. automodule:: rovib.hamiltonian_matrix

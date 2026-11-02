@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anharmonic Potential &mdash; rovib 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"tex": {"macros": {"tens": ["\\boldsymbol{#1}", 1], "op": ["\\hat{#1}", 1], "optens": ["\\hat{\\boldsymbol{#1}}", 1], "tr": "\\operatorname{tr}", "Natom": "N_{\\mathrm{atom}}", "Nvib": "N_{\\mathrm{vib}}", "rzvec": "\\tens{r}^{0}", "Izvec": "\\tens{I}^{0}", "Izmhalf": "\\left(\\Izvec\\right)^{-1/2}", "Lvec": "\\tens{L}", "Mvec": "\\tens{M}", "zetavec": "\\tens{\\zeta}", "avec": "\\tens{a}", "Bvec": "\\tens{B}", "etavec": "\\tens{\\eta}", "gammavec": "\\tens{\\gamma}", "omegavec": "\\tens{\\omega}", "vvec": "\\tens{v}", "midx": "\\tens{m}", "rvec": "\\optens{r}", "rhovec": "\\optens{\\rho}", "Ivec": "\\optens{I}", "Ieffvec": "\\optens{I}'", "qvec": "\\optens{Q}", "pvec": "\\optens{P}", "jvec": "\\optens{J}", "pivec": "\\optens{\\pi}", "muvec": "\\optens{\\mu}", "bvec": "\\optens{b}", "rop": "\\op{r}", "Iop": "\\op{I}", "Ieffop": "\\op{I}'", "qop": "\\op{Q}", "pop": "\\op{P}", "jop": "\\op{J}", "piop": "\\op{\\pi}", "muop": "\\op{\\mu}", "aop": "\\op{a}", "Vop": "\\op{V}", "Hvib": "\\op{H}_{\\mathrm{vib}}", "HRR": "\\op{H}_{\\mathrm{RR}}", "HHO": "\\op{H}_{\\mathrm{HO}}", "HvibCor": "\\op{H}_{\\mathrm{vibCor}}", "Hwatson": "\\op{H}_{\\mathrm{watson}}", "Hrovib": "\\op{H}_{\\mathrm{rovib}}", "Vharm": "\\op{V}_{\\mathrm{harm}}", "Vanharm": "\\op{V}_{\\mathrm{anharm}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Vibrational-Coriolis Hamiltonian" href="vibration_coriolis.html" />
+    <link rel="prev" title="Rigid Rotor Hamiltonian" href="rigid_rotor.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rovib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Theoretical Background</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#notation">Notation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="problem_definition.html">Problem Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coordinate_system.html">Coordinate System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watson_mu.html">Watson mu Tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="angular_wavefunction.html">Angular Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vibrational_wavefunction.html">Vibrational Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rigid_rotor.html">Rigid Rotor Hamiltonian</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Anharmonic Potential</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#matrix-elements">Matrix Elements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vibration_coriolis.html">Vibrational-Coriolis Hamiltonian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watson.html">Watson Hamiltonian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rovibrational_coupling.html">Rovibrational Coupling Hamiltonian</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rovib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Theoretical Background</a></li>
+      <li class="breadcrumb-item active">Anharmonic Potential</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/background/anharmonic_potential.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="anharmonic-potential">
+<span id="id1"></span><h1>Anharmonic Potential<a class="headerlink" href="#anharmonic-potential" title="Link to this heading"></a></h1>
+<p>The anharmonic potential operator is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Vanharm \equiv&amp; \frac{1}{3!}
+                 \sum_{ijk=1}^{\Nvib} g_{ijk}\qop_i\qop_j\qop_k +\\
+               &amp; \frac{1}{4!}
+                 \sum_{ijkl=1}^{\Nvib} h_{ijkl}\qop_i\qop_j\qop_k\qop_l\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(g_{ijk}\)</span> and <span class="math notranslate nohighlight">\(h_{ijkl}\)</span> are the cubic and quartic force
+constants.</p>
+<p>For convenience we break the cubic sum up into a term in which no index is
+repeated, a term in which one index is repeated, and a term in which three
+indices are repeated. Since the <span class="math notranslate nohighlight">\(\qop_i\)</span> commute and
+<span class="math notranslate nohighlight">\(g_{ijk}\)</span> is symmetric under permutation of its indices, this gives:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{1}{3!}\sum_{ijk=1}^{\Nvib} g_{ijk}\qop_i\qop_j\qop_k =&amp;
+   \sum_{i&lt;j&lt;k}^{\Nvib} g_{ijk}\qop_i\qop_j\qop_k\\
+&amp;+ \frac{1}{2}\sum_{i\neq j}^{\Nvib} g_{iij}\qop_i^2\qop_j\\
+&amp;+ \frac{1}{3!}\sum_{i=1}^{\Nvib} g_{iii}\qop_i^3\end{split}\]</div>
+<p>Similarly, we break the quartic sum up into a term in which all four indices
+are distinct, a term in which exactly two indices are equal, a term with two
+distinct pairs of equal indices, a term in which exactly three indices are
+equal, and a term in which all four indices are equal. This gives:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{1}{4!}\sum_{ijkl=1}^{\Nvib} h_{ijkl}\qop_i\qop_j\qop_k\qop_l =&amp;
+   \sum_{i&lt;j&lt;k&lt;l}^{\Nvib} h_{ijkl}\qop_i\qop_j\qop_k\qop_l\\
+&amp;+ \frac{1}{2}\sum_{i=1}^{\Nvib}\sum_{\substack{j&lt;k\\ j,k\neq i}}^{\Nvib}
+   h_{iijk}\qop_i^2\qop_j\qop_k\\
+&amp;+ \frac{1}{4}\sum_{i&lt;j}^{\Nvib} h_{iijj}\qop_i^2\qop_j^2\\
+&amp;+ \frac{1}{3!}\sum_{i\neq j}^{\Nvib} h_{iiij}\qop_i^3\qop_j\\
+&amp;+ \frac{1}{4!}\sum_{i=1}^{\Nvib} h_{iiii}\qop_i^4\end{split}\]</div>
+<p>For what it’s worth, the general form is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Vanharm =&amp; \sum_{i\le j\le k}^{\Nvib}
+            \frac{g_{ijk}}{\prod_{n=1}^{\Nvib} p_n!}
+            \qop_i\qop_j\qop_k\\
+          &amp;+ \sum_{i\le j\le k\le l}^{\Nvib}
+            \frac{h_{ijkl}}{\prod_{n=1}^{\Nvib} p_n!}
+            \qop_i\qop_j\qop_k\qop_l\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p_n\)</span> is the power of <span class="math notranslate nohighlight">\(\qop_n\)</span> in the term.</p>
+<section id="matrix-elements">
+<h2>Matrix Elements<a class="headerlink" href="#matrix-elements" title="Link to this heading"></a></h2>
+<p>Because the operators on different modes commute, the matrix element
+of each term factors into one matrix element per mode (see
+<a class="reference internal" href="vibrational_wavefunction.html#vibrational-wavefunction"><span class="std std-ref">Vibrational Wavefunction</span></a>):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\braket{\vvec'\mid\qop_i\qop_j\qop_k\mid\vvec} =&amp;
+   \prod_{n=1}^{\Nvib}\braket{v'_n\mid\qop_n^{p_n}\mid v_n}\\
+\braket{\vvec'\mid\qop_i\qop_j\qop_k\qop_l\mid\vvec} =&amp;
+   \prod_{n=1}^{\Nvib}\braket{v'_n\mid\qop_n^{p_n}\mid v_n}\end{split}\]</div>
+<p>For a mode that does not appear in the term, <span class="math notranslate nohighlight">\(p_n=0\)</span> and its factor is
+<span class="math notranslate nohighlight">\(\delta_{v'_n,v_n}\)</span>. Collecting these factors into:</p>
+<div class="math notranslate nohighlight">
+\[\delta^{(ij\ldots)}_{\vvec',\vvec} \equiv
+   \prod_{n\notin\left\{i,j,\ldots\right\}}\delta_{v'_n,v_n}\]</div>
+<p>and using the single-mode matrix elements
+<span class="math notranslate nohighlight">\(\mathcal{Q}^{(p)}_{v'_n,v_n}\)</span> from <a class="reference internal" href="vibrational_wavefunction.html#vibrational-wavefunction"><span class="std std-ref">Vibrational Wavefunction</span></a>, the
+matrix elements of <span class="math notranslate nohighlight">\(\Vanharm\)</span> are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\braket{\vvec'\mid \Vanharm\mid\vvec} =&amp;
+   \sum_{i&lt;j&lt;k}^{\Nvib} g_{ijk}T^{(111)}_{ijk}\\
+&amp;+ \frac{1}{2}\sum_{i\neq j}^{\Nvib} g_{iij}T^{(210)}_{ij}\\
+&amp;+ \frac{1}{3!}\sum_{i=1}^{\Nvib} g_{iii}T^{(300)}_{i}\\
+&amp;+ \sum_{i&lt;j&lt;k&lt;l}^{\Nvib} h_{ijkl}T^{(1111)}_{ijkl}\\
+&amp;+ \frac{1}{2}\sum_{i=1}^{\Nvib}\sum_{\substack{j&lt;k\\ j,k\neq i}}^{\Nvib}
+   h_{iijk}T^{(211)}_{ijk}\\
+&amp;+ \frac{1}{4}\sum_{i&lt;j}^{\Nvib} h_{iijj}T^{(22)}_{ij}\\
+&amp;+ \frac{1}{3!}\sum_{i\neq j}^{\Nvib} h_{iiij}T^{(31)}_{ij}\\
+&amp;+ \frac{1}{4!}\sum_{i=1}^{\Nvib} h_{iiii}T^{(4)}_{i}\end{split}\]</div>
+<p>where the tensors <span class="math notranslate nohighlight">\(T^{(pqr\ldots)}_{ijk\ldots}\)</span> are defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}T^{(111)}_{ijk} \equiv&amp; \mathcal{Q}_{v'_i,v_i}\mathcal{Q}_{v'_j,v_j}
+                        \mathcal{Q}_{v'_k,v_k}\delta^{(ijk)}_{\vvec',\vvec}\\
+T^{(210)}_{ij} \equiv&amp; \mathcal{Q}^{(2)}_{v'_i,v_i}\mathcal{Q}_{v'_j,v_j}
+                        \delta^{(ij)}_{\vvec',\vvec}\\
+T^{(300)}_{i} \equiv&amp; \mathcal{Q}^{(3)}_{v'_i,v_i}
+                      \delta^{(i)}_{\vvec',\vvec}\\
+T^{(1111)}_{ijkl} \equiv&amp; \mathcal{Q}_{v'_i,v_i}\mathcal{Q}_{v'_j,v_j}
+                          \mathcal{Q}_{v'_k,v_k}\mathcal{Q}_{v'_l,v_l}
+                          \delta^{(ijkl)}_{\vvec',\vvec}\\
+T^{(211)}_{ijk} \equiv&amp; \mathcal{Q}^{(2)}_{v'_i,v_i}\mathcal{Q}_{v'_j,v_j}
+                         \mathcal{Q}_{v'_k,v_k}
+                         \delta^{(ijk)}_{\vvec',\vvec}\\
+T^{(22)}_{ij} \equiv&amp; \mathcal{Q}^{(2)}_{v'_i,v_i}
+                       \mathcal{Q}^{(2)}_{v'_j,v_j}
+                       \delta^{(ij)}_{\vvec',\vvec}\\
+T^{(31)}_{ij} \equiv&amp; \mathcal{Q}^{(3)}_{v'_i,v_i}\mathcal{Q}_{v'_j,v_j}
+                      \delta^{(ij)}_{\vvec',\vvec}\\
+ T^{(4)}_{i} \equiv&amp; \mathcal{Q}^{(4)}_{v'_i,v_i}\delta^{(i)}_{\vvec',\vvec}\end{split}\]</div>
+<p>In practice, the matrix elements of <span class="math notranslate nohighlight">\(\Vanharm\)</span> are computed by
+iterating over the <span class="math notranslate nohighlight">\(\binom{\Nvib+2}{3}\)</span> cubic and
+<span class="math notranslate nohighlight">\(\binom{\Nvib+3}{4}\)</span> quartic terms. Then for each term, the non-zero
+matrix elements are evaluated by using the selection rules for the relevant
+single-mode matrix elements.</p>
+<p>In the full ansantz, the matrix elements of <span class="math notranslate nohighlight">\(\Vanharm\)</span> are diagonal in
+<span class="math notranslate nohighlight">\(J\)</span> and <span class="math notranslate nohighlight">\(K\)</span>, so we can define a tensor:</p>
+<div class="math notranslate nohighlight">
+\[\braket{\vvec', J', K' \mid \Vanharm\mid\vvec, J, K} =
+ \delta_{J',J}\delta_{K',K}
+   \braket{\vvec'\mid \Vanharm\mid\vvec}\]</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rigid_rotor.html" class="btn btn-neutral float-left" title="Rigid Rotor Hamiltonian" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vibration_coriolis.html" class="btn btn-neutral float-right" title="Vibrational-Coriolis Hamiltonian" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, QHARM Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
