@@ -22,6 +22,11 @@ of a dense matrix.
 
 import numpy as np
 
+from .anharmonic_potential import AnharmonicPotential
+from .anharmonic_potential_elements import (
+    anharmonic_matrix_element,
+    anharmonic_non_zero_indices,
+)
 from .harmonic_hamiltonian import HarmonicHamiltonian
 from .harmonic_hamiltonian_elements import (
     harmonic_matrix_element,
@@ -35,12 +40,14 @@ from .rigid_rotor_hamiltonian_elements import (
 
 #: Maps each type of Hamiltonian term to its non-zero index generator.
 _NON_ZERO_INDICES = {
+    AnharmonicPotential: anharmonic_non_zero_indices,
     HarmonicHamiltonian: harmonic_non_zero_indices,
     RigidRotorHamiltonian: rigid_rotor_non_zero_indices,
 }
 
 #: Maps each type of Hamiltonian term to its matrix element function.
 _MATRIX_ELEMENTS = {
+    AnharmonicPotential: anharmonic_matrix_element,
     HarmonicHamiltonian: harmonic_matrix_element,
     RigidRotorHamiltonian: rigid_rotor_matrix_element,
 }

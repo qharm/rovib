@@ -17,6 +17,7 @@ import unittest
 import numpy as np
 
 from rovib import (
+    AnharmonicPotential,
     Hamiltonian,
     HamiltonianTerm,
     HarmonicHamiltonian,
@@ -27,6 +28,10 @@ from rovib import (
     matrix_element,
     non_zero_indices,
 )
+from rovib.anharmonic_potential_elements import (
+    anharmonic_matrix_element,
+    anharmonic_non_zero_indices,
+)
 from rovib.harmonic_hamiltonian_elements import (
     harmonic_matrix_element,
     harmonic_non_zero_indices,
@@ -35,6 +40,16 @@ from rovib.rigid_rotor_hamiltonian_elements import (
     rigid_rotor_matrix_element,
     rigid_rotor_non_zero_indices,
 )
+
+
+def _anharmonic_potential():
+    """An AnharmonicPotential for three modes with symmetric constants."""
+    cubic = np.zeros((3, 3, 3))
+    cubic[0, 0, 1] = cubic[0, 1, 0] = cubic[1, 0, 0] = 0.5
+    cubic[2, 2, 2] = -0.25
+    quartic = np.zeros((3, 3, 3, 3))
+    quartic[1, 1, 1, 1] = 0.75
+    return AnharmonicPotential([1.0, 2.0, 3.0], cubic, quartic)
 
 
 class TestNonZeroIndices(unittest.TestCase):
@@ -52,6 +67,14 @@ class TestNonZeroIndices(unittest.TestCase):
         self.assertEqual(
             list(non_zero_indices(ansatz, term, ansatz)),
             list(rigid_rotor_non_zero_indices(ansatz, term, ansatz)),
+        )
+
+    def test_anharmonic(self):
+        term = _anharmonic_potential()
+        ansatz = RovibrationalAnsatz(3, 2, 1)
+        self.assertEqual(
+            list(non_zero_indices(ansatz, term, ansatz)),
+            list(anharmonic_non_zero_indices(ansatz, term, ansatz)),
         )
 
     def test_unknown_term(self):
@@ -78,6 +101,14 @@ class TestMatrixElement(unittest.TestCase):
         self.assertEqual(
             matrix_element(bra, term, ket),
             rigid_rotor_matrix_element(bra, term, ket),
+        )
+
+    def test_anharmonic(self):
+        term = _anharmonic_potential()
+        bra = RovibrationalBasisFunction((2, 1, 2), 0, 0)
+        self.assertEqual(
+            matrix_element(bra, term, self.bf),
+            anharmonic_matrix_element(bra, term, self.bf),
         )
 
     def test_unknown_term(self):
@@ -117,6 +148,20 @@ class TestBuildHamiltonianMatrix(unittest.TestCase):
             b = self.ansatz.index(bra)
             k = self.ansatz.index(ket)
             expected[b, k] = rigid_rotor_matrix_element(bra, term, ket)
+        np.testing.assert_array_equal(matrix, expected)
+
+    def test_anharmonic(self):
+        term = _anharmonic_potential()
+        matrix = build_hamiltonian_matrix(Hamiltonian((term,)), self.ansatz)
+        np.testing.assert_allclose(matrix, matrix.conj().T)
+
+        expected = np.zeros_like(matrix)
+        for bra, ket in anharmonic_non_zero_indices(
+            self.ansatz, term, self.ansatz
+        ):
+            b = self.ansatz.index(bra)
+            k = self.ansatz.index(ket)
+            expected[b, k] = anharmonic_matrix_element(bra, term, ket)
         np.testing.assert_array_equal(matrix, expected)
 
     def test_harmonic_plus_rigid_rotor(self):

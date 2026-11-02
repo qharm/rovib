@@ -40,7 +40,9 @@ The following typesetting conventions are used:
    coordinate_system
    watson_mu
    angular_wavefunction
+   vibrational_wavefunction
    rigid_rotor
+   anharmonic_potential
    vibration_coriolis
    watson
    rovibrational_coupling

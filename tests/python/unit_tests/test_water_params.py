@@ -12,18 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
 import unittest
 
 import numpy as np
 
-from rovib import Molecule
+from rovib import AnharmonicPotential, Molecule
 from rovib.constants import HARTREE_TO_CM
 from rovib.water_params import (
+    anharmonic_force_constants,
     harmonic_analysis,
     is_water,
+    water_cubic_force_constants,
     water_harmonic_frequencies,
     water_molecule,
     water_normal_modes,
+    water_quartic_force_constants,
 )
 
 #: The normal modes are only given to four digits.
@@ -113,6 +117,83 @@ class TestWaterHarmonicFrequencies(unittest.TestCase):
     def test_frequencies(self):
         frequencies = water_harmonic_frequencies() * HARTREE_TO_CM
         np.testing.assert_allclose(frequencies, [3830.87, 1649.74, 3940.46])
+
+
+def _reduce(force_constants, idx):
+    """Divides a force constant by the square roots of its frequencies."""
+    omega = water_harmonic_frequencies()
+    scale = np.sqrt(np.prod(omega[list(idx)]))
+    return force_constants[idx] / scale * HARTREE_TO_CM
+
+
+class TestWaterForceConstants(unittest.TestCase):
+    def setUp(self):
+        self.cubic = water_cubic_force_constants()
+        self.quartic = water_quartic_force_constants()
+
+    def test_shape(self):
+        self.assertEqual(self.cubic.shape, (3, 3, 3))
+        self.assertEqual(self.quartic.shape, (3, 3, 3, 3))
+
+    def test_symmetric(self):
+        # The constructor checks the symmetry of the force constants.
+        AnharmonicPotential(
+            water_harmonic_frequencies(), self.cubic, self.quartic
+        )
+
+    def test_cubic_values(self):
+        expected = {
+            (0, 2, 2): -1822.17,
+            (1, 2, 2): -265.63,
+            (0, 0, 0): -1843.08,
+            (0, 0, 1): -73.77,
+            (0, 1, 1): 310.01,
+            (1, 1, 1): 264.59,
+        }
+        for idx in itertools.combinations_with_replacement(range(3), 3):
+            with self.subTest(idx=idx):
+                self.assertAlmostEqual(
+                    _reduce(self.cubic, idx), expected.get(idx, 0.0)
+                )
+
+    def test_quartic_values(self):
+        expected = {
+            (2, 2, 2, 2): 779.10,
+            (0, 0, 2, 2): 764.90,
+            (0, 0, 0, 0): 767.10,
+            (0, 1, 2, 2): 118.20,
+            (0, 0, 0, 1): 62.20,
+            (1, 1, 2, 2): -368.56,
+            (0, 0, 1, 1): -305.41,
+            (0, 1, 1, 1): -154.64,
+            (1, 1, 1, 1): -52.89,
+        }
+        for idx in itertools.combinations_with_replacement(range(3), 4):
+            with self.subTest(idx=idx):
+                self.assertAlmostEqual(
+                    _reduce(self.quartic, idx), expected.get(idx, 0.0)
+                )
+
+    def test_c2v_symmetry(self):
+        # The antisymmetric stretch (mode 2) is the only non-totally
+        # symmetric mode, so terms with an odd power of it vanish.
+        for force_constants in (self.cubic, self.quartic):
+            for idx in np.ndindex(force_constants.shape):
+                if idx.count(2) % 2 == 1:
+                    self.assertEqual(force_constants[idx], 0.0)
+
+
+class TestAnharmonicForceConstants(unittest.TestCase):
+    def test_water(self):
+        cubic, quartic = anharmonic_force_constants(water_molecule())
+        np.testing.assert_array_equal(cubic, water_cubic_force_constants())
+        np.testing.assert_array_equal(quartic, water_quartic_force_constants())
+
+    def test_not_water(self):
+        water = water_molecule()
+        mol = Molecule(("N", "H", "H"), water.coords, water.masses)
+        with self.assertRaises(ValueError):
+            anharmonic_force_constants(mol)
 
 
 class TestHarmonicAnalysis(unittest.TestCase):

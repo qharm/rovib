@@ -14,6 +14,7 @@
 
 """A proof-of-concept library that solves the rovibrational problem."""
 
+from .anharmonic_potential import AnharmonicPotential
 from .driver import (
     dominant_basis_function,
     hartree_to_wavenumber,
@@ -32,9 +33,15 @@ from .molecule import Molecule
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
 from .rovibrational_ansatz import RovibrationalAnsatz
 from .rovibrational_basis_function import RovibrationalBasisFunction
-from .water_params import harmonic_analysis, is_water, water_molecule
+from .water_params import (
+    anharmonic_force_constants,
+    harmonic_analysis,
+    is_water,
+    water_molecule,
+)
 
 __all__ = [
+    "AnharmonicPotential",
     "Hamiltonian",
     "HamiltonianTerm",
     "HarmonicHamiltonian",
@@ -42,6 +49,7 @@ __all__ = [
     "RigidRotorHamiltonian",
     "RovibrationalAnsatz",
     "RovibrationalBasisFunction",
+    "anharmonic_force_constants",
     "build_hamiltonian_matrix",
     "dominant_basis_function",
     "harmonic_analysis",

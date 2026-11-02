@@ -109,7 +109,7 @@ term is also zero). Truncating the series at the quartic term gives:
     \Vharm \equiv& \frac{1}{2}\sum_{i}^{\Nvib}\omega_i^2 \qop_i^2 \\
     \Vanharm \equiv& \frac{1}{6}\sum_{i,j,k}^{\Nvib}g_{i,j,k}
                        \qop_i \qop_j \qop_k +
-               \frac{1}{24}\sum_{i,j,k,\ell}^{\Nvib}F_{i,j,k,\ell}
+               \frac{1}{24}\sum_{i,j,k,\ell}^{\Nvib}h_{i,j,k,\ell}
                  \qop_i \qop_j \qop_k \qop_\ell
 
 where we used the fact that the harmonic force constants are diagonal in the
@@ -214,6 +214,29 @@ rotational constants of the molecule and:
 
    C^\pm_{J,K} = \sqrt{J(J+1) - K(K\pm1)}.
 
+Anharmonic Matrix Elements
+==========================
+
+Main article: :ref:`anharmonic_potential`.
+
+In the :math:`\ket{\vvec,J,K}` basis, the anharmonic potential energy,
+:math:`\Vanharm` is:
+
+.. math::
+
+   \braket{\vvec', J', K' \mid \Vanharm\mid\vvec, J, K} =&
+    \delta_{J',J}\delta_{K',K}\left[
+       \sum_{i<j<k}^{\Nvib} g_{ijk}T^{(111)}_{ijk}\right.\\
+    &+ \frac{1}{2}\sum_{i\neq j}^{\Nvib} g_{iij}T^{(210)}_{ij}\\
+    &+ \frac{1}{3!}\sum_{i=1}^{\Nvib} g_{iii}T^{(300)}_{i}\\
+    &+ \sum_{i<j<k<l}^{\Nvib} h_{ijkl}T^{(1111)}_{ijkl}\\
+    &+ \frac{1}{2}\sum_{i=1}^{\Nvib}\sum_{\substack{j<k\\ j,k\neq i}}^{\Nvib}
+       h_{iijk}T^{(211)}_{ijk}\\
+    &+ \frac{1}{4}\sum_{i<j}^{\Nvib} h_{iijj}T^{(22)}_{ij}\\
+    &+ \frac{1}{3!}\sum_{i\neq j}^{\Nvib} h_{iiij}T^{(31)}_{ij}\\
+    &+ \left.\frac{1}{4!}\sum_{i=1}^{\Nvib} h_{iiii}T^{(4)}_{i}\right]
+
+
 Watson Matrix Elements
 ======================
 
@@ -288,40 +311,9 @@ product of one :math:`\ket{v}` per vibrational degree of freedom and
 :math:`\qop_k`, :math:`\pop_k`, and :math:`\jop_\alpha`, so their matrix
 elements follow from those of the individual operators.
 
-In mass-weighted normal coordinates
-:math:`\qop_k = \sqrt{\frac{\hbar}{2\omega_k}}
-\left(\aop_k + \aop_k^\dagger\right)` and
-:math:`\pop_k = i\sqrt{\frac{\hbar\omega_k}{2}}
-\left(\aop_k^\dagger - \aop_k\right)`,
-where :math:`\aop_k` and :math:`\aop_k^\dagger` are the ladder operators of
-mode :math:`k`. The single-mode matrix elements are therefore:
+I
 
-.. math::
 
-   \braket{v'_k\mid \qop_k\mid v_k} =& \sqrt{\frac{\hbar}{2\omega_k}}
-      \left(\sqrt{v_k+1}\,\delta_{v'_k,v_k+1} +
-            \sqrt{v_k}\,\delta_{v'_k,v_k-1}\right)\\
-   \braket{v'_k\mid \pop_k\mid v_k} =& i\sqrt{\frac{\hbar\omega_k}{2}}
-      \left(\sqrt{v_k+1}\,\delta_{v'_k,v_k+1} -
-            \sqrt{v_k}\,\delta_{v'_k,v_k-1}\right)
-
-Operators on different modes commute, so the matrix element of a product of
-:math:`\qop` and :math:`\pop` operators factors into one matrix element per
-mode:
-
-.. math::
-
-   \braket{\vvec'\mid \op{O}_1 \op{O}_2\cdots \op{O}_p\mid\vvec} =
-      \prod_{k=1}^{\Nvib}\braket{v'_k\mid \op{O}^{(k)}\mid v_k}
-
-where :math:`\op{O}^{(k)}` is the product, in the original order, of the
-factors that act on mode :math:`k` (the identity if there are none).
-Single-mode products are evaluated by inserting
-:math:`\sum_{v''_k}\ket{v''_k}\bra{v''_k}` between factors. Each factor changes
-one quantum number by :math:`\pm 1`, so a product of :math:`p` factors only
-connects states with
-:math:`\sum_k\left|v'_k - v_k\right| \le p` and
-:math:`\sum_k\left(v'_k - v_k\right) \equiv p \pmod 2`.
 
 The reversed action of :math:`\jop_\pm` does not change the magnitude of the
 |HRR| matrix elements, which only involve :math:`\jop_+^2 + \jop_-^2`, but it
