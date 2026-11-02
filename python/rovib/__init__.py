@@ -16,7 +16,10 @@
 
 from .driver import (
     dominant_basis_function,
+    encode_harmonic_hamiltonian,
+    encoded_harmonic_hamiltonian,
     hartree_to_wavenumber,
+    print_encoded_harmonic_hamiltonian,
     rovibrational_energies,
 )
 from .hamiltonian import Hamiltonian
@@ -41,11 +44,14 @@ __all__ = [
     "RovibrationalBasisFunction",
     "build_hamiltonian_matrix",
     "dominant_basis_function",
+    "encode_harmonic_hamiltonian",
+    "encoded_harmonic_hamiltonian",
     "harmonic_analysis",
     "hartree_to_wavenumber",
     "is_water",
     "matrix_element",
     "non_zero_indices",
+    "print_encoded_harmonic_hamiltonian",
     "rovibrational_energies",
     "water_molecule",
 ]
