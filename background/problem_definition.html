@@ -61,7 +61,6 @@
 <li class="toctree-l3"><a class="reference internal" href="rigid_rotor.html">Rigid Rotor Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="anharmonic_potential.html">Anharmonic Potential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vibration_coriolis.html">Vibrational-Coriolis Hamiltonian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="watson.html">Watson Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rovibrational_coupling.html">Rovibrational Coupling Hamiltonian</a></li>
 </ul>
 </li>
@@ -178,7 +177,7 @@ also expanded as a fourth-order Taylor series about the minimum energy geometry,
 vibrational Hamiltonian, and retaining terms up to fourth order in <span class="math notranslate nohighlight">\(\qvec\)</span>
 gives:</p>
 <div class="math notranslate nohighlight">
-\[\Hvib = \HHO + \HRR + \Vanharm  + \HvibCor + \Hrovib + \Hwatson +
+\[\Hvib = \HHO + \HRR + \Vanharm  + \HvibCor + \Hrovib +
   \mathcal{O}(\qvec^5)\]</div>
 <p>Where:</p>
 <ul class="simple">
@@ -192,7 +191,7 @@ Hamiltonian.</p></li>
 <div class="math notranslate nohighlight">
 \[\begin{split}\HvibCor\equiv&amp; \frac{1}{2}\sum_{n=0}^{2}\pivec^T\muvec^{(n)}\pivec +
                \Hwatson\\
-\Hwatson \equiv&amp; -\frac{1}{2}\sum_{n=0}^{4}\frac{\hbar^2}{8}\tr(\muvec^{(n)})\end{split}\]</div>
+\Hwatson \equiv&amp; -\frac{\hbar^2}{8}\sum_{n=0}^{4}\tr(\muvec^{(n)})\end{split}\]</div>
 <p>is the vibrational Coriolis Hamiltonian and <span class="math notranslate nohighlight">\(\Hrovib\)</span> is the rovibrational
 coupling Hamiltonian, which is given by:</p>
 <div class="math notranslate nohighlight">
@@ -262,13 +261,22 @@ rotational constants of the molecule and:</p>
  &amp;+ \frac{1}{3!}\sum_{i\neq j}^{\Nvib} h_{iiij}T^{(31)}_{ij}\\
  &amp;+ \left.\frac{1}{4!}\sum_{i=1}^{\Nvib} h_{iiii}T^{(4)}_{i}\right]\end{split}\]</div>
 </section>
-<section id="watson-matrix-elements">
-<h3>Watson Matrix Elements<a class="headerlink" href="#watson-matrix-elements" title="Link to this heading"></a></h3>
-<p>Main article: <a class="reference internal" href="watson.html#watson-hamiltonian"><span class="std std-ref">Watson Hamiltonian</span></a>.</p>
-</section>
 <section id="vibrational-coriolis-matrix-elements">
 <h3>Vibrational Coriolis Matrix Elements<a class="headerlink" href="#vibrational-coriolis-matrix-elements" title="Link to this heading"></a></h3>
 <p>Main article: <a class="reference internal" href="vibration_coriolis.html#vibration-coriolis"><span class="std std-ref">Vibrational-Coriolis Hamiltonian</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\braket{\vvec',J',K'\mid \HvibCor\mid\vvec,J,K} =&amp;
+   \delta_{J',J}\delta_{K',K}\braket{\vvec'\mid \HvibCor\mid\vvec}\\
+\braket{\vvec'\mid \HvibCor\mid\vvec}=&amp;
+\frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
+   \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx_n}
+   \zeta^\alpha_{i,j}\zeta^\beta_{k,\ell}
+   \eta^{\midx_n}_{\alpha\beta}
+   \braket{\vvec'\mid \qop_i \pop_j \qop_{\midx_n} \qop_k
+           \pop_\ell \mid\vvec} -\\
+   &amp; \frac{\hbar^2}{8}\sum_{n=0}^{4}
+    \sum_{\alpha=1}^{3}\sum_{\midx_n}
+   \eta^{\midx_n}_{\alpha\alpha}\braket{\vvec'\mid \qop_{\midx_n}\mid\vvec}\end{split}\]</div>
 </section>
 <section id="rovibrational-coupling-matrix-elements">
 <h3>Rovibrational Coupling Matrix Elements<a class="headerlink" href="#rovibrational-coupling-matrix-elements" title="Link to this heading"></a></h3>

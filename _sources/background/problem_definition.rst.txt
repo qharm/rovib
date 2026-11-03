@@ -126,7 +126,7 @@ gives:
 
 .. math::
 
-       \Hvib = \HHO + \HRR + \Vanharm  + \HvibCor + \Hrovib + \Hwatson +
+       \Hvib = \HHO + \HRR + \Vanharm  + \HvibCor + \Hrovib +
          \mathcal{O}(\qvec^5)
 
 Where:
@@ -143,7 +143,7 @@ Where:
 
    \HvibCor\equiv& \frac{1}{2}\sum_{n=0}^{2}\pivec^T\muvec^{(n)}\pivec +
                   \Hwatson\\
-   \Hwatson \equiv& -\frac{1}{2}\sum_{n=0}^{4}\frac{\hbar^2}{8}\tr(\muvec^{(n)})
+   \Hwatson \equiv& -\frac{\hbar^2}{8}\sum_{n=0}^{4}\tr(\muvec^{(n)})
 
 is the vibrational Coriolis Hamiltonian and :math:`\Hrovib` is the rovibrational
 coupling Hamiltonian, which is given by:
@@ -236,18 +236,25 @@ In the :math:`\ket{\vvec,J,K}` basis, the anharmonic potential energy,
     &+ \frac{1}{3!}\sum_{i\neq j}^{\Nvib} h_{iiij}T^{(31)}_{ij}\\
     &+ \left.\frac{1}{4!}\sum_{i=1}^{\Nvib} h_{iiii}T^{(4)}_{i}\right]
 
-
-Watson Matrix Elements
-======================
-
-Main article: :ref:`watson_hamiltonian`.
-
 Vibrational Coriolis Matrix Elements
 ====================================
 
 Main article: :ref:`vibration_coriolis`.
 
+.. math::
 
+   \braket{\vvec',J',K'\mid \HvibCor\mid\vvec,J,K} =&
+      \delta_{J',J}\delta_{K',K}\braket{\vvec'\mid \HvibCor\mid\vvec}\\
+   \braket{\vvec'\mid \HvibCor\mid\vvec}=&
+   \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
+      \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx_n}
+      \zeta^\alpha_{i,j}\zeta^\beta_{k,\ell}
+      \eta^{\midx_n}_{\alpha\beta}
+      \braket{\vvec'\mid \qop_i \pop_j \qop_{\midx_n} \qop_k
+              \pop_\ell \mid\vvec} -\\
+      & \frac{\hbar^2}{8}\sum_{n=0}^{4}
+       \sum_{\alpha=1}^{3}\sum_{\midx_n}
+      \eta^{\midx_n}_{\alpha\alpha}\braket{\vvec'\mid \qop_{\midx_n}\mid\vvec}
 
 Rovibrational Coupling Matrix Elements
 ======================================

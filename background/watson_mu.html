@@ -52,6 +52,11 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Watson mu Tensor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#general-formulation">General Formulation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#th-order-term">0-th Order Term</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#st-order-term">1-st Order Term</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nd-order-term">2-nd Order Term</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rd-order-term">3-rd Order Term</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4-th Order Term</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#n-th-order-term">n-th Order Term</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="angular_wavefunction.html">Angular Wavefunction</a></li>
@@ -59,7 +64,6 @@
 <li class="toctree-l3"><a class="reference internal" href="rigid_rotor.html">Rigid Rotor Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="anharmonic_potential.html">Anharmonic Potential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vibration_coriolis.html">Vibrational-Coriolis Hamiltonian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="watson.html">Watson Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rovibrational_coupling.html">Rovibrational Coupling Hamiltonian</a></li>
 </ul>
 </li>
@@ -104,21 +108,21 @@ details.</p>
 <h2>General Formulation<a class="headerlink" href="#general-formulation" title="Link to this heading"></a></h2>
 <p>The <span class="math notranslate nohighlight">\(n\)</span>-th term in the Taylor expansion of <span class="math notranslate nohighlight">\(\muvec\)</span> is given by:</p>
 <div class="math notranslate nohighlight">
-\[\muvec^{(n)} =&amp; c_n \Izmhalf \bvec^n \Izmhalf\]</div>
+\[\muvec^{(n)} = c_n \Izmhalf \bvec^n \Izmhalf\]</div>
 <p>with:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(c_n = (n+1)\left(-\frac{1}{2}\right)^n\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\bvec =&amp; \sum_{k=1}^{\Nvib} \Izmhalf \avec_k \Izmhalf \qop_k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\bvec = \sum_{k=1}^{\Nvib} \Izmhalf \avec_k \Izmhalf \qop_k\)</span></p></li>
 </ul>
 <p>and <span class="math notranslate nohighlight">\(\avec_k\)</span> is a 3 by 3 matrix with elements:</p>
 <div class="math notranslate nohighlight">
-\[a_{k,\alpha\beta} =&amp;
-   2 \sum_{\ell=1}^{\Natom} \sum_{m,n=1}^{3}
-   \left(\delta_{\alpha\beta}\delta_{mn} -
-         \delta_{\alpha n}\delta_{\beta m}\right)
-   \sqrt{M_\ell}\,
-   r_{\ell,m}^0
-   L_{\ell,k,n}\]</div>
+\[a_{k,\alpha\beta} =
+   2 \sum_{i=1}^{\Natom} \sum_{\gamma,\delta=1}^{3}
+   \left(\delta_{\alpha\beta}\delta_{\gamma\delta} -
+         \delta_{\alpha\delta}\delta_{\beta\gamma}\right)
+   \sqrt{M_i}\,
+   r_{i,\gamma}^0
+   L_{i,k,\delta}\]</div>
 </section>
 <section id="th-order-term">
 <h2>0-th Order Term<a class="headerlink" href="#th-order-term" title="Link to this heading"></a></h2>
@@ -126,7 +130,207 @@ details.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\muvec^{(0)} =&amp; c_0 \Izmhalf \bvec^0 \Izmhalf\\
               =&amp; 1 \cdot \Izmhalf \Izmhalf\\
-              =&amp; \Ivec\end{split}\]</div>
+              =&amp; \left(\Izvec\right)^{-1}\end{split}\]</div>
+<p>or in components:</p>
+<div class="math notranslate nohighlight">
+\[\muop^{(0)}_{\alpha\beta} = \frac{\delta_{\alpha\beta}}
+                                 {I^0_{\alpha\alpha}}\]</div>
+<p>where we used the fact that <span class="math notranslate nohighlight">\(\Izvec\)</span> is diagonal.</p>
+</section>
+<section id="st-order-term">
+<h2>1-st Order Term<a class="headerlink" href="#st-order-term" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muvec^{(1)} =&amp; c_1 \Izmhalf \bvec^1 \Izmhalf\\
+              =&amp; - \Izmhalf \bvec \Izmhalf\\
+              =&amp; - \sum_{k=1}^{\Nvib} \Izmhalf
+                 \left(\Izmhalf \avec_k \Izmhalf\right) \Izmhalf
+                 \qop_k\\
+              =&amp; -\sum_{k=1}^{\Nvib}
+                 \left(\Izvec\right)^{-1}\avec_k\left(\Izvec\right)^{-1}
+                 \qop_k\end{split}\]</div>
+<p>or in components:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muop^{(1)}_{\alpha\beta} =&amp; -\sum_{k=1}^{\Nvib}
+   \sum_{\gamma,\delta=1}^{3}
+   \frac{\delta_{\alpha\gamma}}{I^0_{\alpha\alpha}}
+   a_{k,\gamma\delta}
+   \frac{\delta_{\delta\beta}}{I^0_{\beta\beta}}
+   \qop_k\\
+   =&amp;-\sum_{k=1}^{\Nvib}
+   \frac{1}{I^0_{\alpha\alpha}I^0_{\beta\beta}}
+   a_{k,\alpha\beta}
+   \qop_k\\
+  =&amp;-\sum_{k=1}^{\Nvib}
+   \frac{\xi^k_{\alpha\beta}}{I^0_{\beta\beta}}
+   \qop_k\end{split}\]</div>
+<p>where we have defined:</p>
+<div class="math notranslate nohighlight">
+\[\xi^k_{\alpha\beta} \equiv \frac{a_{k,\alpha\beta}}{I^0_{\alpha\alpha}}\]</div>
+</section>
+<section id="nd-order-term">
+<h2>2-nd Order Term<a class="headerlink" href="#nd-order-term" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muvec^{(2)} =&amp; c_2 \Izmhalf \bvec^2 \Izmhalf\\
+              =&amp; \frac{3}{4} \Izmhalf \bvec^2 \Izmhalf\\
+              =&amp; \frac{3}{4} \sum_{k,\ell=1}^{\Nvib}
+                 \Izmhalf
+                 \left(\Izmhalf \avec_k \Izmhalf\right)
+                 \left(\Izmhalf \avec_\ell \Izmhalf\right)\\
+               &amp; \Izmhalf
+                 \qop_k\qop_\ell\\
+              =&amp; \frac{3}{4} \sum_{k,\ell=1}^{\Nvib}
+                 \left(\Izvec\right)^{-1}\avec_k
+                 \left(\Izvec\right)^{-1}\avec_\ell
+                 \left(\Izvec\right)^{-1}
+                 \qop_k\qop_\ell\end{split}\]</div>
+<p>or in components:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muop^{(2)}_{\alpha\beta} =&amp; \frac{3}{4}\sum_{k,\ell=1}^{\Nvib}
+   \sum_{\gamma,\delta,\epsilon,\zeta=1}^{3}
+   \frac{\delta_{\alpha\gamma}}{I^0_{\alpha\alpha}}
+   a_{k,\gamma\delta}
+   \frac{\delta_{\delta\epsilon}}{I^0_{\delta\delta}}
+   a_{\ell,\epsilon\zeta}
+   \frac{\delta_{\zeta\beta}}{I^0_{\beta\beta}}
+   \qop_k\qop_\ell\\
+   =&amp; \frac{3}{4}\sum_{k,\ell=1}^{\Nvib}
+   \sum_{\delta=1}^{3}
+   \frac{1}{I^0_{\alpha\alpha}}
+   a_{k,\alpha\delta}
+   \frac{1}{I^0_{\delta\delta}}
+   a_{\ell,\delta\beta}
+   \frac{1}{I^0_{\beta\beta}}
+   \qop_k\qop_\ell\\
+   =&amp; \frac{3}{4}\sum_{k,\ell=1}^{\Nvib}
+   \sum_{\delta=1}^{3}
+   \frac{1}{I^0_{\alpha\alpha}I^0_{\delta\delta}I^0_{\beta\beta}}
+   a_{k,\alpha\delta}
+   a_{\ell,\delta\beta}
+   \qop_k\qop_\ell\\
+  =&amp; \frac{3}{4}\sum_{k,\ell=1}^{\Nvib}
+   \sum_{\delta=1}^{3}
+   \frac{\xi^k_{\alpha\delta}\xi^\ell_{\delta\beta}}
+        {I^0_{\beta\beta}}\qop_k\qop_\ell\end{split}\]</div>
+</section>
+<section id="rd-order-term">
+<h2>3-rd Order Term<a class="headerlink" href="#rd-order-term" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muvec^{(3)} =&amp; c_3 \Izmhalf \bvec^3 \Izmhalf\\
+              =&amp; -\frac{1}{2} \Izmhalf \bvec^3 \Izmhalf\\
+              =&amp; -\frac{1}{2} \sum_{k,\ell,m=1}^{\Nvib}
+                 \Izmhalf
+                 \left(\Izmhalf \avec_k \Izmhalf\right)
+                 \left(\Izmhalf \avec_\ell \Izmhalf\right)\\
+               &amp; \left(\Izmhalf \avec_m \Izmhalf\right)
+                 \Izmhalf
+                 \qop_k\qop_\ell\qop_m\\
+              =&amp; -\frac{1}{2} \sum_{k,\ell,m=1}^{\Nvib}
+                 \left(\Izvec\right)^{-1}\avec_k
+                 \left(\Izvec\right)^{-1}\avec_\ell
+                 \left(\Izvec\right)^{-1}\avec_m
+                 \left(\Izvec\right)^{-1}
+                 \qop_k\qop_\ell\qop_m\end{split}\]</div>
+<p>and in components:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muop^{(3)}_{\alpha\beta} =&amp; -\frac{1}{2}\sum_{k,\ell,m=1}^{\Nvib}
+   \sum_{\gamma,\delta,\epsilon,\zeta,\theta,\iota=1}^{3}
+   \frac{\delta_{\alpha\gamma}}{I^0_{\alpha\alpha}}
+   a_{k,\gamma\delta}
+   \frac{\delta_{\delta\epsilon}}{I^0_{\delta\delta}}
+   a_{\ell,\epsilon\zeta}
+   \frac{\delta_{\zeta\theta}}{I^0_{\zeta\zeta}}
+   a_{m,\theta\iota}
+   \frac{\delta_{\iota\beta}}{I^0_{\beta\beta}}
+   \qop_k\qop_\ell\qop_m\\
+   =&amp; -\frac{1}{2}\sum_{k,\ell,m=1}^{\Nvib}
+   \sum_{\delta,\zeta=1}^{3}
+   \frac{1}{I^0_{\alpha\alpha}I^0_{\delta\delta}
+            I^0_{\zeta\zeta}I^0_{\beta\beta}}
+   a_{k,\alpha\delta}
+   a_{\ell,\delta\zeta}
+   a_{m,\zeta\beta}
+   \qop_k\qop_\ell\qop_m\\
+   =&amp; -\frac{1}{2}\sum_{k,\ell,m=1}^{\Nvib}
+   \sum_{\delta,\zeta=1}^{3}
+   \frac{\xi^k_{\alpha\delta}\xi^\ell_{\delta\zeta}\xi^m_{\zeta\beta}}
+        {I^0_{\beta\beta}}
+   \qop_k\qop_\ell\qop_m\end{split}\]</div>
+</section>
+<section id="id2">
+<h2>4-th Order Term<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muvec^{(4)} =&amp; c_4 \Izmhalf \bvec^4 \Izmhalf\\
+              =&amp; -\frac{5}{8} \Izmhalf \bvec^4 \Izmhalf\\
+              =&amp; -\frac{5}{8} \sum_{k,\ell,m,p=1}^{\Nvib}
+                 \Izmhalf
+                 \left(\Izmhalf \avec_k \Izmhalf\right)
+                 \left(\Izmhalf \avec_\ell \Izmhalf\right)\\
+               &amp; \left(\Izmhalf \avec_m \Izmhalf\right)
+                 \left(\Izmhalf \avec_p \Izmhalf\right)
+                 \Izmhalf
+                 \qop_k\qop_\ell\qop_m\qop_p\\
+              =&amp; -\frac{5}{8} \sum_{k,\ell,m,p=1}^{\Nvib}
+                 \left(\Izvec\right)^{-1}\avec_k
+                 \left(\Izvec\right)^{-1}\avec_\ell
+                 \left(\Izvec\right)^{-1}\avec_m
+                 \left(\Izvec\right)^{-1}\avec_p
+                 \left(\Izvec\right)^{-1}
+                 \qop_k\qop_\ell\qop_m\qop_p\end{split}\]</div>
+<p>and in components:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\muop^{(4)}_{\alpha\beta} =&amp; -\frac{5}{8}\sum_{k,\ell,m,p=1}^{\Nvib}
+   \sum_{\gamma,\delta,\epsilon,\zeta,\theta,\iota,\kappa,\lambda=1}^{3}
+   \frac{\delta_{\alpha\gamma}}{I^0_{\alpha\alpha}}
+   a_{k,\gamma\delta}
+   \frac{\delta_{\delta\epsilon}}{I^0_{\delta\delta}}
+   a_{\ell,\epsilon\zeta}
+   \frac{\delta_{\zeta\theta}}{I^0_{\zeta\zeta}}
+   a_{m,\theta\iota}
+   \frac{\delta_{\iota\kappa}}{I^0_{\iota\iota}}
+   a_{p,\kappa\lambda}
+   \frac{\delta_{\lambda\beta}}{I^0_{\beta\beta}}
+   \qop_k\qop_\ell\qop_m\qop_p\\
+   =&amp; -\frac{5}{8}\sum_{k,\ell,m,p=1}^{\Nvib}
+   \sum_{\delta,\zeta,\iota=1}^{3}
+   \frac{1}{I^0_{\alpha\alpha}I^0_{\delta\delta}I^0_{\zeta\zeta}
+            I^0_{\iota\iota}I^0_{\beta\beta}}
+   a_{k,\alpha\delta}
+   a_{\ell,\delta\zeta}
+   a_{m,\zeta\iota}
+   a_{p,\iota\beta}
+   \qop_k\qop_\ell\qop_m\qop_p\\
+   =&amp; -\frac{5}{8}\sum_{k,\ell,m,p=1}^{\Nvib}
+   \sum_{\delta,\zeta,\iota=1}^{3}
+   \frac{\xi^k_{\alpha\delta}\xi^\ell_{\delta\zeta}
+         \xi^m_{\zeta\iota}\xi^p_{\iota\beta}}
+        {I^0_{\beta\beta}}
+   \qop_k\qop_\ell\qop_m\qop_p\end{split}\]</div>
+</section>
+<section id="n-th-order-term">
+<h2>n-th Order Term<a class="headerlink" href="#n-th-order-term" title="Link to this heading"></a></h2>
+<p>For the <span class="math notranslate nohighlight">\(n\)</span>th order term it is helpful to define a multi-index
+<span class="math notranslate nohighlight">\(\midx_n = (i_1,i_2,\ldots,i_n)\)</span> with <span class="math notranslate nohighlight">\(i_j \in [1,\Nvib]\)</span>. We can
+then define the tensor <span class="math notranslate nohighlight">\(\tens{\eta}\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[\eta^{\midx_n}_{\alpha\beta} \equiv
+   c_n\sum_{\delta_1,\delta_2,\ldots,\delta_{n-1}=1}^{3}
+   \frac{\xi^{i_1}_{\alpha\delta_1}\xi^{i_2}_{\delta_1\delta_2}
+         \xi^{i_3}_{\delta_2\delta_3}\cdots
+         \xi^{i_n}_{\delta_{n-1}\beta}}
+        {I^0_{\beta\beta}}\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\xi\)</span> on the right-side are our previously defined 1-st order
+terms. Also defining
+<span class="math notranslate nohighlight">\(\qop_{\midx_n} \equiv \qop_{i_1}\qop_{i_2}\cdots\qop_{i_n}\)</span>, for
+<span class="math notranslate nohighlight">\(n \geq 1\)</span> we can write the <span class="math notranslate nohighlight">\(n\)</span>th order term as:</p>
+<div class="math notranslate nohighlight">
+\[\muop^{(n)}_{\alpha\beta} = \sum_{\midx_n}
+   \eta^{\midx_n}_{\alpha\beta}\qop_{\midx_n}\]</div>
+<p>For <span class="math notranslate nohighlight">\(n=0\)</span> the multi-index is empty, so the sum has a single term. Taking
+<span class="math notranslate nohighlight">\(\qop_{\midx_0} \equiv 1\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[\eta^{\midx_0}_{\alpha\beta} \equiv \frac{\delta_{\alpha\beta}}{I^0_{\alpha\alpha}}\]</div>
+<p>the same expression reproduces the 0-th order term derived above, so it holds
+for all <span class="math notranslate nohighlight">\(n \geq 0\)</span>.</p>
 </section>
 </section>
 

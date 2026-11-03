@@ -21,7 +21,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Watson Hamiltonian" href="watson.html" />
+    <link rel="next" title="Rovibrational Coupling Hamiltonian" href="rovibrational_coupling.html" />
     <link rel="prev" title="Anharmonic Potential" href="anharmonic_potential.html" /> 
 </head>
 
@@ -54,8 +54,10 @@
 <li class="toctree-l3"><a class="reference internal" href="vibrational_wavefunction.html">Vibrational Wavefunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rigid_rotor.html">Rigid Rotor Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="anharmonic_potential.html">Anharmonic Potential</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Vibrational-Coriolis Hamiltonian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="watson.html">Watson Hamiltonian</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Vibrational-Coriolis Hamiltonian</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#matrix-elements">Matrix Elements</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="rovibrational_coupling.html">Rovibrational Coupling Hamiltonian</a></li>
 </ul>
 </li>
@@ -92,41 +94,57 @@
              
   <section id="vibrational-coriolis-hamiltonian">
 <span id="vibration-coriolis"></span><h1>Vibrational-Coriolis Hamiltonian<a class="headerlink" href="#vibrational-coriolis-hamiltonian" title="Link to this heading"></a></h1>
-<p>The vibrational Coriolis Hamiltonian is purely vibrational. Writing out the
-matrix products and inserting the expansions above:</p>
+<p>The vibrational Coriolis Hamiltonian is:</p>
+<div class="math notranslate nohighlight">
+\[\HvibCor = \frac{1}{2}\sum_{n=0}^{2}\pivec^T\muvec^{(n)}\pivec -
+           \frac{\hbar^2}{8}\sum_{n=0}^{4}\tr(\muvec^{(n)})\]</div>
+<p>Writing out the matrix products and inserting the Taylor expansion of <span class="math notranslate nohighlight">\(\muvec\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\HvibCor =&amp; \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
-   \piop_\alpha\muop^{(n)}_{\alpha\beta}\piop_\beta\\
+   \piop_\alpha\muop^{(n)}_{\alpha\beta}\piop_\beta -
+    \frac{\hbar^2}{8}\sum_{n=0}^{4}
+    \sum_{\alpha=1}^{3}\muop^{(n)}_{\alpha\alpha}\\
   =&amp; \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
-   \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx}
+   \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx_n}
    \zeta^\alpha_{i,j}\zeta^\beta_{k,\ell}
-   \eta^{(n)}_{\alpha\beta,\midx}
-   \qop_i \pop_j \qop^{\midx} \qop_k \pop_\ell\end{split}\]</div>
-<p>The operator ordering must be kept, because <span class="math notranslate nohighlight">\(\pop_j\)</span> does not commute
-with <span class="math notranslate nohighlight">\(\qop^{\midx}\qop_k\)</span>. The <span class="math notranslate nohighlight">\(n=0\)</span> terms reduce to</p>
+   \eta^{\midx_n}_{\alpha\beta}
+   \qop_i \pop_j \qop_{\midx_n} \qop_k \pop_\ell -\\
+   &amp; \frac{\hbar^2}{8}\sum_{n=0}^{4}
+    \sum_{\alpha=1}^{3}\sum_{\midx_n}
+   \eta^{\midx_n}_{\alpha\alpha}\qop_{\midx_n}\end{split}\]</div>
+<p>where we have used the definition of <span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> from
+<a class="reference internal" href="watson_mu.html#watson-mu-tensor"><span class="std std-ref">Watson mu Tensor</span></a>. The operator ordering must be kept,
+because <span class="math notranslate nohighlight">\(\pop_j\)</span> does not commute with <span class="math notranslate nohighlight">\(\qop_{\midx_n}\qop_k\)</span>.</p>
+<section id="matrix-elements">
+<h2>Matrix Elements<a class="headerlink" href="#matrix-elements" title="Link to this heading"></a></h2>
+<p><span class="math notranslate nohighlight">\(\HvibCor\)</span> is purely vibrational, so it suffices to work out the matrix
+elements in the vibrational basis. The matrix elements are:</p>
 <div class="math notranslate nohighlight">
-\[\frac{1}{2}\sum_{\alpha=1}^{3}
-   \frac{\piop_\alpha^2}{I^0_{\alpha\alpha}} -
-\frac{\hbar^2}{8}\sum_{\alpha=1}^{3}
-   \frac{1}{I^0_{\alpha\alpha}}\]</div>
-<p>the second of which is a constant energy shift.</p>
-<p><span class="math notranslate nohighlight">\(\HvibCor\)</span> is purely vibrational, so it is diagonal in <span class="math notranslate nohighlight">\(J\)</span> and
-<span class="math notranslate nohighlight">\(K\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\braket{\vvec',J',K'\mid \HvibCor\mid\vvec,J,K} =&amp;
-   \delta_{J',J}\delta_{K',K}\left[
-   \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
-   \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx}
+\[\begin{split}\braket{\vvec'\mid \HvibCor\mid\vvec}=&amp;
+\frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
+   \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx_n}
    \zeta^\alpha_{i,j}\zeta^\beta_{k,\ell}
-   \eta^{(n)}_{\alpha\beta,\midx}
-   \braket{\vvec'\mid \qop_i \pop_j \qop^{\midx} \qop_k \pop_\ell
-           \mid\vvec}\right.\\
-   &amp;\left.- \frac{\hbar^2}{8}\sum_{n=0}^{4}\sum_{\alpha=1}^{3}
-   \sum_{\midx}\eta^{(n)}_{\alpha\alpha,\midx}
-   \braket{\vvec'\mid \qop^{\midx}\mid\vvec}\right]\end{split}\]</div>
-<p>The <span class="math notranslate nohighlight">\(n\)</span>th Coriolis term is a product of <span class="math notranslate nohighlight">\(n+4\)</span> vibrational
-operators and the <span class="math notranslate nohighlight">\(n\)</span>th Watson term is a product of <span class="math notranslate nohighlight">\(n\)</span>, which
-sets the range of <span class="math notranslate nohighlight">\(\vvec'\)</span> each term couples to.</p>
+   \eta^{\midx_n}_{\alpha\beta}
+   \braket{\vvec'\mid \qop_i \pop_j \qop_{\midx_n}
+   \qop_k \pop_\ell \mid\vvec} -\\
+   &amp; \frac{\hbar^2}{8}\sum_{n=0}^{4}
+    \sum_{\alpha=1}^{3}\sum_{\midx_n}
+   \eta^{\midx_n}_{\alpha\alpha}\braket{\vvec'\mid \qop_{\midx_n}\mid\vvec}\end{split}\]</div>
+<p>Like the anharmonic potential (see <a class="reference internal" href="anharmonic_potential.html#anharmonic-potential"><span class="std std-ref">Anharmonic Potential</span></a>), in the
+vibrational basis, the vibrational Coriolis Hamiltonian is very sparse. Thus
+evaluation of
+<span class="math notranslate nohighlight">\(\braket{\vvec'\mid \qop_i \pop_j \qop_{\midx_n} \qop_k \pop_\ell \mid\vvec}\)</span>
+and <span class="math notranslate nohighlight">\(\braket{\vvec'\mid \qop_{\midx_n}\mid\vvec}\)</span> is done using the
+same technique (but now also needs the single-mode matrix elements of
+<span class="math notranslate nohighlight">\(\pop_j\)</span>). The <span class="math notranslate nohighlight">\(n\)</span>th Coriolis term is a product of <span class="math notranslate nohighlight">\(n+4\)</span>
+vibrational operators and the <span class="math notranslate nohighlight">\(n\)</span>th Watson term is a product of
+<span class="math notranslate nohighlight">\(n\)</span>, which sets the range of <span class="math notranslate nohighlight">\(\vvec'\)</span> each term couples to.</p>
+<p>In the full basis, the vibrational Coriolis Hamiltonian is diagonal in <span class="math notranslate nohighlight">\(J\)</span>
+and <span class="math notranslate nohighlight">\(K\)</span> and the matrix elements are:</p>
+<div class="math notranslate nohighlight">
+\[\braket{\vvec',J',K'\mid \HvibCor\mid\vvec,J,K} =
+   \delta_{J',J}\delta_{K',K}\braket{\vvec'\mid \HvibCor\mid\vvec}\]</div>
+</section>
 </section>
 
 
@@ -134,7 +152,7 @@ sets the range of <span class="math notranslate nohighlight">\(\vvec'\)</span> e
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="anharmonic_potential.html" class="btn btn-neutral float-left" title="Anharmonic Potential" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="watson.html" class="btn btn-neutral float-right" title="Watson Hamiltonian" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rovibrational_coupling.html" class="btn btn-neutral float-right" title="Rovibrational Coupling Hamiltonian" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
