@@ -23,7 +23,7 @@ from rovib import (
     RovibrationalAnsatz,
     RovibrationalBasisFunction,
 )
-from rovib.rigid_rotor_hamiltonian_elements import (
+from rovib.matrix_elements.rigid_rotor_hamiltonian_elements import (
     rigid_rotor_matrix_element,
     rigid_rotor_non_zero_indices,
 )

@@ -18,48 +18,70 @@
 Vibrational-Coriolis Hamiltonian
 ################################
 
-The vibrational Coriolis Hamiltonian is purely vibrational. Writing out the
-matrix products and inserting the expansions above:
+The vibrational Coriolis Hamiltonian is:
+
+.. math::
+
+   \HvibCor = \frac{1}{2}\sum_{n=0}^{2}\pivec^T\muvec^{(n)}\pivec -
+              \frac{\hbar^2}{8}\sum_{n=0}^{4}\tr(\muvec^{(n)})
+
+
+Writing out the matrix products and inserting the Taylor expansion of |muvec|:
 
 .. math::
 
    \HvibCor =& \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
-      \piop_\alpha\muop^{(n)}_{\alpha\beta}\piop_\beta\\
+      \piop_\alpha\muop^{(n)}_{\alpha\beta}\piop_\beta -
+       \frac{\hbar^2}{8}\sum_{n=0}^{4}
+       \sum_{\alpha=1}^{3}\muop^{(n)}_{\alpha\alpha}\\
      =& \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
-      \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx}
+      \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx_n}
       \zeta^\alpha_{i,j}\zeta^\beta_{k,\ell}
-      \eta^{(n)}_{\alpha\beta,\midx}
-      \qop_i \pop_j \qop^{\midx} \qop_k \pop_\ell 
+      \eta^{\midx_n}_{\alpha\beta}
+      \qop_i \pop_j \qop_{\midx_n} \qop_k \pop_\ell -\\
+      & \frac{\hbar^2}{8}\sum_{n=0}^{4}
+       \sum_{\alpha=1}^{3}\sum_{\midx_n}
+      \eta^{\midx_n}_{\alpha\alpha}\qop_{\midx_n}
 
-The operator ordering must be kept, because :math:`\pop_j` does not commute
-with :math:`\qop^{\midx}\qop_k`. The :math:`n=0` terms reduce to
+where we have used the definition of :math:`\muvec^{(n)}` from
+:ref:`watson_mu_tensor`. The operator ordering must be kept,
+because :math:`\pop_j` does not commute with :math:`\qop_{\midx_n}\qop_k`.
+
+===============
+Matrix Elements
+===============
+
+|HvibCor| is purely vibrational, so it suffices to work out the matrix
+elements in the vibrational basis. The matrix elements are:
 
 .. math::
 
-   \frac{1}{2}\sum_{\alpha=1}^{3}
-      \frac{\piop_\alpha^2}{I^0_{\alpha\alpha}} -
-   \frac{\hbar^2}{8}\sum_{\alpha=1}^{3}
-      \frac{1}{I^0_{\alpha\alpha}}
+   \braket{\vvec'\mid \HvibCor\mid\vvec}=&
+   \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
+      \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx_n}
+      \zeta^\alpha_{i,j}\zeta^\beta_{k,\ell}
+      \eta^{\midx_n}_{\alpha\beta}
+      \braket{\vvec'\mid \qop_i \pop_j \qop_{\midx_n}
+      \qop_k \pop_\ell \mid\vvec} -\\
+      & \frac{\hbar^2}{8}\sum_{n=0}^{4}
+       \sum_{\alpha=1}^{3}\sum_{\midx_n}
+      \eta^{\midx_n}_{\alpha\alpha}\braket{\vvec'\mid \qop_{\midx_n}\mid\vvec}
 
-the second of which is a constant energy shift.
 
-|HvibCor| is purely vibrational, so it is diagonal in :math:`J` and
-:math:`K`:
+Like the anharmonic potential (see :ref:`anharmonic_potential`), in the
+vibrational basis, the vibrational Coriolis Hamiltonian is very sparse. Thus
+evaluation of
+:math:`\braket{\vvec'\mid \qop_i \pop_j \qop_{\midx_n} \qop_k \pop_\ell \mid\vvec}`
+and :math:`\braket{\vvec'\mid \qop_{\midx_n}\mid\vvec}` is done using the
+same technique (but now also needs the single-mode matrix elements of
+:math:`\pop_j`). The :math:`n`\ th Coriolis term is a product of :math:`n+4`
+vibrational operators and the :math:`n`\ th Watson term is a product of
+:math:`n`, which sets the range of :math:`\vvec'` each term couples to.
+
+In the full basis, the vibrational Coriolis Hamiltonian is diagonal in :math:`J`
+and :math:`K` and the matrix elements are:
 
 .. math::
 
-   \braket{\vvec',J',K'\mid \HvibCor\mid\vvec,J,K} =&
-      \delta_{J',J}\delta_{K',K}\left[
-      \frac{1}{2}\sum_{n=0}^{2}\sum_{\alpha,\beta=1}^{3}
-      \sum_{i,j,k,\ell=1}^{\Nvib}\sum_{\midx}
-      \zeta^\alpha_{i,j}\zeta^\beta_{k,\ell}
-      \eta^{(n)}_{\alpha\beta,\midx}
-      \braket{\vvec'\mid \qop_i \pop_j \qop^{\midx} \qop_k \pop_\ell
-              \mid\vvec}\right.\\
-      &\left.- \frac{\hbar^2}{8}\sum_{n=0}^{4}\sum_{\alpha=1}^{3}
-      \sum_{\midx}\eta^{(n)}_{\alpha\alpha,\midx}
-      \braket{\vvec'\mid \qop^{\midx}\mid\vvec}\right]
-
-The :math:`n`\ th Coriolis term is a product of :math:`n+4` vibrational
-operators and the :math:`n`\ th Watson term is a product of :math:`n`, which
-sets the range of :math:`\vvec'` each term couples to.
+   \braket{\vvec',J',K'\mid \HvibCor\mid\vvec,J,K} =
+      \delta_{J',J}\delta_{K',K}\braket{\vvec'\mid \HvibCor\mid\vvec}

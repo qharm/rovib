@@ -21,14 +21,13 @@ from .driver import (
     rovibrational_energies,
 )
 from .hamiltonian import Hamiltonian
-from .hamiltonian_matrix import (
-    build_hamiltonian_matrix,
-    matrix_element,
-    non_zero_indices,
-)
 from .hamiltonian_term import HamiltonianTerm
 from .harmonic_hamiltonian import HarmonicHamiltonian
 from .inertia import inertia_tensor, rotational_constants
+from .matrix_elements.hamiltonian_matrix import (
+    build_hamiltonian_matrix,
+    non_zero_indices,
+)
 from .molecule import Molecule
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
 from .rovibrational_ansatz import RovibrationalAnsatz
@@ -56,7 +55,6 @@ __all__ = [
     "hartree_to_wavenumber",
     "inertia_tensor",
     "is_water",
-    "matrix_element",
     "non_zero_indices",
     "rotational_constants",
     "rovibrational_energies",

@@ -21,7 +21,7 @@ class HamiltonianTerm:
     Terms carry the state needed to evaluate their matrix elements, but
     otherwise serve as a domain-specific language for specifying which terms
     are in the Hamiltonian. Matrix elements are evaluated by separate
-    functions (see :mod:`rovib.hamiltonian_matrix`).
+    functions (see :mod:`rovib.matrix_elements.hamiltonian_matrix`).
 
     Adding two terms, or a term and a
     :class:`~rovib.hamiltonian.Hamiltonian`, gives a

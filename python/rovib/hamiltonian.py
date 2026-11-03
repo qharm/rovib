@@ -21,7 +21,7 @@ class Hamiltonian:
     """A Hamiltonian, i.e., a sum of Hamiltonian terms.
 
     The Hamiltonian only records which terms it contains. Its matrix is built
-    by :func:`rovib.hamiltonian_matrix.build_hamiltonian_matrix`.
+    by :func:`.build_hamiltonian_matrix`.
 
     :param terms: The terms in the Hamiltonian.
     :type terms: tuple of HamiltonianTerm

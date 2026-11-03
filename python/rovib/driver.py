@@ -17,9 +17,9 @@ import numpy as np
 
 from .constants import HARTREE_TO_CM
 from .hamiltonian import Hamiltonian
-from .hamiltonian_matrix import build_hamiltonian_matrix
 from .harmonic_hamiltonian import HarmonicHamiltonian
 from .inertia import rotational_constants
+from .matrix_elements.hamiltonian_matrix import build_hamiltonian_matrix
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
 from .rovibrational_ansatz import RovibrationalAnsatz
 from .water_params import harmonic_analysis

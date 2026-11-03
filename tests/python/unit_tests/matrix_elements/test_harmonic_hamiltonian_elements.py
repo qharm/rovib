@@ -19,7 +19,7 @@ from rovib import (
     RovibrationalAnsatz,
     RovibrationalBasisFunction,
 )
-from rovib.harmonic_hamiltonian_elements import (
+from rovib.matrix_elements.harmonic_hamiltonian_elements import (
     harmonic_matrix_element,
     harmonic_non_zero_indices,
 )

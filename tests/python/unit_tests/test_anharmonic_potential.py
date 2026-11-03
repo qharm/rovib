@@ -17,6 +17,8 @@ import unittest
 import numpy as np
 
 from rovib import AnharmonicPotential, HamiltonianTerm
+from rovib.operators.normal_mode import NormalMode
+from rovib.operators.potential_operator import PotentialOperator
 
 
 class TestAnharmonicPotential(unittest.TestCase):
@@ -37,6 +39,26 @@ class TestAnharmonicPotential(unittest.TestCase):
         np.testing.assert_array_equal(self.term.cubic, self.cubic)
         np.testing.assert_array_equal(self.term.quartic, self.quartic)
         self.assertEqual(self.term.nvib, 2)
+
+    def test_terms(self):
+        (cubic_ops, cubic_reducer), (
+            quartic_ops,
+            quartic_reducer,
+        ) = self.term.terms()
+        self.assertEqual(len(cubic_ops), 1)
+        self.assertEqual(len(quartic_ops), 1)
+        self.assertEqual(cubic_reducer([1.5]), 1.5)
+        self.assertEqual(quartic_reducer([2.5]), 2.5)
+        cubic, quartic = cubic_ops[0], quartic_ops[0]
+        self.assertIsInstance(cubic, PotentialOperator)
+        self.assertIsInstance(quartic, PotentialOperator)
+        self.assertEqual(cubic.order, 3)
+        self.assertEqual(quartic.order, 4)
+        q0 = NormalMode(0, 1.0)
+        q1 = NormalMode(1, 2.0)
+        # The force constants divided by the factorials of the powers.
+        self.assertAlmostEqual(cubic.coefficient((q0, q0, q1)), 1.5)
+        self.assertAlmostEqual(quartic.coefficient((q0, q0, q1, q1)), 1.0)
 
     def test_state_is_read_only(self):
         with self.assertRaises(ValueError):

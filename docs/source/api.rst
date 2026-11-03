@@ -46,20 +46,29 @@ Classes
 .. automodule:: rovib.anharmonic_potential
    :members:
 
+.. automodule:: rovib.operators.normal_mode
+   :members:
+
+.. automodule:: rovib.operators.conjugate_momentum
+   :members:
+
+.. automodule:: rovib.operators.potential_operator
+   :members:
+
 ***************
 Matrix Elements
 ***************
 
-.. automodule:: rovib.harmonic_hamiltonian_elements
+.. automodule:: rovib.matrix_elements.harmonic_hamiltonian_elements
    :members:
 
-.. automodule:: rovib.rigid_rotor_hamiltonian_elements
+.. automodule:: rovib.matrix_elements.rigid_rotor_hamiltonian_elements
    :members:
 
-.. automodule:: rovib.anharmonic_potential_elements
+.. automodule:: rovib.matrix_elements.vibrational_matrix_elements
    :members:
 
-.. automodule:: rovib.hamiltonian_matrix
+.. automodule:: rovib.matrix_elements.hamiltonian_matrix
    :members:
 
 ******

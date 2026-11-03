@@ -19,6 +19,12 @@ import itertools
 import numpy as np
 
 from .hamiltonian_term import HamiltonianTerm
+from .operators.potential_operator import PotentialOperator
+
+
+def _only_coefficient(coefficients):
+    """Reducer for an operator with a single factor."""
+    return coefficients[0]
 
 
 def _check_force_constants(force_constants, nvib, order, name):
@@ -58,7 +64,8 @@ class AnharmonicPotential(HamiltonianTerm):
 
     The harmonic frequencies are needed because the matrix elements of
     :math:`\\qop_i` depend on :math:`\\omega_i`. All inputs are stored as
-    read-only arrays.
+    read-only arrays. See :ref:`anharmonic_potential` for the matrix
+    elements.
 
     :param frequencies: The harmonic frequencies |omegavec| in hartree. The
         shape is (number of vibrational modes,).
@@ -93,6 +100,16 @@ class AnharmonicPotential(HamiltonianTerm):
         self._cubic.setflags(write=False)
         self._quartic.setflags(write=False)
 
+        # N.b. the inputs are read-only, so the terms only need to be built
+        # once.
+        self._terms = tuple(
+            (
+                [PotentialOperator(force_constants, self._frequencies)],
+                _only_coefficient,
+            )
+            for force_constants in (self._cubic, self._quartic)
+        )
+
     @property
     def frequencies(self):
         """The harmonic frequencies |omegavec| in hartree.
@@ -124,3 +141,16 @@ class AnharmonicPotential(HamiltonianTerm):
         :rtype: int
         """
         return self._frequencies.size
+
+    def terms(self):
+        """The cubic and quartic parts of |Vanharm|.
+
+        Each part is a single :class:`.PotentialOperator`, so each product
+        has one factor and the reducer returns that factor's coefficient.
+
+        :return: The (operators, reducer) pairs of the cubic and quartic
+            parts, in that order, in the form expected by
+            :func:`.vibrational_matrix`.
+        :rtype: tuple
+        """
+        return self._terms

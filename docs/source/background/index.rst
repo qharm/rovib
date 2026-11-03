@@ -44,5 +44,4 @@ The following typesetting conventions are used:
    rigid_rotor
    anharmonic_potential
    vibration_coriolis
-   watson
    rovibrational_coupling

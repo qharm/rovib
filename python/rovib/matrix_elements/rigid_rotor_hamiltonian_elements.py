@@ -46,7 +46,7 @@ and :math:`C^\\pm_{J,K} = \\sqrt{J(J+1) - K(K\\pm1)}`. See
 
 import math
 
-from .rovibrational_basis_function import RovibrationalBasisFunction
+from ..rovibrational_basis_function import RovibrationalBasisFunction
 
 
 def _ladder_coefficient(J, K, sign):
