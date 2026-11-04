@@ -55,18 +55,33 @@ Classes Design
     - |zetavec| which is |Nvib| by 3 by |Nvib|
     - |etavec| list
 
+#. ``VibrationalBasisFunction`` class.
+
+   - Product of |Nvib| harmonic oscillator wavefunctions.
+   - Class state is a vector of vibrational quantum numbers.
+
+#. ``RotationalBasisFunction`` class.
+
+   - Angular momentum eigenstate.
+   - Class state is J and K.
 
 #. ``RovibrationalBasisFunction`` class.
 
-   - Product of |Nvib| harmonic oscillator wavefunctions and an angular
-     momentum eigenstate.
-   - Class state is a vector of vibrational quantum numbers, J, and K.
+   - Contains a ``VibrationalBasisFunction`` and a ``RotationalBasisFunction``.
+
+#. ``VibrationalAnsatz`` class.
+
+   - State is conceptually a vector of ``VibrationalBasisFunction`` objects.
+   - In practice, basis functions are generated on-the-fly.
+
+#. ``RotationalAnsatz`` class.
+
+   - State is conceptually a vector of ``RotationalBasisFunction`` objects.
+   - In practice, basis functions are generated on-the-fly.
 
 #. ``RovibrationalAnsatz`` class.
 
-   - State is conceptually a vector of ``RovibrationalBasisFunction`` objects.
-   - In practice, basis functions are generated on-the-fly.
-
+   - State is a  ``RotationalAnsatz`` and a ``VibrationalAnsatz``.
 
 *********************
 Vibrational Operators
