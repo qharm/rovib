@@ -23,6 +23,7 @@ from rovib import (
     HarmonicHamiltonian,
     RigidRotorHamiltonian,
     RovibrationalAnsatz,
+    VibrationalCoriolisHamiltonian,
     build_hamiltonian_matrix,
     non_zero_indices,
 )
@@ -58,6 +59,19 @@ def _anharmonic_potential():
     return AnharmonicPotential([1.0, 2.0, 3.0], cubic, quartic)
 
 
+def _vibrational_coriolis_hamiltonian():
+    """A VibrationalCoriolisHamiltonian for three modes."""
+    zeta = np.zeros((3, 3, 3))
+    zeta[0, 0, 2] = zeta[1, 2, 2] = 0.5
+    zeta[2, 0, 0] = zeta[2, 2, 1] = -0.5
+    a = np.zeros((3, 3, 3))
+    a[0] = np.diag([0.1, 0.2, 0.3])
+    a[1, 0, 1] = a[1, 1, 0] = 0.4
+    return VibrationalCoriolisHamiltonian(
+        [1.0, 2.0, 3.0], zeta, a, [0.25, 1.0, 0.5]
+    )
+
+
 class TestNonZeroIndices(unittest.TestCase):
     def test_harmonic(self):
         term = HarmonicHamiltonian(np.ones(3))
@@ -80,6 +94,13 @@ class TestNonZeroIndices(unittest.TestCase):
         ansatz = RovibrationalAnsatz(3, 1, 0)
         with self.assertRaises(TypeError):
             non_zero_indices(ansatz, _anharmonic_potential(), ansatz)
+
+    def test_vibrational_coriolis_not_supported(self):
+        # HvibCor goes through vibrational_matrix.
+        ansatz = RovibrationalAnsatz(3, 1, 0)
+        term = _vibrational_coriolis_hamiltonian()
+        with self.assertRaises(TypeError):
+            non_zero_indices(ansatz, term, ansatz)
 
     def test_unknown_term(self):
         ansatz = RovibrationalAnsatz(3, 1, 0)
@@ -105,6 +126,19 @@ class TestBuildMatrix(unittest.TestCase):
         self.assertEqual(matrix.dtype, np.complex128)
         expected = _vibrational_matrix(term, self.ansatz, self.ansatz)
         np.testing.assert_allclose(matrix, expected, atol=1.0e-12)
+
+    def test_vibrational_coriolis(self):
+        term = _vibrational_coriolis_hamiltonian()
+        matrix = build_matrix(self.ansatz, term, self.ansatz)
+        self.assertEqual(matrix.dtype, np.complex128)
+        expected = _vibrational_matrix(term, self.ansatz, self.ansatz)
+        np.testing.assert_allclose(matrix, expected, atol=1.0e-12)
+
+    def test_vibrational_coriolis_mode_mismatch(self):
+        term = _vibrational_coriolis_hamiltonian()
+        other = RovibrationalAnsatz(2, 2, 1)
+        with self.assertRaises(ValueError):
+            build_matrix(other, term, self.ansatz)
 
     def test_block(self):
         term = _anharmonic_potential()
@@ -164,6 +198,14 @@ class TestBuildHamiltonianMatrix(unittest.TestCase):
 
     def test_anharmonic(self):
         term = _anharmonic_potential()
+        matrix = build_hamiltonian_matrix(Hamiltonian((term,)), self.ansatz)
+        np.testing.assert_allclose(matrix, matrix.conj().T)
+
+        expected = _vibrational_matrix(term, self.ansatz, self.ansatz)
+        np.testing.assert_allclose(matrix, expected, atol=1.0e-12)
+
+    def test_vibrational_coriolis(self):
+        term = _vibrational_coriolis_hamiltonian()
         matrix = build_hamiltonian_matrix(Hamiltonian((term,)), self.ansatz)
         np.testing.assert_allclose(matrix, matrix.conj().T)
 

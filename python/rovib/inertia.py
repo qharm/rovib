@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""The inertia tensor and the rotational constants of a molecule."""
+"""The inertia tensor, its derivatives, and the rotational constants."""
 
 import numpy as np
 
@@ -39,6 +39,41 @@ def inertia_tensor(molecule):
     m = molecule.masses
     r2 = np.einsum("n,ni,ni->", m, r, r)
     return r2 * np.eye(3) - np.einsum("n,ni,nj->ij", m, r, r)
+
+
+def inertia_derivatives(molecule, normal_modes):
+    """Computes the derivatives |avec| of the inertia tensor of a molecule.
+
+    .. math::
+
+       a_{k,\\alpha\\beta} =
+          2 \\sum_{i=1}^{\\Natom} \\sum_{\\gamma,\\delta=1}^{3}
+          \\left(\\delta_{\\alpha\\beta}\\delta_{\\gamma\\delta} -
+                \\delta_{\\alpha\\delta}\\delta_{\\beta\\gamma}\\right)
+          \\sqrt{M_i}\\, r_{i,\\gamma}^0 L_{i,k,\\delta}
+
+    :math:`\\avec_k` is only symmetric if |Lvec| satisfies the Eckart
+    conditions at the geometry of ``molecule``. No attempt is made to
+    symmetrize the result, so normal modes with limited precision give an
+    :math:`\\avec_k` that is only symmetric to that precision.
+
+    :param molecule: The molecule, at its minimum energy geometry, with its
+        center of mass at the origin and its axes along the principal axes.
+    :type molecule: Molecule
+    :param normal_modes: The normal-mode matrix |Lvec|, indexed by (atom,
+        axis, mode).
+    :type normal_modes: numpy.ndarray
+    :return: The derivatives in atomic units, indexed by (:math:`k`,
+        :math:`\\alpha`, :math:`\\beta`). The shape is (number of modes, 3,
+        3).
+    :rtype: numpy.ndarray
+    """
+    r = molecule.coords
+    L = np.asarray(normal_modes, dtype=float)
+    weights = np.sqrt(molecule.masses)
+    trace = np.einsum("n,ni,nik->k", weights, r, L)
+    outer = np.einsum("n,nak,nb->kab", weights, L, r)
+    return 2.0 * (np.einsum("k,ab->kab", trace, np.eye(3)) - outer)
 
 
 def rotational_constants(molecule, ordering=(1, 3, 2)):

@@ -18,6 +18,8 @@ import numpy as np
 
 from rovib import (
     Molecule,
+    harmonic_analysis,
+    inertia_derivatives,
     inertia_tensor,
     rotational_constants,
     water_molecule,
@@ -33,6 +35,64 @@ def _planar_molecule():
     coords = [[0.0, 0.0, -1.0], [0.0, -1.0, 2.0], [0.0, 1.0, 2.0]]
     masses = [4.0, 1.0, 1.0]
     return Molecule(("X", "Y", "Y"), coords, masses)
+
+
+class TestInertiaDerivatives(unittest.TestCase):
+    def test_single_atom(self):
+        # One mode moving an atom of mass 4 along the z-axis it sits on. The
+        # inertia changes by 2 sqrt(M) r for rotations about x and y.
+        molecule = Molecule(("X",), [[0.0, 0.0, 3.0]], [4.0])
+        L = np.zeros((1, 3, 1))
+        L[0, 2, 0] = 1.0
+        a = inertia_derivatives(molecule, L)
+        self.assertEqual(a.shape, (1, 3, 3))
+        np.testing.assert_allclose(a[0], np.diag([12.0, 12.0, 0.0]))
+
+    def test_off_diagonal(self):
+        # With r along z and L along y, a_yz = -2 sqrt(M) L_y r_z.
+        molecule = Molecule(("X",), [[0.0, 0.0, 3.0]], [4.0])
+        L = np.zeros((1, 3, 1))
+        L[0, 1, 0] = 1.0
+        a = inertia_derivatives(molecule, L)
+        expected = np.zeros((3, 3))
+        expected[1, 2] = -12.0
+        np.testing.assert_allclose(a[0], expected)
+
+    def test_water_matches_finite_difference(self):
+        # dI/dQ_k has the symmetrized form of a_k, which are the same if L
+        # satisfies the Eckart conditions.
+        water = water_molecule()
+        L, _ = harmonic_analysis(water)
+        a = inertia_derivatives(water, L)
+        step = 1.0e-2
+        weights = np.sqrt(water.masses)[:, np.newaxis]
+        for k in range(water.nvib):
+            displacement = step * L[:, :, k] / weights
+
+            def inertia(sign):
+                return inertia_tensor(
+                    Molecule(
+                        water.symbols,
+                        water.coords + sign * displacement,
+                        water.masses,
+                    )
+                )
+
+            derivative = (inertia(1.0) - inertia(-1.0)) / (2.0 * step)
+            with self.subTest(k=k):
+                np.testing.assert_allclose(
+                    derivative,
+                    0.5 * (a[k] + a[k].T),
+                    atol=1.0e-8,
+                )
+
+    def test_water_symmetric(self):
+        # The paper's normal modes have 4 digits, so the Eckart conditions
+        # only hold to about that precision.
+        water = water_molecule()
+        L, _ = harmonic_analysis(water)
+        a = inertia_derivatives(water, L)
+        np.testing.assert_allclose(a, a.transpose(0, 2, 1), atol=0.05)
 
 
 class TestInertiaTensor(unittest.TestCase):

@@ -17,17 +17,25 @@ import unittest
 import numpy as np
 
 from rovib import (
+    AnharmonicPotential,
+    HarmonicHamiltonian,
     Molecule,
+    RigidRotorHamiltonian,
     RovibrationalAnsatz,
     RovibrationalBasisFunction,
+    VibrationalCoriolisHamiltonian,
+    anharmonic_force_constants,
+    build_hamiltonian_matrix,
+    coriolis_couplings,
     dominant_basis_function,
+    harmonic_analysis,
     hartree_to_wavenumber,
+    inertia_derivatives,
     rotational_constants,
     rovibrational_energies,
     water_molecule,
 )
 from rovib.constants import HARTREE_TO_CM
-from rovib.water_params import water_harmonic_frequencies
 
 
 class TestRovibrationalEnergies(unittest.TestCase):
@@ -40,13 +48,34 @@ class TestRovibrationalEnergies(unittest.TestCase):
         self.assertEqual(eigenvectors.shape, (len(ansatz), len(ansatz)))
         self.assertTrue(np.all(np.diff(energies) >= 0.0))
 
+    def test_hamiltonian_terms(self):
+        water = water_molecule()
+        normal_modes, frequencies = harmonic_analysis(water)
+        cubic, quartic = anharmonic_force_constants(water)
+        gamma = rotational_constants(water)
+        hamiltonian = (
+            HarmonicHamiltonian(frequencies)
+            + RigidRotorHamiltonian(gamma)
+            + AnharmonicPotential(frequencies, cubic, quartic)
+            + VibrationalCoriolisHamiltonian(
+                frequencies,
+                coriolis_couplings(normal_modes),
+                inertia_derivatives(water, normal_modes),
+                gamma,
+            )
+        )
+        ansatz = RovibrationalAnsatz(water.nvib, 1, 1)
+        matrix = build_hamiltonian_matrix(hamiltonian, ansatz)
+        energies, _ = rovibrational_energies(water, vmax=1, J=1)
+        np.testing.assert_allclose(energies, np.linalg.eigvalsh(matrix))
+
     def test_rigid_rotor(self):
-        # With vmax = 0 the J = 1 levels are the zero-point energy plus the
-        # J = 1 rigid rotor levels, which are sums of two rotational
-        # constants.
+        # With vmax = 0 the vibrational terms are the same constant for all
+        # J, so relative to J = 0 the J = 1 levels are the J = 1 rigid rotor
+        # levels, which are sums of two rotational constants.
         water = water_molecule()
         energies, _ = rovibrational_energies(water, vmax=0, J=1)
-        zero_point = 0.5 * water_harmonic_frequencies().sum()
+        zero_point = rovibrational_energies(water, vmax=0, J=0)[0][0]
         x, y, z = rotational_constants(water)
         np.testing.assert_allclose(
             energies - zero_point, sorted([x + y, x + z, y + z])

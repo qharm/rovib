@@ -15,11 +15,16 @@
 
 import unittest
 
+import numpy as np
+
 from rovib import (
+    Hamiltonian,
+    HarmonicHamiltonian,
     RovibrationalAnsatz,
+    build_hamiltonian_matrix,
     dominant_basis_function,
+    harmonic_analysis,
     hartree_to_wavenumber,
-    rovibrational_energies,
     water_molecule,
 )
 
@@ -41,9 +46,12 @@ TOL = 0.05
 class TestWaterHarmonic(unittest.TestCase):
     def test_table1_harmonic(self):
         water = water_molecule()
-        energies, eigenvectors = rovibrational_energies(water, vmax=3, J=0)
-        energies = hartree_to_wavenumber(energies)
+        _, frequencies = harmonic_analysis(water)
+        hamiltonian = Hamiltonian((HarmonicHamiltonian(frequencies),))
         ansatz = RovibrationalAnsatz(water.nvib, vmax=3, J=0)
+        matrix = build_hamiltonian_matrix(hamiltonian, ansatz)
+        energies, eigenvectors = np.linalg.eigh(matrix)
+        energies = hartree_to_wavenumber(energies)
         levels = {
             dominant_basis_function(eigenvectors[:, i], ansatz).v: energy
             for i, energy in enumerate(energies)

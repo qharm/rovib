@@ -25,6 +25,7 @@ import numpy as np
 from ..anharmonic_potential import AnharmonicPotential
 from ..harmonic_hamiltonian import HarmonicHamiltonian
 from ..rigid_rotor_hamiltonian import RigidRotorHamiltonian
+from ..vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
 from .harmonic_hamiltonian_elements import (
     harmonic_matrix_element,
     harmonic_non_zero_indices,
@@ -37,7 +38,7 @@ from .vibrational_matrix_elements import vibrational_matrix
 
 #: The types of Hamiltonian terms that are sums of products of vibrational
 #: operators. Their ``terms`` method returns the (operators, reducer) pairs.
-_VIBRATIONAL_TERMS = (AnharmonicPotential,)
+_VIBRATIONAL_TERMS = (AnharmonicPotential, VibrationalCoriolisHamiltonian)
 
 #: Maps each type of Hamiltonian term to its non-zero index generator.
 _NON_ZERO_INDICES = {

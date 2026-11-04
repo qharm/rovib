@@ -15,23 +15,27 @@
 
 import numpy as np
 
+from .anharmonic_potential import AnharmonicPotential
 from .constants import HARTREE_TO_CM
+from .coriolis import coriolis_couplings
 from .hamiltonian import Hamiltonian
 from .harmonic_hamiltonian import HarmonicHamiltonian
-from .inertia import rotational_constants
+from .inertia import inertia_derivatives, rotational_constants
 from .matrix_elements.hamiltonian_matrix import build_hamiltonian_matrix
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
 from .rovibrational_ansatz import RovibrationalAnsatz
-from .water_params import harmonic_analysis
+from .vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
+from .water_params import anharmonic_force_constants, harmonic_analysis
 
 
 def rovibrational_energies(molecule, vmax, J=0):
     """Computes the rovibrational energies of a molecule.
 
-    The Hamiltonian is currently the harmonic oscillator Hamiltonian |HHO|
-    plus the rigid rotor Hamiltonian |HRR|. The harmonic parameters are
-    hard-coded for water. The eigenvectors are expressed in
-    ``RovibrationalAnsatz(molecule.nvib, vmax, J)``.
+    The Hamiltonian is currently the harmonic oscillator Hamiltonian |HHO|,
+    the rigid rotor Hamiltonian |HRR|, the anharmonic potential |Vanharm|, and
+    the vibrational Coriolis Hamiltonian |HvibCor|. The harmonic and
+    anharmonic parameters are hard-coded for water. The eigenvectors are
+    expressed in ``RovibrationalAnsatz(molecule.nvib, vmax, J)``.
 
     :param molecule: The molecule, at its minimum energy geometry, with its
         center of mass at the origin.
@@ -45,13 +49,21 @@ def rovibrational_energies(molecule, vmax, J=0):
     :rtype: tuple of (numpy.ndarray, numpy.ndarray)
     :raises ValueError: If ``molecule`` is not water.
     """
-    # The normal modes are not needed until the Coriolis terms are added.
-    _, frequencies = harmonic_analysis(molecule)
+    normal_modes, frequencies = harmonic_analysis(molecule)
+    cubic, quartic = anharmonic_force_constants(molecule)
+    gamma = rotational_constants(molecule)
 
     H_harm = HarmonicHamiltonian(frequencies)
-    H_rr = RigidRotorHamiltonian(rotational_constants(molecule))
+    H_rr = RigidRotorHamiltonian(gamma)
+    H_anharm = AnharmonicPotential(frequencies, cubic, quartic)
+    H_vib_cor = VibrationalCoriolisHamiltonian(
+        frequencies,
+        coriolis_couplings(normal_modes),
+        inertia_derivatives(molecule, normal_modes),
+        gamma,
+    )
 
-    hamiltonian = Hamiltonian((H_harm, H_rr))
+    hamiltonian = Hamiltonian((H_harm, H_rr, H_anharm, H_vib_cor))
     ansatz = RovibrationalAnsatz(molecule.nvib, vmax, J)
     matrix = build_hamiltonian_matrix(hamiltonian, ansatz)
     energies, eigenvectors = np.linalg.eigh(matrix)

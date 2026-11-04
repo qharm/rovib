@@ -25,11 +25,17 @@ singlet. Pex=1 is the opposite (spin must be a triplet).
 
 import unittest
 
+import numpy as np
+
 from rovib import (
+    HarmonicHamiltonian,
+    RigidRotorHamiltonian,
     RovibrationalAnsatz,
+    build_hamiltonian_matrix,
     dominant_basis_function,
+    harmonic_analysis,
     hartree_to_wavenumber,
-    rovibrational_energies,
+    rotational_constants,
     water_molecule,
 )
 
@@ -67,15 +73,23 @@ LEVELS = {
 TOL = 0.05
 
 
+def _eigensystem(water, J):
+    """Returns the energies in cm^-1, eigenvectors, and ansatz of HRR + HHO."""
+    _, frequencies = harmonic_analysis(water)
+    hamiltonian = HarmonicHamiltonian(frequencies) + RigidRotorHamiltonian(
+        rotational_constants(water)
+    )
+    ansatz = RovibrationalAnsatz(water.nvib, vmax=1, J=J)
+    matrix = build_hamiltonian_matrix(hamiltonian, ansatz)
+    energies, eigenvectors = np.linalg.eigh(matrix)
+    return hartree_to_wavenumber(energies), eigenvectors, ansatz
+
+
 def _levels(J):
     """Returns the (DeltaE in cm^-1, Pex) pairs of the levels in STATES."""
     water = water_molecule()
-    ground_state = hartree_to_wavenumber(
-        rovibrational_energies(water, vmax=1, J=0)[0][0]
-    )
-    energies, eigenvectors = rovibrational_energies(water, vmax=1, J=J)
-    energies = hartree_to_wavenumber(energies)
-    ansatz = RovibrationalAnsatz(water.nvib, vmax=1, J=J)
+    ground_state = _eigensystem(water, 0)[0][0]
+    energies, eigenvectors, ansatz = _eigensystem(water, J)
     levels = []
     for i, energy in enumerate(energies):
         bf = dominant_basis_function(eigenvectors[:, i], ansatz)

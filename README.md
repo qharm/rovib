@@ -18,8 +18,9 @@
 A proof-of-concept library that solves the rovibrational problem
 
 > **Note:** rovib is under active development. The Hamiltonian currently
-> contains only the harmonic oscillator and rigid rotor terms, and the
-> harmonic parameters are hard-coded for water (see `rovib.water_params`).
+> contains the harmonic oscillator, rigid rotor, anharmonic, and vibrational
+> Coriolis terms, but not the rovibrational coupling term. The harmonic and
+> anharmonic parameters are hard-coded for water (see `rovib.water_params`).
 
 ## Installation
 
@@ -44,8 +45,7 @@ pip install -e .
 The driver, `rovibrational_energies`, takes a molecule, the maximum
 vibrational quantum number of each mode (`vmax`), and the total angular
 momentum quantum number (`J`). It returns the energies in hartree and the
-corresponding eigenvectors. The following computes the harmonic levels of
-water:
+corresponding eigenvectors. The following computes the J = 0 levels of water:
 
 ```python
 from rovib import (
@@ -73,11 +73,11 @@ for i in range(1, 5):
 which prints:
 
 ```
-Zero-point energy: 4710.5 cm^-1
-(0, 1, 0) 1649.7 cm^-1
-(0, 2, 0) 3299.5 cm^-1
-(1, 0, 0) 3830.9 cm^-1
-(0, 0, 1) 3940.5 cm^-1
+Zero-point energy: 4641.5 cm^-1
+(0, 1, 0) 1590.2 cm^-1
+(0, 2, 0) 3162.0 cm^-1
+(1, 0, 0) 3715.8 cm^-1
+(0, 0, 1) 3797.0 cm^-1
 ```
 
 The tuples are the vibrational quantum numbers (v1, v2, v3) of the basis

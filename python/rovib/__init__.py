@@ -15,6 +15,7 @@
 """A proof-of-concept library that solves the rovibrational problem."""
 
 from .anharmonic_potential import AnharmonicPotential
+from .coriolis import coriolis_couplings
 from .driver import (
     dominant_basis_function,
     hartree_to_wavenumber,
@@ -23,7 +24,7 @@ from .driver import (
 from .hamiltonian import Hamiltonian
 from .hamiltonian_term import HamiltonianTerm
 from .harmonic_hamiltonian import HarmonicHamiltonian
-from .inertia import inertia_tensor, rotational_constants
+from .inertia import inertia_derivatives, inertia_tensor, rotational_constants
 from .matrix_elements.hamiltonian_matrix import (
     build_hamiltonian_matrix,
     non_zero_indices,
@@ -32,6 +33,7 @@ from .molecule import Molecule
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
 from .rovibrational_ansatz import RovibrationalAnsatz
 from .rovibrational_basis_function import RovibrationalBasisFunction
+from .vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
 from .water_params import (
     anharmonic_force_constants,
     harmonic_analysis,
@@ -48,11 +50,14 @@ __all__ = [
     "RigidRotorHamiltonian",
     "RovibrationalAnsatz",
     "RovibrationalBasisFunction",
+    "VibrationalCoriolisHamiltonian",
     "anharmonic_force_constants",
     "build_hamiltonian_matrix",
+    "coriolis_couplings",
     "dominant_basis_function",
     "harmonic_analysis",
     "hartree_to_wavenumber",
+    "inertia_derivatives",
     "inertia_tensor",
     "is_water",
     "non_zero_indices",
