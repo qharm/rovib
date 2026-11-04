@@ -51,6 +51,7 @@
 <li class="toctree-l2"><a class="reference internal" href="matrix_elements.html">Evaluating Matrix Elements</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Classes Design</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#vibrational-operators">Vibrational Operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rotational-operators">Rotational Operators</a></li>
 </ul>
 </li>
 </ul>
@@ -85,7 +86,7 @@
              
   <section id="classes-design">
 <span id="classes"></span><h1>Classes Design<a class="headerlink" href="#classes-design" title="Link to this heading"></a></h1>
-<ol class="arabic">
+<ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Molecule</span></code> class.</p>
 <ul class="simple">
 <li><p>Motivation: Describe the user’s input.</p></li>
@@ -103,11 +104,17 @@
 <ul class="simple">
 <li><p>Base class for all Hamiltonian terms.</p></li>
 <li><p>Will eventually get replaced by a SimDE class.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">terms(kets)</span></code> returns one (vibrational operators, reducer, rotational
+operators) tuple per direct product in the term, where <code class="docutils literal notranslate"><span class="pre">kets</span></code> is a
+<code class="docutils literal notranslate"><span class="pre">RotationalAnsatz</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvib</span></code> is the number of vibrational modes the term acts on, or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+if it does not act on them.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">HarmonicHamiltonian</span></code> class.</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\omegavec\)</span> which is <span class="math notranslate nohighlight">\(\Nvib\)</span> element vector</p></li>
+<li><p>State is a <code class="docutils literal notranslate"><span class="pre">HarmonicOperator</span></code> object.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AnharmonicPotential</span></code> class.</p>
@@ -115,35 +122,56 @@
 <li><p>State is <code class="docutils literal notranslate"><span class="pre">CubicPotential</span></code> and <code class="docutils literal notranslate"><span class="pre">QuarticPotential</span></code> objects.</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">RigidRotorHamiltonian</span></code> class.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">CoriolisHamiltonianTerm</span></code> class.</p>
 <ul class="simple">
-<li><p>Rotational constants</p></li>
+<li><p>Base class for the terms built from <span class="math notranslate nohighlight">\(\pivec\)</span> and <span class="math notranslate nohighlight">\(\muvec\)</span>.</p></li>
+<li><p>State is <code class="docutils literal notranslate"><span class="pre">CoriolisOperator</span></code> and <code class="docutils literal notranslate"><span class="pre">WatsonOperator</span></code> objects.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">VibrationalCoriolisHamiltonian</span></code> class.</p>
 <ul class="simple">
-<li><p>State is <code class="docutils literal notranslate"><span class="pre">CoriolisOperator</span></code> and <code class="docutils literal notranslate"><span class="pre">WatsonOperator</span></code> objects.</p></li>
+<li><p>Derives from <code class="docutils literal notranslate"><span class="pre">CoriolisHamiltonianTerm</span></code>.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RovibrationalHamiltonian</span></code> class.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\zetavec\)</span> which is <span class="math notranslate nohighlight">\(\Nvib\)</span> by 3 by <span class="math notranslate nohighlight">\(\Nvib\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\etavec\)</span> list</p></li>
+<ul class="simple">
+<li><p>Derives from <code class="docutils literal notranslate"><span class="pre">CoriolisHamiltonianTerm</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">terms(kets)</span></code> builds the <code class="docutils literal notranslate"><span class="pre">JOperator</span></code> objects for the <span class="math notranslate nohighlight">\(J\)</span> of
+<code class="docutils literal notranslate"><span class="pre">kets</span></code>. The vibrational operators and reducers do not depend on it.</p></li>
 </ul>
-</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VibrationalBasisFunction</span></code> class.</p>
+<ul class="simple">
+<li><p>Product of <span class="math notranslate nohighlight">\(\Nvib\)</span> harmonic oscillator wavefunctions.</p></li>
+<li><p>Class state is a vector of vibrational quantum numbers.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RotationalBasisFunction</span></code> class.</p>
+<ul class="simple">
+<li><p>Angular momentum eigenstate.</p></li>
+<li><p>Class state is J and K.</p></li>
+</ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RovibrationalBasisFunction</span></code> class.</p>
 <ul class="simple">
-<li><p>Product of <span class="math notranslate nohighlight">\(\Nvib\)</span> harmonic oscillator wavefunctions and an angular
-momentum eigenstate.</p></li>
-<li><p>Class state is a vector of vibrational quantum numbers, J, and K.</p></li>
+<li><p>Contains a <code class="docutils literal notranslate"><span class="pre">VibrationalBasisFunction</span></code> and a <code class="docutils literal notranslate"><span class="pre">RotationalBasisFunction</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VibrationalAnsatz</span></code> class.</p>
+<ul class="simple">
+<li><p>State is conceptually a vector of <code class="docutils literal notranslate"><span class="pre">VibrationalBasisFunction</span></code> objects.</p></li>
+<li><p>In practice, basis functions are generated on-the-fly.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RotationalAnsatz</span></code> class.</p>
+<ul class="simple">
+<li><p>State is conceptually a vector of <code class="docutils literal notranslate"><span class="pre">RotationalBasisFunction</span></code> objects.</p></li>
+<li><p>In practice, basis functions are generated on-the-fly.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RovibrationalAnsatz</span></code> class.</p>
 <ul class="simple">
-<li><p>State is conceptually a vector of <code class="docutils literal notranslate"><span class="pre">RovibrationalBasisFunction</span></code> objects.</p></li>
-<li><p>In practice, basis functions are generated on-the-fly.</p></li>
+<li><p>State is a  <code class="docutils literal notranslate"><span class="pre">RotationalAnsatz</span></code> and a <code class="docutils literal notranslate"><span class="pre">VibrationalAnsatz</span></code>.</p></li>
 </ul>
 </li>
 </ol>
@@ -160,13 +188,28 @@ momentum eigenstate.</p></li>
 <li><p>State is the normal mode index and the frequency of the mode.</p></li>
 </ul>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NumberOperator</span></code> class.</p>
+<ul class="simple">
+<li><p>State is the normal mode index.</p></li>
+</ul>
+</li>
 </ol>
 <p>All of the below classes have a method, <code class="docutils literal notranslate"><span class="pre">vibrational_operators</span></code>, that returns
 an object that can be iterated over. Each iteration returns a list of
-vibrational operators (<code class="docutils literal notranslate"><span class="pre">NormalMode</span></code> or <code class="docutils literal notranslate"><span class="pre">ConjugateMomentum</span></code>) operators. The
+vibrational operators (<code class="docutils literal notranslate"><span class="pre">NormalMode</span></code>, <code class="docutils literal notranslate"><span class="pre">ConjugateMomentum</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">NumberOperator</span></code>) operators. The
 classes also have a method <code class="docutils literal notranslate"><span class="pre">coefficient</span></code>. The inputs to <code class="docutils literal notranslate"><span class="pre">coefficient</span></code>
 are assumed to be generated by the <code class="docutils literal notranslate"><span class="pre">vibrational_operators</span></code> method.</p>
 <ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HarmonicOperator</span></code></p>
+<ul class="simple">
+<li><p>State is the frequencies <span class="math notranslate nohighlight">\(\omegavec\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coefficient</span></code> returns the frequency of a mode, or the zero-point energy
+for the empty product.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vibrational_operators</span></code> returns one tuple holding a <code class="docutils literal notranslate"><span class="pre">NumberOperator</span></code>
+per mode, and the empty tuple.</p></li>
+</ul>
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PotentialOperator</span></code></p>
 <ul class="simple">
 <li><p>State is the order (either 3 or 4), the number of vibrations, <span class="math notranslate nohighlight">\(\Nvib\)</span>, the
@@ -199,6 +242,25 @@ rotational constants, and the frequencies <span class="math notranslate nohighli
 <code class="docutils literal notranslate"><span class="pre">NormalMode</span></code> objects).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">coefficient</span></code> returns 3 by 3 matrix <span class="math notranslate nohighlight">\(\tens{\eta^{\midx_n}}\)</span>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vibrational_operators</span></code> returns tuples of <code class="docutils literal notranslate"><span class="pre">NormalMode</span></code> objects.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="rotational-operators">
+<h2>Rotational Operators<a class="headerlink" href="#rotational-operators" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JOperator</span></code> class.</p>
+<ul class="simple">
+<li><p>State is the rotational quantum numbers <code class="docutils literal notranslate"><span class="pre">J</span></code> and the projection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">act</span></code> acts on a value of <code class="docutils literal notranslate"><span class="pre">K</span></code> and returns the resulting values of <code class="docutils literal notranslate"><span class="pre">K</span></code>
+and the corresponding coefficients.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RigidRotorHamiltonian</span></code> class.</p>
+<ul class="simple">
+<li><p>Rotational constants only. No <code class="docutils literal notranslate"><span class="pre">J</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">terms(kets)</span></code> builds the <code class="docutils literal notranslate"><span class="pre">JOperator</span></code> objects for the <span class="math notranslate nohighlight">\(J\)</span> of
+<code class="docutils literal notranslate"><span class="pre">kets</span></code>. The rotational constants are in the reducers.</p></li>
 </ul>
 </li>
 </ol>

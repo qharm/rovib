@@ -55,7 +55,10 @@
 <li class="toctree-l3"><a class="reference internal" href="rigid_rotor.html">Rigid Rotor Hamiltonian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="anharmonic_potential.html">Anharmonic Potential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vibration_coriolis.html">Vibrational-Coriolis Hamiltonian</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Rovibrational Coupling Hamiltonian</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Rovibrational Coupling Hamiltonian</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#matrix-elements">Matrix Elements</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -91,60 +94,60 @@
              
   <section id="rovibrational-coupling-hamiltonian">
 <span id="rovibrational-coupling"></span><h1>Rovibrational Coupling Hamiltonian<a class="headerlink" href="#rovibrational-coupling-hamiltonian" title="Link to this heading"></a></h1>
-<p>For the rovibrational coupling Hamiltonian, note that the molecule-fixed
-components of <span class="math notranslate nohighlight">\(\jvec\)</span> act only on the rotational coordinates, so they
-commute with <span class="math notranslate nohighlight">\(\qvec\)</span>, <span class="math notranslate nohighlight">\(\pvec\)</span>, and therefore
-<span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> and <span class="math notranslate nohighlight">\(\pivec\)</span>. Combined with the symmetry of
-<span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span>, this lets the two Coriolis terms be combined:</p>
+<p>The rovibrational coupling Hamiltonian is defined as:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\pivec^T\muvec^{(n)}\jvec =&amp;
-   \sum_{\alpha,\beta=1}^{3}
-   \piop_\alpha\muop^{(n)}_{\alpha\beta}\jop_\beta
- = \sum_{\alpha,\beta=1}^{3}
-   \jop_\alpha\piop_\beta\muop^{(n)}_{\alpha\beta}\\
-\jvec^T\muvec^{(n)}\pivec + \pivec^T\muvec^{(n)}\jvec =&amp;
-   \sum_{\alpha,\beta=1}^{3}\jop_\alpha\left(
-     \muop^{(n)}_{\alpha\beta}\piop_\beta +
-     \piop_\beta\muop^{(n)}_{\alpha\beta}\right)\end{split}\]</div>
-<p>where the first line relabeled <span class="math notranslate nohighlight">\(\alpha\leftrightarrow\beta\)</span>. Inserting
-this and the expansions above:</p>
+\[\Hrovib \equiv \frac{1}{2}\sum_{n=1}^{4}\jvec^T\muvec^{(n)}\jvec -
+   \frac{1}{2}\sum_{n=0}^{3}\left(\jvec^T\muvec^{(n)}\pivec +
+   \pivec^T\muvec^{(n)}\jvec\right)\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\jvec\)</span> is purely rotational it commutes with <span class="math notranslate nohighlight">\(\qvec\)</span> and <span class="math notranslate nohighlight">\(\pvec\)</span>, and thus
+with <span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> and <span class="math notranslate nohighlight">\(\pivec\)</span>. <span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> is also symmetric
+(the individual <span class="math notranslate nohighlight">\(\eta^{\midx_n}_{\alpha\beta}\)</span> are not, but reversing the
+multi-index transposes them and the normal coordinates commute). Relabeling
+<span class="math notranslate nohighlight">\(\alpha\leftrightarrow\beta\)</span> then gives:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\Hrovib =&amp; \frac{1}{2}\sum_{n=1}^{4}\sum_{\alpha,\beta=1}^{3}
-   \muop^{(n)}_{\alpha\beta}\jop_\alpha \jop_\beta -
+\[\pivec^T\muvec^{(n)}\jvec =
+   \sum_{\alpha,\beta=1}^{3}\piop_\alpha\muop^{(n)}_{\alpha\beta}\jop_\beta =
+   \sum_{\alpha,\beta=1}^{3}\jop_\alpha\piop_\beta\muop^{(n)}_{\alpha\beta}\]</div>
+<p>and therefore:</p>
+<div class="math notranslate nohighlight">
+\[\Hrovib = \frac{1}{2}\sum_{n=1}^{4}\jvec^T\muvec^{(n)}\jvec -
    \frac{1}{2}\sum_{n=0}^{3}\sum_{\alpha,\beta=1}^{3}\jop_\alpha\left(
-     \muop^{(n)}_{\alpha\beta}\piop_\beta +
-     \piop_\beta\muop^{(n)}_{\alpha\beta}\right)\\
-  =&amp; \frac{1}{2}\sum_{n=1}^{4}\sum_{\alpha,\beta=1}^{3}\sum_{\midx}
-   \eta^{(n)}_{\alpha\beta,\midx}\qop^{\midx}\jop_\alpha \jop_\beta\\
-   &amp;- \frac{1}{2}\sum_{n=0}^{3}\sum_{\alpha,\beta=1}^{3}
-   \sum_{k,\ell=1}^{\Nvib}\sum_{\midx}
-   \zeta^\beta_{k,\ell}\eta^{(n)}_{\alpha\beta,\midx}
-   \left(\qop^{\midx}\qop_k \pop_\ell + \qop_k \pop_\ell \qop^{\midx}\right)
-   \jop_\alpha\end{split}\]</div>
-<p>Because <span class="math notranslate nohighlight">\(\muvec^{(0)}\)</span> is a diagonal constant, the <span class="math notranslate nohighlight">\(n=0\)</span>
-Coriolis term reduces to</p>
+   \muop^{(n)}_{\alpha\beta}\piop_\beta +
+   \piop_\beta\muop^{(n)}_{\alpha\beta}\right)\]</div>
+<p>Writing out the matrix products and inserting the Taylor expansion of <span class="math notranslate nohighlight">\(\muvec\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[-\sum_{\alpha=1}^{3}
-   \frac{\jop_\alpha\piop_\alpha}{I^0_{\alpha\alpha}}\]</div>
-<p><span class="math notranslate nohighlight">\(\Hrovib\)</span> couples vibration and rotation, and its matrix elements
-factor into a vibrational and a rotational part:</p>
+\[\begin{split}\Hrovib =&amp; \frac{1}{2}\sum_{\alpha,\beta=1}^{3}
+   \jop_\alpha\jop_\beta
+   \sum_{n=1}^{4}\sum_{\midx_n}
+   \eta^{\midx_n}_{\alpha\beta}\qop_{\midx_n} -\\
+   &amp;\frac{1}{2}\sum_{\alpha,\beta=1}^{3}
+   \jop_\alpha
+   \sum_{n=0}^{3}\sum_{\midx_n}\eta^{\midx_n}_{\alpha\beta}
+   \sum_{i,j} \zeta^\beta_{ij}\left(
+      \qop_{\midx_n}\qop_{i}\pop_{j} +
+      \qop_{i}\pop_{j}\qop_{\midx_n}\right)\end{split}\]</div>
+<p>where we have used the definition of <span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> from
+<a class="reference internal" href="watson_mu.html#watson-mu-tensor"><span class="std std-ref">Watson mu Tensor</span></a>.</p>
+<section id="matrix-elements">
+<h2>Matrix Elements<a class="headerlink" href="#matrix-elements" title="Link to this heading"></a></h2>
 <div class="math notranslate nohighlight">
-\[\begin{split}\braket{\vvec',J',K'\mid \Hrovib\mid\vvec,J,K} =&amp;
-   \delta_{J',J}\left[
-   \frac{1}{2}\sum_{n=1}^{4}\sum_{\alpha,\beta=1}^{3}\sum_{\midx}
-   \eta^{(n)}_{\alpha\beta,\midx}
-   \braket{\vvec'\mid \qop^{\midx}\mid\vvec}
-   \braket{J,K'\mid \jop_\alpha \jop_\beta\mid J,K}\right.\\
-   &amp;- \frac{1}{2}\sum_{n=0}^{3}\sum_{\alpha,\beta=1}^{3}
-   \sum_{k,\ell=1}^{\Nvib}\sum_{\midx}
-   \zeta^\beta_{k,\ell}\eta^{(n)}_{\alpha\beta,\midx}\\
-   &amp;\left.\times\braket{\vvec'\mid
-      \qop^{\midx}\qop_k \pop_\ell + \qop_k \pop_\ell \qop^{\midx}
-      \mid\vvec}
-   \braket{J,K'\mid \jop_\alpha\mid J,K}\right]\end{split}\]</div>
-<p>The first (centrifugal distortion) term couples <span class="math notranslate nohighlight">\(K\)</span> to
-<span class="math notranslate nohighlight">\(K, K\pm1, K\pm2\)</span>. The second (Coriolis) term couples <span class="math notranslate nohighlight">\(K\)</span> to
-<span class="math notranslate nohighlight">\(K, K\pm1\)</span>.</p>
+\[\begin{split}\braket{\vvec',J',K'\mid \Hrovib\mid\vvec,J,K}=&amp;
+\frac{1}{2}\sum_{\alpha,\beta=1}^{3}
+   \braket{J',K'\mid\jop_\alpha\jop_\beta\mid J,K}
+   T_{\alpha\beta}^{(\text{RC},0)}
+    -\\
+   &amp;\frac{1}{2}\sum_{\alpha=1}^{3}
+    \braket{J',K'\mid\jop_\alpha\mid J,K}
+    T_{\alpha}^{(\text{RC},1)}\\
+T_{\alpha\beta}^{(\text{RC},0)}\equiv&amp;
+   \sum_{n=1}^{4}\sum_{\midx_n} \eta^{\midx_n}_{\alpha\beta}
+   \braket{\vvec'\mid\qop_{\midx_n}\mid\vvec}\\
+T_{\alpha}^{(\text{RC},1)}\equiv&amp;
+\sum_{\beta=1}^{3}\sum_{n=0}^{3}\sum_{\midx_n}\eta^{\midx_n}_{\alpha\beta}
+    \sum_{i,j} \zeta^\beta_{ij} \left(
+      \braket{\vvec'\mid\qop_{\midx_n}\qop_{i}\pop_{j}\mid\vvec} +\right.\\
+   &amp;\left. \braket{\vvec'\mid\qop_{i}\pop_{j}\qop_{\midx_n}\mid\vvec}\right)\end{split}\]</div>
+</section>
 </section>
 
 

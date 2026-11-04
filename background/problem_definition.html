@@ -280,6 +280,23 @@ rotational constants of the molecule and:</p>
 <section id="rovibrational-coupling-matrix-elements">
 <h3>Rovibrational Coupling Matrix Elements<a class="headerlink" href="#rovibrational-coupling-matrix-elements" title="Link to this heading"></a></h3>
 <p>Main article: <a class="reference internal" href="rovibrational_coupling.html#rovibrational-coupling"><span class="std std-ref">Rovibrational Coupling Hamiltonian</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\braket{\vvec',J',K'\mid \Hrovib\mid\vvec,J,K}=&amp;
+\frac{1}{2}\sum_{\alpha,\beta=1}^{3}
+   \braket{J',K'\mid\jop_\alpha\jop_\beta\mid J,K}
+   T_{\alpha\beta}^{(\text{RC},0)}
+    -\\
+   &amp;\frac{1}{2}\sum_{\alpha=1}^{3}
+    \braket{J',K'\mid\jop_\alpha\mid J,K}
+    T_{\alpha}^{(\text{RC},1)}\\
+T_{\alpha\beta}^{(\text{RC},0)}\equiv&amp;
+   \sum_{n=1}^{4}\sum_{\midx_n} \eta^{\midx_n}_{\alpha\beta}
+   \braket{\vvec'\mid\qop_{\midx_n}\mid\vvec}\\
+T_{\alpha}^{(\text{RC},1)}\equiv&amp;
+\sum_{\beta=1}^{3}\sum_{n=0}^{3}\sum_{\midx_n}\eta^{\midx_n}_{\alpha\beta}
+    \sum_{i,j} \zeta^\beta_{ij} \left(
+      \braket{\vvec'\mid\qop_{\midx_n}\qop_{i}\pop_{j}\mid\vvec} +\right.\\
+   &amp;\left. \braket{\vvec'\mid\qop_{i}\pop_{j}\qop_{\midx_n}\mid\vvec}\right)\end{split}\]</div>
 </section>
 </section>
 </section>

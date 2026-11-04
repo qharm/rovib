@@ -25,10 +25,22 @@ Classes
 .. automodule:: rovib.molecule
    :members:
 
-.. automodule:: rovib.rovibrational_basis_function
+.. automodule:: rovib.wavefunction.vibrational_basis_function
    :members:
 
-.. automodule:: rovib.rovibrational_ansatz
+.. automodule:: rovib.wavefunction.rotational_basis_function
+   :members:
+
+.. automodule:: rovib.wavefunction.rovibrational_basis_function
+   :members:
+
+.. automodule:: rovib.wavefunction.vibrational_ansatz
+   :members:
+
+.. automodule:: rovib.wavefunction.rotational_ansatz
+   :members:
+
+.. automodule:: rovib.wavefunction.rovibrational_ansatz
    :members:
 
 .. automodule:: rovib.hamiltonian_term
@@ -46,13 +58,25 @@ Classes
 .. automodule:: rovib.anharmonic_potential
    :members:
 
+.. automodule:: rovib.coriolis_hamiltonian_term
+   :members:
+
 .. automodule:: rovib.vibrational_coriolis_hamiltonian
+   :members:
+
+.. automodule:: rovib.rovibrational_hamiltonian
    :members:
 
 .. automodule:: rovib.operators.normal_mode
    :members:
 
 .. automodule:: rovib.operators.conjugate_momentum
+   :members:
+
+.. automodule:: rovib.operators.number_operator
+   :members:
+
+.. automodule:: rovib.operators.harmonic_operator
    :members:
 
 .. automodule:: rovib.operators.potential_operator
@@ -64,17 +88,20 @@ Classes
 .. automodule:: rovib.operators.watson_operator
    :members:
 
+.. automodule:: rovib.operators.j_operator
+   :members:
+
 ***************
 Matrix Elements
 ***************
 
-.. automodule:: rovib.matrix_elements.harmonic_hamiltonian_elements
-   :members:
-
-.. automodule:: rovib.matrix_elements.rigid_rotor_hamiltonian_elements
+.. automodule:: rovib.matrix_elements.apply_operators
    :members:
 
 .. automodule:: rovib.matrix_elements.vibrational_matrix_elements
+   :members:
+
+.. automodule:: rovib.matrix_elements.rotational_matrix_elements
    :members:
 
 .. automodule:: rovib.matrix_elements.hamiltonian_matrix

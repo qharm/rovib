@@ -41,36 +41,17 @@ Considerations
    - Whether it's sparse enough to use sparse matrix libraries is TBD.
    - Initial implementation will focus on filling in the non-zero elements of
      a dense matrix.
-   - Need a mechanism to get non-zero indices.
+   - The functions that build matrices only visit the elements that may be
+     non-zero.
 
-#. The anharmonic potential, vibrational coriolis, and rovibrational coupling
-   terms are all products of vibrational operators. We need a mechanism to
-   evaluate matrix elements of products of vibrational operators.
+#. The harmonic oscillator, anharmonic potential, vibrational coriolis, and
+   rovibrational coupling terms are all products of vibrational operators. We
+   need a mechanism to evaluate matrix elements of products of vibrational
+   operators.
 
    - The final matrix elements are direct products of per-mode matrix elements;
      however, the per-mode matrices are extremely sparse.
 
-
-****************
-Helper Functions
-****************
-
-#. ``non_zero_indices(BraBasis, t, KetBasis)``. Takes the basis set for the
-   bra, a term in the Hamiltonian, and the basis set for the ket. Returns a
-   generator that runs over bra-ket basis function pairs. The generator only
-   returns pairs that are in general non-zero.
-
-   - The idea to take a bra and a ket is to allow for the using different basis
-     sets or batches of basis functions.
-   - One common API. Internally can branch based on the input types.
-
-#. ``matrix_element(Bra, t, Ket)``. Takes a basis function from the bra, a
-   term from the Hamiltonian, and a basis function from the ket. Returns the
-   value of the corresponding matrix element.
-
-   - Similar to ``non_zero_indices``, the idea is to have a common API that can
-     branch internally based on the input types.
-   - Could be extended to take a batch of basis functions eventually.
 
 ***********************
 Full Basis: Algorithm 1
@@ -83,11 +64,14 @@ format.
 
 #. Loop over Hamiltonian terms, ``t``.
 
-#. Call  ``non_zero_indices(B,t,B)`` to get a generator ``G``.
+#. Loop over the (vibrational operators, reducer, rotational operators) tuples
+   returned by ``t.terms``. No step depends on the type of ``t``.
 
-#. Loop over ``(b,k)`` pairs in ``G``.
+#. Evaluate the matrix of the vibrational operators and the matrix of the
+   rotational operators with the algorithms below. An empty list of operators
+   gives the identity.
 
-#. Call ``matrix_element(b, t, k)`` to compute the matrix element.
+#. Add the direct product of the two matrices to the Hamiltonian matrix.
 
 ******************************
 Vibrational Basis: Algorithm 1
@@ -97,21 +81,25 @@ We need to be able to on-the-fly build elements like
 :math:`c\braket{\vvec'\mid \op{O}^n \mid\vvec}`, where :math:`\op{O}^n` is a
 product of :math:`n` vibrational operators and :math:`c` is a coefficient whose
 value depends on the modes :math:`\op{O}^n` operates on. The input to our
-function will be ``bra_space``, the list of allowed bra states, ``ket_space``,
-the list of allowed ket states, ``o``, the list of operators, and ``reducer``
-a function that combines the coefficients. This is implemented by
+function will be ``bras``, the ``VibrationalAnsatz`` of allowed bra states,
+``ops``, the list of operators, ``kets``, the ``VibrationalAnsatz`` of allowed
+ket states, and ``reducer`` a function that combines the coefficients. This is
+implemented by
 :func:`rovib.matrix_elements.vibrational_matrix_elements.vibrational_matrix`.
+The elements in the full basis follow from the direct product of the result
+with the matrix of the rotational part of the term.
 
-Elements in ``o`` are assumed to be ``PotentialOperator``, ``CoriolisOperator``,
-or ``WatsonOperator`` objects.
+Elements in ``ops`` are assumed to be ``HarmonicOperator``,
+``PotentialOperator``, ``CoriolisOperator``, or ``WatsonOperator`` objects.
 
 The first three steps do not depend on the ket, so they are done once.
 
-#. Let ``op_range[i] = o[i].vibrational_operators()``. Loop over the Cartesian
-   product of ``op_range``. Let ``op_list`` be the current list of operators.
+#. Let ``op_range[i] = ops[i].vibrational_operators()``. Loop over the
+   Cartesian product of ``op_range``. Let ``op_list`` be the current list of
+   operators.
 
-#. Let ``c[i] = o[i].coefficient(op_list[i])``. Call ``reducer(c)`` to get the
-   coefficient for this term. If it is zero, skip to the next ``op_list``.
+#. Let ``c[i] = ops[i].coefficient(op_list[i])``. Call ``reducer(c)`` to get
+   the coefficient for this term. If it is zero, skip to the next ``op_list``.
 
 #. Operators on different modes commute, so group ``op_list`` by mode, keeping
    the order of the operators within each mode. Let ``word[i]`` be the
@@ -119,7 +107,7 @@ The first three steps do not depend on the ket, so they are done once.
 
 The remaining steps are done for each ket.
 
-#. Loop over the states in ``ket_space``. Let ``ket`` be the current ket state
+#. Loop over the states in ``kets``. Let ``ket`` be the current ket state
    and ``values`` be an empty map from bra states to matrix elements.
 
 #. For each term from steps 1-3, and each mode ``i`` in ``word``, apply
@@ -133,7 +121,7 @@ The remaining steps are done for each ket.
 #. Shifts in each mode are independent, so loop over the Cartesian product of
    the results of the previous step. Let ``ket_dp`` be ``ket`` with each mode
    in ``word`` replaced by the current :math:`v'_i`. If ``ket_dp`` is not in
-   ``bra_space``, skip to the next shift.
+   ``bras``, skip to the next shift.
 
 #. Add ``c`` times the product of the per-mode matrix elements to
    ``values[ket_dp]``. Different terms can couple the same bra and ket, so the
@@ -141,3 +129,38 @@ The remaining steps are done for each ket.
 
 #. Once all terms are done, set ``H[bra, ket] = values[bra]`` for each ``bra``
    in ``values``.
+
+*****************************
+Rotational Basis: Algorithm 1
+*****************************
+
+The rotational analog of the above builds :math:`\braket{J',K'\mid\op{O}^n\mid J,K}`,
+where :math:`\op{O}^n` is a product of :math:`n` ``JOperator`` objects. The input
+to our function will be ``bras``, the ``RotationalAnsatz`` of allowed bra states,
+``ops``, the list of ``JOperator`` objects, and ``kets``, the ``RotationalAnsatz``
+of allowed ket states. This is implemented by
+:func:`rovib.matrix_elements.rotational_matrix_elements.rotational_matrix`.
+
+Each element of ``ops`` is a single operator, not a sum, so no ``reducer`` is
+needed; the coefficient of the direct product comes from the ``reducer`` of the
+vibrational part. The algorithm is:
+
+#. If ``bras`` and ``kets`` have different values of :math:`J`, the matrix is
+   zero, because ``JOperator`` objects conserve :math:`J`.
+
+#. Loop over the states in ``kets``. Let ``ket`` be the current ket state.
+
+#. Apply ``ops`` to the :math:`K` of ``ket``, the rightmost operator first, and
+   sum the amplitudes of each resulting value of :math:`K'`. Set the element for
+   each :math:`K'` to its summed amplitude.
+
+The rigid rotor Hamiltonian is then
+
+.. math::
+
+   \braket{\vvec',J',K'\mid\HRR\mid\vvec,J,K} =
+      \braket{\vvec'\mid\vvec}\sum_{\alpha}\gamma_\alpha
+      \braket{J',K'\mid\jop_\alpha^2\mid J,K}
+
+where :math:`\braket{\vvec'\mid\vvec}` is ``vibrational_matrix`` with no
+operators and a ``reducer`` that returns :math:`\gamma_\alpha`.
