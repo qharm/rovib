@@ -129,13 +129,25 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#rovib.operators.potential_operator.PotentialOperator.coefficient">coefficient() (rovib.operators.potential_operator.PotentialOperator method)</a>
+      <li><a href="api.html#rovib.operators.coriolis_operator.CoriolisOperator.coefficient">coefficient() (rovib.operators.coriolis_operator.CoriolisOperator method)</a>
+
+      <ul>
+        <li><a href="api.html#rovib.operators.potential_operator.PotentialOperator.coefficient">(rovib.operators.potential_operator.PotentialOperator method)</a>
 </li>
+        <li><a href="api.html#rovib.operators.watson_operator.WatsonOperator.coefficient">(rovib.operators.watson_operator.WatsonOperator method)</a>
+</li>
+      </ul></li>
       <li><a href="api.html#rovib.operators.conjugate_momentum.ConjugateMomentum">ConjugateMomentum (class in rovib.operators.conjugate_momentum)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.molecule.Molecule.coords">coords (rovib.molecule.Molecule property)</a>
+</li>
+      <li><a href="api.html#rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian.coriolis_couplings">coriolis_couplings (rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian property)</a>
+</li>
+      <li><a href="api.html#rovib.coriolis.coriolis_couplings">coriolis_couplings() (in module rovib.coriolis)</a>
+</li>
+      <li><a href="api.html#rovib.operators.coriolis_operator.CoriolisOperator">CoriolisOperator (class in rovib.operators.coriolis_operator)</a>
 </li>
       <li><a href="api.html#rovib.anharmonic_potential.AnharmonicPotential.cubic">cubic (rovib.anharmonic_potential.AnharmonicPotential property)</a>
 </li>
@@ -157,6 +169,8 @@
 
       <ul>
         <li><a href="api.html#rovib.harmonic_hamiltonian.HarmonicHamiltonian.frequencies">(rovib.harmonic_hamiltonian.HarmonicHamiltonian property)</a>
+</li>
+        <li><a href="api.html#rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian.frequencies">(rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -191,8 +205,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.rovibrational_ansatz.RovibrationalAnsatz.index">index() (rovib.rovibrational_ansatz.RovibrationalAnsatz method)</a>
 </li>
+      <li><a href="api.html#rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian.inertia_derivatives">inertia_derivatives (rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian property)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#rovib.inertia.inertia_derivatives">inertia_derivatives() (in module rovib.inertia)</a>
+</li>
       <li><a href="api.html#rovib.inertia.inertia_tensor">inertia_tensor() (in module rovib.inertia)</a>
 </li>
       <li><a href="api.html#rovib.water_params.is_water">is_water() (in module rovib.water_params)</a>
@@ -221,6 +239,8 @@
 </li>
         <li><a href="api.html#module-rovib.constants">rovib.constants</a>
 </li>
+        <li><a href="api.html#module-rovib.coriolis">rovib.coriolis</a>
+</li>
         <li><a href="api.html#module-rovib.driver">rovib.driver</a>
 </li>
         <li><a href="api.html#module-rovib.hamiltonian">rovib.hamiltonian</a>
@@ -243,15 +263,21 @@
 </li>
         <li><a href="api.html#module-rovib.operators.conjugate_momentum">rovib.operators.conjugate_momentum</a>
 </li>
+        <li><a href="api.html#module-rovib.operators.coriolis_operator">rovib.operators.coriolis_operator</a>
+</li>
         <li><a href="api.html#module-rovib.operators.normal_mode">rovib.operators.normal_mode</a>
 </li>
         <li><a href="api.html#module-rovib.operators.potential_operator">rovib.operators.potential_operator</a>
+</li>
+        <li><a href="api.html#module-rovib.operators.watson_operator">rovib.operators.watson_operator</a>
 </li>
         <li><a href="api.html#module-rovib.rigid_rotor_hamiltonian">rovib.rigid_rotor_hamiltonian</a>
 </li>
         <li><a href="api.html#module-rovib.rovibrational_ansatz">rovib.rovibrational_ansatz</a>
 </li>
         <li><a href="api.html#module-rovib.rovibrational_basis_function">rovib.rovibrational_basis_function</a>
+</li>
+        <li><a href="api.html#module-rovib.vibrational_coriolis_hamiltonian">rovib.vibrational_coriolis_hamiltonian</a>
 </li>
         <li><a href="api.html#module-rovib.water_params">rovib.water_params</a>
 </li>
@@ -283,6 +309,8 @@
 </li>
         <li><a href="api.html#rovib.rovibrational_basis_function.RovibrationalBasisFunction.nvib">(rovib.rovibrational_basis_function.RovibrationalBasisFunction property)</a>
 </li>
+        <li><a href="api.html#rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian.nvib">(rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian property)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -291,7 +319,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.operators.potential_operator.PotentialOperator.order">order (rovib.operators.potential_operator.PotentialOperator property)</a>
+
+      <ul>
+        <li><a href="api.html#rovib.operators.watson_operator.WatsonOperator.order">(rovib.operators.watson_operator.WatsonOperator property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -321,7 +353,11 @@
       <li><a href="api.html#rovib.rigid_rotor_hamiltonian.RigidRotorHamiltonian">RigidRotorHamiltonian (class in rovib.rigid_rotor_hamiltonian)</a>
 </li>
       <li><a href="api.html#rovib.rigid_rotor_hamiltonian.RigidRotorHamiltonian.rotational_constants">rotational_constants (rovib.rigid_rotor_hamiltonian.RigidRotorHamiltonian property)</a>
+
+      <ul>
+        <li><a href="api.html#rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian.rotational_constants">(rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian property)</a>
 </li>
+      </ul></li>
       <li><a href="api.html#rovib.inertia.rotational_constants">rotational_constants() (in module rovib.inertia)</a>
 </li>
       <li>
@@ -336,6 +372,13 @@
 
       <ul>
         <li><a href="api.html#module-rovib.constants">module</a>
+</li>
+      </ul></li>
+      <li>
+    rovib.coriolis
+
+      <ul>
+        <li><a href="api.html#module-rovib.coriolis">module</a>
 </li>
       </ul></li>
       <li>
@@ -387,8 +430,6 @@
         <li><a href="api.html#module-rovib.matrix_elements.harmonic_hamiltonian_elements">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     rovib.matrix_elements.rigid_rotor_hamiltonian_elements
 
@@ -396,6 +437,8 @@
         <li><a href="api.html#module-rovib.matrix_elements.rigid_rotor_hamiltonian_elements">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     rovib.matrix_elements.vibrational_matrix_elements
 
@@ -418,6 +461,13 @@
 </li>
       </ul></li>
       <li>
+    rovib.operators.coriolis_operator
+
+      <ul>
+        <li><a href="api.html#module-rovib.operators.coriolis_operator">module</a>
+</li>
+      </ul></li>
+      <li>
     rovib.operators.normal_mode
 
       <ul>
@@ -429,6 +479,13 @@
 
       <ul>
         <li><a href="api.html#module-rovib.operators.potential_operator">module</a>
+</li>
+      </ul></li>
+      <li>
+    rovib.operators.watson_operator
+
+      <ul>
+        <li><a href="api.html#module-rovib.operators.watson_operator">module</a>
 </li>
       </ul></li>
       <li>
@@ -450,6 +507,13 @@
 
       <ul>
         <li><a href="api.html#module-rovib.rovibrational_basis_function">module</a>
+</li>
+      </ul></li>
+      <li>
+    rovib.vibrational_coriolis_hamiltonian
+
+      <ul>
+        <li><a href="api.html#module-rovib.vibrational_coriolis_hamiltonian">module</a>
 </li>
       </ul></li>
       <li>
@@ -484,7 +548,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.anharmonic_potential.AnharmonicPotential.terms">terms() (rovib.anharmonic_potential.AnharmonicPotential method)</a>
+
+      <ul>
+        <li><a href="api.html#rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian.terms">(rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -493,9 +561,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.matrix_elements.vibrational_matrix_elements.vibrational_matrix">vibrational_matrix() (in module rovib.matrix_elements.vibrational_matrix_elements)</a>
 </li>
+      <li><a href="api.html#rovib.operators.coriolis_operator.CoriolisOperator.vibrational_operators">vibrational_operators() (rovib.operators.coriolis_operator.CoriolisOperator method)</a>
+
+      <ul>
+        <li><a href="api.html#rovib.operators.potential_operator.PotentialOperator.vibrational_operators">(rovib.operators.potential_operator.PotentialOperator method)</a>
+</li>
+        <li><a href="api.html#rovib.operators.watson_operator.WatsonOperator.vibrational_operators">(rovib.operators.watson_operator.WatsonOperator method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#rovib.operators.potential_operator.PotentialOperator.vibrational_operators">vibrational_operators() (rovib.operators.potential_operator.PotentialOperator method)</a>
+      <li><a href="api.html#rovib.vibrational_coriolis_hamiltonian.VibrationalCoriolisHamiltonian">VibrationalCoriolisHamiltonian (class in rovib.vibrational_coriolis_hamiltonian)</a>
 </li>
       <li><a href="api.html#rovib.rovibrational_ansatz.RovibrationalAnsatz.vmax">vmax (rovib.rovibrational_ansatz.RovibrationalAnsatz property)</a>
 </li>
@@ -509,13 +585,15 @@
 </li>
       <li><a href="api.html#rovib.water_params.water_harmonic_frequencies">water_harmonic_frequencies() (in module rovib.water_params)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.water_params.water_molecule">water_molecule() (in module rovib.water_params)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#rovib.water_params.water_normal_modes">water_normal_modes() (in module rovib.water_params)</a>
 </li>
       <li><a href="api.html#rovib.water_params.water_quartic_force_constants">water_quartic_force_constants() (in module rovib.water_params)</a>
+</li>
+      <li><a href="api.html#rovib.operators.watson_operator.WatsonOperator">WatsonOperator (class in rovib.operators.watson_operator)</a>
 </li>
   </ul></td>
 </tr></table>

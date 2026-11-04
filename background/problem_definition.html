@@ -51,7 +51,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#coordinate-system">Coordinate System</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#defining-the-rovibrational-hamiltonian">Defining the Rovibrational Hamiltonian</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#matrix-elements-of-the-hamiltonian">Matrix Elements of the Hamiltonian</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#matrix-elements">Matrix Elements</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="coordinate_system.html">Coordinate System</a></li>
@@ -281,69 +280,7 @@ rotational constants of the molecule and:</p>
 <section id="rovibrational-coupling-matrix-elements">
 <h3>Rovibrational Coupling Matrix Elements<a class="headerlink" href="#rovibrational-coupling-matrix-elements" title="Link to this heading"></a></h3>
 <p>Main article: <a class="reference internal" href="rovibrational_coupling.html#rovibrational-coupling"><span class="std std-ref">Rovibrational Coupling Hamiltonian</span></a>.</p>
-<p>TODO: Stuff below here needs a new home.</p>
-<p>The remaining Hamiltonians are easier to work with once
-<span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> and <span class="math notranslate nohighlight">\(\pivec\)</span> are written explicitly in terms
-of <span class="math notranslate nohighlight">\(\qvec\)</span> and <span class="math notranslate nohighlight">\(\pvec\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\Bvec_k \equiv \Izmhalf \avec_k \Izmhalf\]</div>
-<p>so that <span class="math notranslate nohighlight">\(\bvec = \sum_{k}\Bvec_k \qop_k\)</span>, and using the fact that
-the <span class="math notranslate nohighlight">\(\qop_k\)</span> commute with one another, <span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> is a
-polynomial of degree <span class="math notranslate nohighlight">\(n\)</span> in <span class="math notranslate nohighlight">\(\qvec\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\muop^{(n)}_{\alpha\beta} =&amp;
-   \sum_{\midx}\eta^{(n)}_{\alpha\beta,\midx}\qop^{\midx}\\
-\eta^{(n)}_{\alpha\beta,\midx} \equiv&amp; c_n\left[
-   \Izmhalf
-   \Bvec_{m_1}\Bvec_{m_2}\cdots\Bvec_{m_n}
-   \Izmhalf\right]_{\alpha\beta}\\
-\qop^{\midx} \equiv&amp; \qop_{m_1}\qop_{m_2}\cdots \qop_{m_n}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\midx = \left(m_1, m_2, \ldots, m_n\right)\)</span> is a multi-index
-and <span class="math notranslate nohighlight">\(\sum_{\midx}\)</span> runs each <span class="math notranslate nohighlight">\(m_t\)</span> from 1 to
-<span class="math notranslate nohighlight">\(\Nvib\)</span>. For <span class="math notranslate nohighlight">\(n=0\)</span>, <span class="math notranslate nohighlight">\(\qop^{\midx} = 1\)</span> and
-<span class="math notranslate nohighlight">\(\eta^{(0)}_{\alpha\beta} = \delta_{\alpha\beta}/I^0_{\alpha\alpha}\)</span>.
-Two properties are used below:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\avec_k\)</span> is symmetric (a consequence of the Eckart conditions),
-so <span class="math notranslate nohighlight">\(\muvec^{(n)}\)</span> is symmetric.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\zeta^\alpha_{i,j} = -\zeta^\alpha_{j,i}\)</span>, so
-<span class="math notranslate nohighlight">\(\zeta^\alpha_{i,i} = 0\)</span> and each <span class="math notranslate nohighlight">\(\piop_\alpha\)</span> is Hermitian.</p></li>
-</ul>
 </section>
-</section>
-<section id="matrix-elements">
-<h2>Matrix Elements<a class="headerlink" href="#matrix-elements" title="Link to this heading"></a></h2>
-<p>Let <span class="math notranslate nohighlight">\(\ket{v}\)</span> be an eigenfunction of <span class="math notranslate nohighlight">\(\HHO\)</span> with eigenvalue
-<span class="math notranslate nohighlight">\(E_v=\hbar\omega\left(v + \frac{1}{2}\right)\)</span> and <span class="math notranslate nohighlight">\(\ket{J,K}\)</span> be an eigenfunction of
-<span class="math notranslate nohighlight">\(\jop^2\)</span>
-and <span class="math notranslate nohighlight">\(\jop_z\)</span> with eigenvalues <span class="math notranslate nohighlight">\(\hbar^2 J(J+1)\)</span> and
-<span class="math notranslate nohighlight">\(K\hbar\)</span> respectively (here <span class="math notranslate nohighlight">\(K\)</span> is the projection of
-<span class="math notranslate nohighlight">\(\jvec\)</span> on to the molecule’s z-axis). A basis for the rovibrational
-Hamiltonian is then given by the direct
-product of one <span class="math notranslate nohighlight">\(\ket{v}\)</span> per vibrational degree of freedom and
-<span class="math notranslate nohighlight">\(\ket{J,K}\)</span>, i.e., <span class="math notranslate nohighlight">\(\ket{\vvec,J,K}\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(\HvibCor\)</span> and <span class="math notranslate nohighlight">\(\Hrovib\)</span> are sums of products of
-<span class="math notranslate nohighlight">\(\qop_k\)</span>, <span class="math notranslate nohighlight">\(\pop_k\)</span>, and <span class="math notranslate nohighlight">\(\jop_\alpha\)</span>, so their matrix
-elements follow from those of the individual operators.</p>
-<p>I</p>
-<p>The reversed action of <span class="math notranslate nohighlight">\(\jop_\pm\)</span> does not change the magnitude of the
-<span class="math notranslate nohighlight">\(\HRR\)</span> matrix elements, which only involve <span class="math notranslate nohighlight">\(\jop_+^2 + \jop_-^2\)</span>, but it
-fixes the signs below. Using
-<span class="math notranslate nohighlight">\(\jop_x = \frac{1}{2}\left(\jop_+ + \jop_-\right)\)</span> and
-<span class="math notranslate nohighlight">\(\jop_y = \frac{1}{2i}\left(\jop_+ - \jop_-\right)\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\braket{J',K'\mid \jop_x\mid J,K} =&amp; \frac{\hbar}{2}\delta_{J',J}
-   \left(C^+_{J,K}\,\delta_{K',K+1} + C^-_{J,K}\,\delta_{K',K-1}\right)\\
-\braket{J',K'\mid \jop_y\mid J,K} =&amp; \frac{i\hbar}{2}\delta_{J',J}
-   \left(C^+_{J,K}\,\delta_{K',K+1} - C^-_{J,K}\,\delta_{K',K-1}\right)\\
-\braket{J',K'\mid \jop_z\mid J,K} =&amp; \hbar K\,\delta_{J',J}\delta_{K',K}\end{split}\]</div>
-<p>Every <span class="math notranslate nohighlight">\(\jop_\alpha\)</span> conserves <span class="math notranslate nohighlight">\(J\)</span>, so products are evaluated within
-a single <span class="math notranslate nohighlight">\(J\)</span> block:</p>
-<div class="math notranslate nohighlight">
-\[\braket{J,K'\mid \jop_\alpha \jop_\beta\mid J,K} =
-   \sum_{K''=K-1}^{K+1}\braket{J,K'\mid \jop_\alpha\mid J,K''}
-                       \braket{J,K''\mid \jop_\beta\mid J,K}\]</div>
-<p>which is nonzero only for <span class="math notranslate nohighlight">\(\left|K'-K\right| \le 2\)</span>.</p>
 </section>
 </section>
 

@@ -122,8 +122,7 @@
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">VibrationalCoriolisHamiltonian</span></code> class.</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\zetavec\)</span> which is <span class="math notranslate nohighlight">\(\Nvib\)</span> by 3 by <span class="math notranslate nohighlight">\(\Nvib\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\etavec\)</span> list</p></li>
+<li><p>State is <code class="docutils literal notranslate"><span class="pre">CoriolisOperator</span></code> and <code class="docutils literal notranslate"><span class="pre">WatsonOperator</span></code> objects.</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RovibrationalHamiltonian</span></code> class.</p>
@@ -131,14 +130,6 @@
 <div><ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\zetavec\)</span> which is <span class="math notranslate nohighlight">\(\Nvib\)</span> by 3 by <span class="math notranslate nohighlight">\(\Nvib\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\etavec\)</span> list</p></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">WatsonHamiltonian</span></code> class.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\etavec\)</span> list.</p></li>
-<li><p>Technically only need diagonal elements of <span class="math notranslate nohighlight">\(\etavec\)</span>.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -191,8 +182,9 @@ numbers 0 to <span class="math notranslate nohighlight">\(\Nvib\)</span> choose 
 <li><p><code class="docutils literal notranslate"><span class="pre">CoriolisOperator</span></code> class.</p>
 <ul class="simple">
 <li><p>The <span class="math notranslate nohighlight">\(\pivec\)</span> operator in the background.</p></li>
-<li><p>State is the Coriolis coupling matrix, <span class="math notranslate nohighlight">\(\zetavec\)</span>, and the number of
-vibrations, <span class="math notranslate nohighlight">\(\Nvib\)</span>.</p></li>
+<li><p>State is the Coriolis coupling matrix, <span class="math notranslate nohighlight">\(\zetavec\)</span>, the number of
+vibrations, <span class="math notranslate nohighlight">\(\Nvib\)</span>, and the frequencies <span class="math notranslate nohighlight">\(\omegavec\)</span> (needed to build the
+<code class="docutils literal notranslate"><span class="pre">NormalMode</span></code> and <code class="docutils literal notranslate"><span class="pre">ConjugateMomentum</span></code> objects).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">coefficient</span></code> returns the 3 element tensor <span class="math notranslate nohighlight">\(\tens{\zeta_{ij}}\)</span>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vibrational_operators</span></code> loops over <code class="docutils literal notranslate"><span class="pre">NormalMode</span></code> and
 <code class="docutils literal notranslate"><span class="pre">ConjugateMomentum</span></code> pairs where the modes of each operator run from 0
@@ -202,8 +194,9 @@ to <span class="math notranslate nohighlight">\(\Nvib\)</span>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">WatsonOperator</span></code> class.</p>
 <ul class="simple">
 <li><p>This is the <cite>muvec</cite> operator from Watson’s Hamiltonian.</p></li>
-<li><p>State is <span class="math notranslate nohighlight">\(\Nvib\)</span>, the order of the operator, the <span class="math notranslate nohighlight">\(\tens{a}\)</span>, and the
-rotational constants.</p></li>
+<li><p>State is <span class="math notranslate nohighlight">\(\Nvib\)</span>, the order of the operator, the <span class="math notranslate nohighlight">\(\tens{a}\)</span>, the
+rotational constants, and the frequencies <span class="math notranslate nohighlight">\(\omegavec\)</span> (needed to build the
+<code class="docutils literal notranslate"><span class="pre">NormalMode</span></code> objects).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">coefficient</span></code> returns 3 by 3 matrix <span class="math notranslate nohighlight">\(\tens{\eta^{\midx_n}}\)</span>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vibrational_operators</span></code> returns tuples of <code class="docutils literal notranslate"><span class="pre">NormalMode</span></code> objects.</p></li>
 </ul>

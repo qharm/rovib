@@ -46,6 +46,9 @@ Classes
 .. automodule:: rovib.anharmonic_potential
    :members:
 
+.. automodule:: rovib.vibrational_coriolis_hamiltonian
+   :members:
+
 .. automodule:: rovib.operators.normal_mode
    :members:
 
@@ -53,6 +56,12 @@ Classes
    :members:
 
 .. automodule:: rovib.operators.potential_operator
+   :members:
+
+.. automodule:: rovib.operators.coriolis_operator
+   :members:
+
+.. automodule:: rovib.operators.watson_operator
    :members:
 
 ***************
@@ -83,6 +92,9 @@ Parameters
 **********
 
 .. automodule:: rovib.inertia
+   :members:
+
+.. automodule:: rovib.coriolis
    :members:
 
 .. automodule:: rovib.water_params

@@ -219,8 +219,8 @@ and in components:
 .. math::
 
    \muvec^{(4)} =& c_4 \Izmhalf \bvec^4 \Izmhalf\\
-                 =& -\frac{5}{8} \Izmhalf \bvec^4 \Izmhalf\\
-                 =& -\frac{5}{8} \sum_{k,\ell,m,p=1}^{\Nvib}
+                 =& \frac{5}{16} \Izmhalf \bvec^4 \Izmhalf\\
+                 =& \frac{5}{16} \sum_{k,\ell,m,p=1}^{\Nvib}
                     \Izmhalf
                     \left(\Izmhalf \avec_k \Izmhalf\right)
                     \left(\Izmhalf \avec_\ell \Izmhalf\right)\\
@@ -228,7 +228,7 @@ and in components:
                     \left(\Izmhalf \avec_p \Izmhalf\right)
                     \Izmhalf
                     \qop_k\qop_\ell\qop_m\qop_p\\
-                 =& -\frac{5}{8} \sum_{k,\ell,m,p=1}^{\Nvib}
+                 =& \frac{5}{16} \sum_{k,\ell,m,p=1}^{\Nvib}
                     \left(\Izvec\right)^{-1}\avec_k
                     \left(\Izvec\right)^{-1}\avec_\ell
                     \left(\Izvec\right)^{-1}\avec_m
@@ -240,7 +240,7 @@ and in components:
 
 .. math::
 
-   \muop^{(4)}_{\alpha\beta} =& -\frac{5}{8}\sum_{k,\ell,m,p=1}^{\Nvib}
+   \muop^{(4)}_{\alpha\beta} =& \frac{5}{16}\sum_{k,\ell,m,p=1}^{\Nvib}
       \sum_{\gamma,\delta,\epsilon,\zeta,\theta,\iota,\kappa,\lambda=1}^{3}
       \frac{\delta_{\alpha\gamma}}{I^0_{\alpha\alpha}}
       a_{k,\gamma\delta}
@@ -252,7 +252,7 @@ and in components:
       a_{p,\kappa\lambda}
       \frac{\delta_{\lambda\beta}}{I^0_{\beta\beta}}
       \qop_k\qop_\ell\qop_m\qop_p\\
-      =& -\frac{5}{8}\sum_{k,\ell,m,p=1}^{\Nvib}
+      =& \frac{5}{16}\sum_{k,\ell,m,p=1}^{\Nvib}
       \sum_{\delta,\zeta,\iota=1}^{3}
       \frac{1}{I^0_{\alpha\alpha}I^0_{\delta\delta}I^0_{\zeta\zeta}
                I^0_{\iota\iota}I^0_{\beta\beta}}
