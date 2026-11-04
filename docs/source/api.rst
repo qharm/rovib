@@ -67,6 +67,12 @@ Classes
 .. automodule:: rovib.operators.conjugate_momentum
    :members:
 
+.. automodule:: rovib.operators.number_operator
+   :members:
+
+.. automodule:: rovib.operators.harmonic_operator
+   :members:
+
 .. automodule:: rovib.operators.potential_operator
    :members:
 
@@ -82,9 +88,6 @@ Classes
 ***************
 Matrix Elements
 ***************
-
-.. automodule:: rovib.matrix_elements.harmonic_hamiltonian_elements
-   :members:
 
 .. automodule:: rovib.matrix_elements.apply_operators
    :members:

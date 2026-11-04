@@ -41,36 +41,17 @@ Considerations
    - Whether it's sparse enough to use sparse matrix libraries is TBD.
    - Initial implementation will focus on filling in the non-zero elements of
      a dense matrix.
-   - Need a mechanism to get non-zero indices.
+   - The functions that build matrices only visit the elements that may be
+     non-zero.
 
-#. The anharmonic potential, vibrational coriolis, and rovibrational coupling
-   terms are all products of vibrational operators. We need a mechanism to
-   evaluate matrix elements of products of vibrational operators.
+#. The harmonic oscillator, anharmonic potential, vibrational coriolis, and
+   rovibrational coupling terms are all products of vibrational operators. We
+   need a mechanism to evaluate matrix elements of products of vibrational
+   operators.
 
    - The final matrix elements are direct products of per-mode matrix elements;
      however, the per-mode matrices are extremely sparse.
 
-
-****************
-Helper Functions
-****************
-
-#. ``non_zero_indices(BraBasis, t, KetBasis)``. Takes the basis set for the
-   bra, a term in the Hamiltonian, and the basis set for the ket. Returns a
-   generator that runs over bra-ket basis function pairs. The generator only
-   returns pairs that are in general non-zero.
-
-   - The idea to take a bra and a ket is to allow for the using different basis
-     sets or batches of basis functions.
-   - One common API. Internally can branch based on the input types.
-
-#. ``matrix_element(Bra, t, Ket)``. Takes a basis function from the bra, a
-   term from the Hamiltonian, and a basis function from the ket. Returns the
-   value of the corresponding matrix element.
-
-   - Similar to ``non_zero_indices``, the idea is to have a common API that can
-     branch internally based on the input types.
-   - Could be extended to take a batch of basis functions eventually.
 
 ***********************
 Full Basis: Algorithm 1
@@ -83,11 +64,11 @@ format.
 
 #. Loop over Hamiltonian terms, ``t``.
 
-#. Call  ``non_zero_indices(B,t,B)`` to get a generator ``G``.
+#. Build the matrix of ``t``. Its matrix is a sum of direct products of a
+   matrix in the vibrational basis and a matrix in the rotational basis,
+   which are evaluated with the algorithms below.
 
-#. Loop over ``(b,k)`` pairs in ``G``.
-
-#. Call ``matrix_element(b, t, k)`` to compute the matrix element.
+#. Add the matrix of ``t`` to the Hamiltonian matrix.
 
 ******************************
 Vibrational Basis: Algorithm 1
@@ -105,8 +86,8 @@ implemented by
 The elements in the full basis follow from the direct product of the result
 with the matrix of the rotational part of the term.
 
-Elements in ``ops`` are assumed to be ``PotentialOperator``,
-``CoriolisOperator``, or ``WatsonOperator`` objects.
+Elements in ``ops`` are assumed to be ``HarmonicOperator``,
+``PotentialOperator``, ``CoriolisOperator``, or ``WatsonOperator`` objects.
 
 The first three steps do not depend on the ket, so they are done once.
 

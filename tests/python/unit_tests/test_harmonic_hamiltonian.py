@@ -31,6 +31,12 @@ class TestHarmonicHamiltonian(unittest.TestCase):
         np.testing.assert_array_equal(self.term.frequencies, self.frequencies)
         self.assertEqual(self.term.nvib, 3)
 
+    def test_terms(self):
+        ((operators, reducer),) = self.term.terms()
+        self.assertEqual(len(operators), 1)
+        self.assertEqual(reducer([2.0]), 2.0)
+        self.assertEqual(operators[0].coefficient(()), 3.0)
+
     def test_frequencies_are_read_only(self):
         with self.assertRaises(ValueError):
             self.term.frequencies[0] = 1.0

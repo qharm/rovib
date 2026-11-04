@@ -25,10 +25,7 @@ from .hamiltonian import Hamiltonian
 from .hamiltonian_term import HamiltonianTerm
 from .harmonic_hamiltonian import HarmonicHamiltonian
 from .inertia import inertia_derivatives, inertia_tensor, rotational_constants
-from .matrix_elements.hamiltonian_matrix import (
-    build_hamiltonian_matrix,
-    non_zero_indices,
-)
+from .matrix_elements.hamiltonian_matrix import build_hamiltonian_matrix
 from .molecule import Molecule
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
 from .vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
@@ -70,7 +67,6 @@ __all__ = [
     "inertia_derivatives",
     "inertia_tensor",
     "is_water",
-    "non_zero_indices",
     "rotational_constants",
     "rovibrational_energies",
     "water_molecule",

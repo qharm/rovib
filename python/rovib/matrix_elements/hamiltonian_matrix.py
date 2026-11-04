@@ -16,9 +16,7 @@
 :func:`build_matrix` dispatches on the type of the term. Terms that are
 products of vibrational operators (e.g., :class:`.AnharmonicPotential`) are
 evaluated with :func:`.vibrational_matrix`, and |HRR| is evaluated with
-:func:`.rigid_rotor_matrix`. For the remaining terms, the
-elements returned by :func:`non_zero_indices` are evaluated one at a time
-with the term's matrix element function.
+:func:`.rigid_rotor_matrix`.
 """
 
 import numpy as np
@@ -27,59 +25,16 @@ from ..anharmonic_potential import AnharmonicPotential
 from ..harmonic_hamiltonian import HarmonicHamiltonian
 from ..rigid_rotor_hamiltonian import RigidRotorHamiltonian
 from ..vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
-from .harmonic_hamiltonian_elements import (
-    harmonic_matrix_element,
-    harmonic_non_zero_indices,
-)
 from .rigid_rotor_hamiltonian_elements import rigid_rotor_matrix
 from .vibrational_matrix_elements import vibrational_matrix
 
 #: The types of Hamiltonian terms that are sums of products of vibrational
 #: operators. Their ``terms`` method returns the (operators, reducer) pairs.
-_VIBRATIONAL_TERMS = (AnharmonicPotential, VibrationalCoriolisHamiltonian)
-
-#: Maps each type of Hamiltonian term to its non-zero index generator.
-_NON_ZERO_INDICES = {
-    HarmonicHamiltonian: harmonic_non_zero_indices,
-}
-
-#: Maps each type of Hamiltonian term to its matrix element function.
-_MATRIX_ELEMENTS = {
-    HarmonicHamiltonian: harmonic_matrix_element,
-}
-
-
-def _implementation(table, term):
-    """Looks up the implementation for the type of ``term`` in ``table``."""
-    try:
-        return table[type(term)]
-    except KeyError:
-        raise TypeError(
-            f"Matrix elements of {type(term).__name__} are not implemented."
-        ) from None
-
-
-def non_zero_indices(bra_space, term, ket_space):
-    """Generates the bra-ket pairs whose matrix elements may be non-zero.
-
-    Pairs whose matrix element is zero by symmetry or selection rules are
-    skipped. The bra and ket spaces may differ, e.g., to build a block of the
-    matrix. Terms that are products of vibrational or rotational operators
-    are not supported, see :func:`build_matrix`.
-
-    :param bra_space: The space the bra basis functions come from.
-    :type bra_space: RovibrationalAnsatz
-    :param term: The Hamiltonian term.
-    :type term: HamiltonianTerm
-    :param ket_space: The space the ket basis functions come from.
-    :type ket_space: RovibrationalAnsatz
-    :return: A generator of (bra, ket) pairs of
-        :class:`.RovibrationalBasisFunction` objects.
-    :rtype: collections.abc.Iterator
-    :raises TypeError: If the type of ``term`` is not implemented.
-    """
-    generator = _implementation(_NON_ZERO_INDICES, term)
-    return generator(bra_space, term, ket_space)
+_VIBRATIONAL_TERMS = (
+    AnharmonicPotential,
+    HarmonicHamiltonian,
+    VibrationalCoriolisHamiltonian,
+)
 
 
 def _build_vibrational_matrix(bra_ansatz, term, ket_ansatz):
@@ -127,12 +82,9 @@ def build_matrix(bra_ansatz, term, ket_ansatz):
         return _build_vibrational_matrix(bra_ansatz, term, ket_ansatz)
     if type(term) is RigidRotorHamiltonian:
         return rigid_rotor_matrix(bra_ansatz, term, ket_ansatz)
-    matrix = np.zeros((len(bra_ansatz), len(ket_ansatz)), dtype=complex)
-    for bra, ket in non_zero_indices(bra_ansatz, term, ket_ansatz):
-        b = bra_ansatz.index(bra)
-        k = ket_ansatz.index(ket)
-        matrix[b, k] += _implementation(_MATRIX_ELEMENTS, term)(bra, term, ket)
-    return matrix
+    raise TypeError(
+        f"Matrix elements of {type(term).__name__} are not implemented."
+    )
 
 
 def build_hamiltonian_matrix(hamiltonian, ansatz):

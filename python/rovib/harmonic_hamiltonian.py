@@ -17,6 +17,12 @@
 import numpy as np
 
 from .hamiltonian_term import HamiltonianTerm
+from .operators.harmonic_operator import HarmonicOperator
+
+
+def _harmonic_coefficient(coefficients):
+    """Reducer for |HHO|, which has a single factor."""
+    return coefficients[0]
 
 
 class HarmonicHamiltonian(HamiltonianTerm):
@@ -44,6 +50,12 @@ class HarmonicHamiltonian(HamiltonianTerm):
 
         self._frequencies.setflags(write=False)
 
+        # N.b. the inputs are read-only, so the terms only need to be built
+        # once.
+        self._terms = (
+            ([HarmonicOperator(self._frequencies)], _harmonic_coefficient),
+        )
+
     @property
     def frequencies(self):
         """The harmonic frequencies |omegavec| in hartree.
@@ -59,3 +71,12 @@ class HarmonicHamiltonian(HamiltonianTerm):
         :rtype: int
         """
         return self._frequencies.size
+
+    def terms(self):
+        """The number operators and zero-point energy of |HHO|.
+
+        :return: The (operators, reducer) pair of |HHO|, in the form expected
+            by :func:`.vibrational_matrix`.
+        :rtype: tuple
+        """
+        return self._terms
