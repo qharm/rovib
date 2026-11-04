@@ -16,9 +16,7 @@
 
 import numpy as np
 
-from .hamiltonian_term import HamiltonianTerm
-from .operators.coriolis_operator import CoriolisOperator
-from .operators.watson_operator import WatsonOperator
+from .coriolis_hamiltonian_term import CoriolisHamiltonianTerm
 
 #: The largest order of |muvec| in the Coriolis part of |HvibCor|.
 _MAX_CORIOLIS_ORDER = 2
@@ -38,7 +36,7 @@ def _watson_coefficient(coefficients):
     return -0.125 * float(np.trace(coefficients[0]))
 
 
-class VibrationalCoriolisHamiltonian(HamiltonianTerm):
+class VibrationalCoriolisHamiltonian(CoriolisHamiltonianTerm):
     """The vibrational Coriolis Hamiltonian |HvibCor|.
 
     In atomic units,
@@ -81,64 +79,16 @@ class VibrationalCoriolisHamiltonian(HamiltonianTerm):
         inertia_derivatives,
         rotational_constants,
     ):
-        self._frequencies = np.array(frequencies, dtype=float)
-        self._coriolis_couplings = np.array(coriolis_couplings, dtype=float)
-        self._inertia_derivatives = np.array(inertia_derivatives, dtype=float)
-        self._rotational_constants = np.array(
-            rotational_constants, dtype=float
+        super().__init__(
+            frequencies,
+            coriolis_couplings,
+            inertia_derivatives,
+            rotational_constants,
         )
-
-        if self._frequencies.ndim != 1 or self._frequencies.size == 0:
-            raise ValueError(
-                "Expected a non-empty vector of frequencies, got shape "
-                f"{self._frequencies.shape}."
-            )
-        if np.any(self._frequencies <= 0.0):
-            raise ValueError("Harmonic frequencies must be positive.")
-        if self._coriolis_couplings.shape != (self.nvib, 3, self.nvib):
-            raise ValueError(
-                "Expected the Coriolis couplings to have shape "
-                f"{(self.nvib, 3, self.nvib)}, got "
-                f"{self._coriolis_couplings.shape}."
-            )
-        if not np.allclose(
-            self._coriolis_couplings,
-            -self._coriolis_couplings.transpose(2, 1, 0),
-        ):
-            raise ValueError(
-                "The Coriolis couplings must be antisymmetric in the modes."
-            )
-        if self._inertia_derivatives.shape != (self.nvib, 3, 3):
-            raise ValueError(
-                "Expected the inertia derivatives to have shape "
-                f"{(self.nvib, 3, 3)}, got "
-                f"{self._inertia_derivatives.shape}."
-            )
-        if self._rotational_constants.shape != (3,):
-            raise ValueError(
-                "Expected three rotational constants, got shape "
-                f"{self._rotational_constants.shape}."
-            )
-        if np.any(self._rotational_constants <= 0.0):
-            raise ValueError("Rotational constants must be positive.")
-
-        self._frequencies.setflags(write=False)
-        self._coriolis_couplings.setflags(write=False)
-        self._inertia_derivatives.setflags(write=False)
-        self._rotational_constants.setflags(write=False)
 
         # N.b. the inputs are read-only, so the terms only need to be built
         # once.
-        pi = CoriolisOperator(self._coriolis_couplings, self._frequencies)
-        mu = [
-            WatsonOperator(
-                n,
-                self._inertia_derivatives,
-                self._rotational_constants,
-                self._frequencies,
-            )
-            for n in range(_MAX_WATSON_ORDER + 1)
-        ]
+        pi, mu = self._pi, self._mu
         self._terms = tuple(
             ([pi, mu[n], pi], _coriolis_coefficient, [])
             for n in range(_MAX_CORIOLIS_ORDER + 1)
@@ -146,46 +96,6 @@ class VibrationalCoriolisHamiltonian(HamiltonianTerm):
             ([mu[n]], _watson_coefficient, [])
             for n in range(_MAX_WATSON_ORDER + 1)
         )
-
-    @property
-    def frequencies(self):
-        """The harmonic frequencies |omegavec| in hartree.
-
-        :rtype: numpy.ndarray
-        """
-        return self._frequencies
-
-    @property
-    def coriolis_couplings(self):
-        """The Coriolis coupling constants |zetavec|.
-
-        :rtype: numpy.ndarray
-        """
-        return self._coriolis_couplings
-
-    @property
-    def inertia_derivatives(self):
-        """The derivatives of the inertia tensor |avec| in atomic units.
-
-        :rtype: numpy.ndarray
-        """
-        return self._inertia_derivatives
-
-    @property
-    def rotational_constants(self):
-        """The rotational constants |gammavec| in hartree.
-
-        :rtype: numpy.ndarray
-        """
-        return self._rotational_constants
-
-    @property
-    def nvib(self):
-        """The number of vibrational modes.
-
-        :rtype: int
-        """
-        return self._frequencies.size
 
     def terms(self, kets):
         """The Coriolis and Watson parts of |HvibCor|.

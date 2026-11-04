@@ -48,14 +48,20 @@ Classes Design
 
    - State is ``CubicPotential`` and ``QuarticPotential`` objects.
 
+#. ``CoriolisHamiltonianTerm`` class.
+
+   - Base class for the terms built from |pivec| and |muvec|.
+   - State is ``CoriolisOperator`` and ``WatsonOperator`` objects.
+
 #. ``VibrationalCoriolisHamiltonian`` class.
 
-   - State is ``CoriolisOperator`` and ``WatsonOperator`` objects.
+   - Derives from ``CoriolisHamiltonianTerm``.
 
 #. ``RovibrationalHamiltonian`` class.
 
-    - |zetavec| which is |Nvib| by 3 by |Nvib|
-    - |etavec| list
+   - Derives from ``CoriolisHamiltonianTerm``.
+   - ``terms(kets)`` builds the ``JOperator`` objects for the :math:`J` of
+     ``kets``. The vibrational operators and reducers do not depend on it.
 
 #. ``VibrationalBasisFunction`` class.
 

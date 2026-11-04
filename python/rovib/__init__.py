@@ -28,6 +28,7 @@ from .inertia import inertia_derivatives, inertia_tensor, rotational_constants
 from .matrix_elements.hamiltonian_matrix import build_hamiltonian_matrix
 from .molecule import Molecule
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
+from .rovibrational_hamiltonian import RovibrationalHamiltonian
 from .vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
 from .water_params import (
     anharmonic_force_constants,
@@ -55,6 +56,7 @@ __all__ = [
     "RotationalBasisFunction",
     "RovibrationalAnsatz",
     "RovibrationalBasisFunction",
+    "RovibrationalHamiltonian",
     "VibrationalAnsatz",
     "VibrationalBasisFunction",
     "VibrationalCoriolisHamiltonian",

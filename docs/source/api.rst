@@ -58,7 +58,13 @@ Classes
 .. automodule:: rovib.anharmonic_potential
    :members:
 
+.. automodule:: rovib.coriolis_hamiltonian_term
+   :members:
+
 .. automodule:: rovib.vibrational_coriolis_hamiltonian
+   :members:
+
+.. automodule:: rovib.rovibrational_hamiltonian
    :members:
 
 .. automodule:: rovib.operators.normal_mode

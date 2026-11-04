@@ -17,10 +17,10 @@
 # rovib
 A proof-of-concept library that solves the rovibrational problem
 
-> **Note:** rovib is under active development. The Hamiltonian currently
-> contains the harmonic oscillator, rigid rotor, anharmonic, and vibrational
-> Coriolis terms, but not the rovibrational coupling term. The harmonic and
-> anharmonic parameters are hard-coded for water (see `rovib.water_params`).
+> **Note:** rovib is under active development. The Hamiltonian contains the
+> harmonic oscillator, rigid rotor, anharmonic, vibrational Coriolis, and
+> rovibrational coupling terms. The harmonic and anharmonic parameters are
+> hard-coded for water (see `rovib.water_params`).
 
 ## Installation
 

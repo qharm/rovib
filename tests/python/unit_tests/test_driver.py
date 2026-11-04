@@ -23,6 +23,7 @@ from rovib import (
     RigidRotorHamiltonian,
     RovibrationalAnsatz,
     RovibrationalBasisFunction,
+    RovibrationalHamiltonian,
     VibrationalCoriolisHamiltonian,
     anharmonic_force_constants,
     build_hamiltonian_matrix,
@@ -53,32 +54,39 @@ class TestRovibrationalEnergies(unittest.TestCase):
         normal_modes, frequencies = harmonic_analysis(water)
         cubic, quartic = anharmonic_force_constants(water)
         gamma = rotational_constants(water)
+        zeta = coriolis_couplings(normal_modes)
+        a = inertia_derivatives(water, normal_modes)
         hamiltonian = (
             HarmonicHamiltonian(frequencies)
             + RigidRotorHamiltonian(gamma)
             + AnharmonicPotential(frequencies, cubic, quartic)
-            + VibrationalCoriolisHamiltonian(
-                frequencies,
-                coriolis_couplings(normal_modes),
-                inertia_derivatives(water, normal_modes),
-                gamma,
-            )
+            + VibrationalCoriolisHamiltonian(frequencies, zeta, a, gamma)
+            + RovibrationalHamiltonian(frequencies, zeta, a, gamma)
         )
         ansatz = RovibrationalAnsatz(water.nvib, 1, 1)
         matrix = build_hamiltonian_matrix(hamiltonian, ansatz)
         energies, _ = rovibrational_energies(water, vmax=1, J=1)
         np.testing.assert_allclose(energies, np.linalg.eigvalsh(matrix))
 
-    def test_rigid_rotor(self):
-        # With vmax = 0 the vibrational terms are the same constant for all
-        # J, so relative to J = 0 the J = 1 levels are the J = 1 rigid rotor
-        # levels, which are sums of two rotational constants.
+    def test_rotational_terms(self):
+        # With vmax = 0 the purely vibrational terms are the same constant for
+        # all J, and at J = 0 the terms with rotational operators vanish, so
+        # relative to J = 0 only the terms with rotational operators are left.
         water = water_molecule()
+        normal_modes, frequencies = harmonic_analysis(water)
+        gamma = rotational_constants(water)
+        rotational = RigidRotorHamiltonian(gamma) + RovibrationalHamiltonian(
+            frequencies,
+            coriolis_couplings(normal_modes),
+            inertia_derivatives(water, normal_modes),
+            gamma,
+        )
+        ansatz = RovibrationalAnsatz(water.nvib, 0, 1)
+        matrix = build_hamiltonian_matrix(rotational, ansatz)
         energies, _ = rovibrational_energies(water, vmax=0, J=1)
         zero_point = rovibrational_energies(water, vmax=0, J=0)[0][0]
-        x, y, z = rotational_constants(water)
         np.testing.assert_allclose(
-            energies - zero_point, sorted([x + y, x + z, y + z])
+            energies - zero_point, np.linalg.eigvalsh(matrix)
         )
 
     def test_not_water(self):
