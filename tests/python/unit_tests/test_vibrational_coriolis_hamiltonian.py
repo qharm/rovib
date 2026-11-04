@@ -19,6 +19,7 @@ import numpy as np
 from rovib import (
     Hamiltonian,
     HamiltonianTerm,
+    RotationalAnsatz,
     RovibrationalAnsatz,
     VibrationalCoriolisHamiltonian,
     build_hamiltonian_matrix,
@@ -116,23 +117,25 @@ class TestVibrationalCoriolisHamiltonian(unittest.TestCase):
         self.assertEqual(self.term.nvib, 2)
 
     def test_terms(self):
-        terms = self.term.terms()
+        terms = self.term.terms(RotationalAnsatz(1))
         self.assertEqual(len(terms), 8)
-        for n, (operators, _) in enumerate(terms[:3]):
+        for _, _, rotational in terms:
+            self.assertEqual(rotational, [])
+        for n, (operators, _, _) in enumerate(terms[:3]):
             with self.subTest(coriolis=n):
                 self.assertEqual(len(operators), 3)
                 self.assertIsInstance(operators[0], CoriolisOperator)
                 self.assertIsInstance(operators[1], WatsonOperator)
                 self.assertIsInstance(operators[2], CoriolisOperator)
                 self.assertEqual(operators[1].order, n)
-        for n, (operators, _) in enumerate(terms[3:]):
+        for n, (operators, _, _) in enumerate(terms[3:]):
             with self.subTest(watson=n):
                 self.assertEqual(len(operators), 1)
                 self.assertIsInstance(operators[0], WatsonOperator)
                 self.assertEqual(operators[0].order, n)
 
     def test_reducers(self):
-        terms = self.term.terms()
+        terms = self.term.terms(RotationalAnsatz(1))
         coriolis = terms[0][1]
         watson = terms[3][1]
         left = np.array([1.0, 2.0, 3.0])

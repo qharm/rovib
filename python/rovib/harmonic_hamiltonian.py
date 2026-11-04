@@ -53,7 +53,7 @@ class HarmonicHamiltonian(HamiltonianTerm):
         # N.b. the inputs are read-only, so the terms only need to be built
         # once.
         self._terms = (
-            ([HarmonicOperator(self._frequencies)], _harmonic_coefficient),
+            ([HarmonicOperator(self._frequencies)], _harmonic_coefficient, []),
         )
 
     @property
@@ -72,11 +72,14 @@ class HarmonicHamiltonian(HamiltonianTerm):
         """
         return self._frequencies.size
 
-    def terms(self):
+    def terms(self, kets):
         """The number operators and zero-point energy of |HHO|.
 
-        :return: The (operators, reducer) pair of |HHO|, in the form expected
-            by :func:`.vibrational_matrix`.
+        :param kets: The rotational part of the space the term acts on. The
+            term is purely vibrational, so this is not used.
+        :type kets: RotationalAnsatz
+        :return: The single product of |HHO|, in the form described by
+            :meth:`.HamiltonianTerm.terms`.
         :rtype: tuple
         """
         return self._terms

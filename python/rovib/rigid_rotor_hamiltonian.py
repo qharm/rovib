@@ -20,6 +20,15 @@ from .hamiltonian_term import HamiltonianTerm
 from .operators.j_operator import JOperator
 
 
+def _constant_coefficient(value):
+    """Makes the reducer for a product of no vibrational operators."""
+
+    def reducer(coefficients):
+        return value
+
+    return reducer
+
+
 class RigidRotorHamiltonian(HamiltonianTerm):
     """The rigid rotor Hamiltonian |HRR|.
 
@@ -48,6 +57,13 @@ class RigidRotorHamiltonian(HamiltonianTerm):
 
         self._rotational_constants.setflags(write=False)
 
+        # N.b. the inputs are read-only, so the reducers only need to be built
+        # once.
+        self._reducers = tuple(
+            _constant_coefficient(float(gamma))
+            for gamma in self._rotational_constants
+        )
+
     @property
     def rotational_constants(self):
         """The rotational constants |gammavec| in hartree.
@@ -56,17 +72,19 @@ class RigidRotorHamiltonian(HamiltonianTerm):
         """
         return self._rotational_constants
 
-    def rotational_operators(self, ket):
+    def terms(self, kets):
         """The products of angular momentum operators in |HRR|.
 
-        :param ket: The space the operators act on.
-        :type ket: RotationalAnsatz
-        :return: The factors of :math:`\\jop_\\alpha^2`, with one element
-            for each element of :attr:`rotational_constants`, in the same
-            order.
-        :rtype: tuple of list of JOperator
+        |HRR| is the identity in the vibrational basis, so there are no
+        vibrational operators and the reducer returns the rotational constant.
+
+        :param kets: The rotational part of the space the term acts on.
+        :type kets: RotationalAnsatz
+        :return: The product :math:`\\gamma_\\alpha\\jop_\\alpha^2` for each
+            axis, in the form described by :meth:`.HamiltonianTerm.terms`.
+        :rtype: tuple
         """
         return tuple(
-            [JOperator(ket.J, projection)] * 2
-            for projection in range(self._rotational_constants.size)
+            ([], reducer, [JOperator(kets.J, projection)] * 2)
+            for projection, reducer in enumerate(self._reducers)
         )

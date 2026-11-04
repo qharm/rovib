@@ -16,7 +16,7 @@ import unittest
 
 import numpy as np
 
-from rovib import HamiltonianTerm, HarmonicHamiltonian
+from rovib import HamiltonianTerm, HarmonicHamiltonian, RotationalAnsatz
 
 
 class TestHarmonicHamiltonian(unittest.TestCase):
@@ -32,7 +32,10 @@ class TestHarmonicHamiltonian(unittest.TestCase):
         self.assertEqual(self.term.nvib, 3)
 
     def test_terms(self):
-        ((operators, reducer),) = self.term.terms()
+        ((operators, reducer, rotational),) = self.term.terms(
+            RotationalAnsatz(1)
+        )
+        self.assertEqual(rotational, [])
         self.assertEqual(len(operators), 1)
         self.assertEqual(reducer([2.0]), 2.0)
         self.assertEqual(operators[0].coefficient(()), 3.0)

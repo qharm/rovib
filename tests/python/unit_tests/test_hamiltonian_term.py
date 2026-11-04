@@ -14,10 +14,17 @@
 
 import unittest
 
-from rovib import Hamiltonian, HamiltonianTerm
+from rovib import Hamiltonian, HamiltonianTerm, RotationalAnsatz
 
 
 class TestHamiltonianTerm(unittest.TestCase):
+    def test_nvib(self):
+        self.assertIsNone(HamiltonianTerm().nvib)
+
+    def test_terms_not_implemented(self):
+        with self.assertRaises(TypeError):
+            HamiltonianTerm().terms(RotationalAnsatz(0))
+
     def test_add_term(self):
         t1 = HamiltonianTerm()
         t2 = HamiltonianTerm()

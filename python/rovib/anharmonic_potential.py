@@ -106,6 +106,7 @@ class AnharmonicPotential(HamiltonianTerm):
             (
                 [PotentialOperator(force_constants, self._frequencies)],
                 _only_coefficient,
+                [],
             )
             for force_constants in (self._cubic, self._quartic)
         )
@@ -142,15 +143,17 @@ class AnharmonicPotential(HamiltonianTerm):
         """
         return self._frequencies.size
 
-    def terms(self):
+    def terms(self, kets):
         """The cubic and quartic parts of |Vanharm|.
 
         Each part is a single :class:`.PotentialOperator`, so each product
         has one factor and the reducer returns that factor's coefficient.
 
-        :return: The (operators, reducer) pairs of the cubic and quartic
-            parts, in that order, in the form expected by
-            :func:`.vibrational_matrix`.
+        :param kets: The rotational part of the space the term acts on. The
+            term is purely vibrational, so this is not used.
+        :type kets: RotationalAnsatz
+        :return: The products of the cubic and quartic parts, in that order,
+            in the form described by :meth:`.HamiltonianTerm.terms`.
         :rtype: tuple
         """
         return self._terms

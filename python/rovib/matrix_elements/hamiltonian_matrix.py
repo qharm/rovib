@@ -13,51 +13,24 @@
 # limitations under the License.
 """Builds the matrix of a Hamiltonian in a rovibrational ansatz.
 
-:func:`build_matrix` dispatches on the type of the term. Terms that are
-products of vibrational operators (e.g., :class:`.AnharmonicPotential`) are
-evaluated with :func:`.vibrational_matrix`, and |HRR| is evaluated with
-:func:`.rigid_rotor_matrix`.
+:func:`build_matrix` does not depend on the type of the term. Each term is a
+sum of direct products of a product of vibrational operators and a product of
+rotational operators, see :meth:`.HamiltonianTerm.terms`, so
+
+.. math::
+
+   \\braket{\\vvec',J',K'\\mid\\op{H}\\mid\\vvec,J,K} = \\sum_{t}
+      \\braket{\\vvec'\\mid\\op{V}_t\\mid\\vvec}
+      \\braket{J',K'\\mid\\op{R}_t\\mid J,K}
+
+where the factors are evaluated with :func:`.vibrational_matrix` and
+:func:`.rotational_matrix`.
 """
 
 import numpy as np
 
-from ..anharmonic_potential import AnharmonicPotential
-from ..harmonic_hamiltonian import HarmonicHamiltonian
-from ..rigid_rotor_hamiltonian import RigidRotorHamiltonian
-from ..vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
-from .rigid_rotor_hamiltonian_elements import rigid_rotor_matrix
+from .rotational_matrix_elements import rotational_matrix
 from .vibrational_matrix_elements import vibrational_matrix
-
-#: The types of Hamiltonian terms that are sums of products of vibrational
-#: operators. Their ``terms`` method returns the (operators, reducer) pairs.
-_VIBRATIONAL_TERMS = (
-    AnharmonicPotential,
-    HarmonicHamiltonian,
-    VibrationalCoriolisHamiltonian,
-)
-
-
-def _build_vibrational_matrix(bra_ansatz, term, ket_ansatz):
-    """Builds the matrix of a sum of products of vibrational operators.
-
-    The operators do not act on the rotational basis functions, so the matrix
-    is the direct product of the matrix in the vibrational basis and the
-    identity in the rotational basis.
-    """
-    for ansatz in (bra_ansatz, ket_ansatz):
-        if ansatz.nvib != term.nvib:
-            raise ValueError(
-                f"The Hamiltonian has {term.nvib} modes, but the space has "
-                f"{ansatz.nvib}."
-            )
-    if bra_ansatz.rotational != ket_ansatz.rotational:
-        return np.zeros((len(bra_ansatz), len(ket_ansatz)), dtype=complex)
-    bras = bra_ansatz.vibrational
-    kets = ket_ansatz.vibrational
-    matrix = np.zeros((len(bras), len(kets)), dtype=complex)
-    for operators, reducer in term.terms():
-        matrix += vibrational_matrix(bras, operators, kets, reducer)
-    return np.kron(matrix, np.eye(len(ket_ansatz.rotational)))
 
 
 def build_matrix(bra_ansatz, term, ket_ansatz):
@@ -75,16 +48,31 @@ def build_matrix(bra_ansatz, term, ket_ansatz):
         (``len(bra_ansatz)``, ``len(ket_ansatz)``).
     :rtype: numpy.ndarray
     :raises TypeError: If the type of ``term`` is not implemented.
-    :raises ValueError: If either space has a different number of
-        vibrational modes than ``term``.
+    :raises ValueError: If ``term`` acts on the vibrational modes and either
+        space has a different number of them than ``term``.
     """
-    if type(term) in _VIBRATIONAL_TERMS:
-        return _build_vibrational_matrix(bra_ansatz, term, ket_ansatz)
-    if type(term) is RigidRotorHamiltonian:
-        return rigid_rotor_matrix(bra_ansatz, term, ket_ansatz)
-    raise TypeError(
-        f"Matrix elements of {type(term).__name__} are not implemented."
-    )
+    for ansatz in (bra_ansatz, ket_ansatz):
+        if term.nvib is not None and ansatz.nvib != term.nvib:
+            raise ValueError(
+                f"The Hamiltonian has {term.nvib} modes, but the space has "
+                f"{ansatz.nvib}."
+            )
+    matrix = np.zeros((len(bra_ansatz), len(ket_ansatz)), dtype=complex)
+    for vibrational_ops, reducer, rotational_ops in term.terms(
+        ket_ansatz.rotational
+    ):
+        matrix += np.kron(
+            vibrational_matrix(
+                bra_ansatz.vibrational,
+                vibrational_ops,
+                ket_ansatz.vibrational,
+                reducer,
+            ),
+            rotational_matrix(
+                bra_ansatz.rotational, rotational_ops, ket_ansatz.rotational
+            ),
+        )
+    return matrix
 
 
 def build_hamiltonian_matrix(hamiltonian, ansatz):

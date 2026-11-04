@@ -98,9 +98,6 @@ Matrix Elements
 .. automodule:: rovib.matrix_elements.rotational_matrix_elements
    :members:
 
-.. automodule:: rovib.matrix_elements.rigid_rotor_hamiltonian_elements
-   :members:
-
 .. automodule:: rovib.matrix_elements.hamiltonian_matrix
    :members:
 

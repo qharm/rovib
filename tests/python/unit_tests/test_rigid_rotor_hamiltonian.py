@@ -33,10 +33,24 @@ class TestRigidRotorHamiltonian(unittest.TestCase):
             self.term.rotational_constants, self.constants
         )
 
-    def test_rotational_operators(self):
-        products = self.term.rotational_operators(RotationalAnsatz(2))
-        expected = tuple([JOperator(2, a)] * 2 for a in range(3))
-        self.assertEqual(products, expected)
+    def test_terms(self):
+        terms = self.term.terms(RotationalAnsatz(2))
+        self.assertEqual(len(terms), 3)
+        for a, (vibrational, reducer, rotational) in enumerate(terms):
+            with self.subTest(a=a):
+                self.assertEqual(vibrational, [])
+                self.assertEqual(reducer([]), self.constants[a])
+                self.assertEqual(rotational, [JOperator(2, a)] * 2)
+
+    def test_reducers_are_reused(self):
+        # vibrational_matrix caches on the reducer.
+        once = self.term.terms(RotationalAnsatz(1))
+        twice = self.term.terms(RotationalAnsatz(2))
+        for first, second in zip(once, twice):
+            self.assertIs(first[1], second[1])
+
+    def test_nvib(self):
+        self.assertIsNone(self.term.nvib)
 
     def test_rotational_constants_are_read_only(self):
         with self.assertRaises(ValueError):

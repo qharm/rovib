@@ -64,11 +64,14 @@ format.
 
 #. Loop over Hamiltonian terms, ``t``.
 
-#. Build the matrix of ``t``. Its matrix is a sum of direct products of a
-   matrix in the vibrational basis and a matrix in the rotational basis,
-   which are evaluated with the algorithms below.
+#. Loop over the (vibrational operators, reducer, rotational operators) tuples
+   returned by ``t.terms``. No step depends on the type of ``t``.
 
-#. Add the matrix of ``t`` to the Hamiltonian matrix.
+#. Evaluate the matrix of the vibrational operators and the matrix of the
+   rotational operators with the algorithms below. An empty list of operators
+   gives the identity.
+
+#. Add the direct product of the two matrices to the Hamiltonian matrix.
 
 ******************************
 Vibrational Basis: Algorithm 1
@@ -139,7 +142,8 @@ of allowed ket states. This is implemented by
 :func:`rovib.matrix_elements.rotational_matrix_elements.rotational_matrix`.
 
 Each element of ``ops`` is a single operator, not a sum, so no ``reducer`` is
-needed; coefficients are applied by the caller. The algorithm is:
+needed; the coefficient of the direct product comes from the ``reducer`` of the
+vibrational part. The algorithm is:
 
 #. If ``bras`` and ``kets`` have different values of :math:`J`, the matrix is
    zero, because ``JOperator`` objects conserve :math:`J`.
@@ -159,4 +163,4 @@ The rigid rotor Hamiltonian is then
       \braket{J',K'\mid\jop_\alpha^2\mid J,K}
 
 where :math:`\braket{\vvec'\mid\vvec}` is ``vibrational_matrix`` with no
-operators.
+operators and a ``reducer`` that returns :math:`\gamma_\alpha`.

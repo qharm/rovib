@@ -16,7 +16,7 @@ import unittest
 
 import numpy as np
 
-from rovib import AnharmonicPotential, HamiltonianTerm
+from rovib import AnharmonicPotential, HamiltonianTerm, RotationalAnsatz
 from rovib.operators.normal_mode import NormalMode
 from rovib.operators.potential_operator import PotentialOperator
 
@@ -41,10 +41,13 @@ class TestAnharmonicPotential(unittest.TestCase):
         self.assertEqual(self.term.nvib, 2)
 
     def test_terms(self):
-        (cubic_ops, cubic_reducer), (
+        (cubic_ops, cubic_reducer, cubic_rotational), (
             quartic_ops,
             quartic_reducer,
-        ) = self.term.terms()
+            quartic_rotational,
+        ) = self.term.terms(RotationalAnsatz(1))
+        self.assertEqual(cubic_rotational, [])
+        self.assertEqual(quartic_rotational, [])
         self.assertEqual(len(cubic_ops), 1)
         self.assertEqual(len(quartic_ops), 1)
         self.assertEqual(cubic_reducer([1.5]), 1.5)

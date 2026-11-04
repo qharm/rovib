@@ -33,6 +33,11 @@ Classes Design
 
    - Base class for all Hamiltonian terms.
    - Will eventually get replaced by a SimDE class.
+   - ``terms(kets)`` returns one (vibrational operators, reducer, rotational
+     operators) tuple per direct product in the term, where ``kets`` is a
+     ``RotationalAnsatz``.
+   - ``nvib`` is the number of vibrational modes the term acts on, or ``None``
+     if it does not act on them.
 
 #. ``HarmonicHamiltonian`` class.
 
@@ -155,5 +160,5 @@ Rotational Operators
 #. ``RigidRotorHamiltonian`` class.
 
    - Rotational constants only. No ``J``.
-   - ``rotational_operators(ket)`` returns the ``JOperator`` objects that
-     act on the provided ``ket`` which is a ``RotationalAnsatz`` object.
+   - ``terms(kets)`` builds the ``JOperator`` objects for the :math:`J` of
+     ``kets``. The rotational constants are in the reducers.

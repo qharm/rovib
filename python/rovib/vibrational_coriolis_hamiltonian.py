@@ -140,10 +140,10 @@ class VibrationalCoriolisHamiltonian(HamiltonianTerm):
             for n in range(_MAX_WATSON_ORDER + 1)
         ]
         self._terms = tuple(
-            ([pi, mu[n], pi], _coriolis_coefficient)
+            ([pi, mu[n], pi], _coriolis_coefficient, [])
             for n in range(_MAX_CORIOLIS_ORDER + 1)
         ) + tuple(
-            ([mu[n]], _watson_coefficient)
+            ([mu[n]], _watson_coefficient, [])
             for n in range(_MAX_WATSON_ORDER + 1)
         )
 
@@ -187,15 +187,18 @@ class VibrationalCoriolisHamiltonian(HamiltonianTerm):
         """
         return self._frequencies.size
 
-    def terms(self):
+    def terms(self, kets):
         """The Coriolis and Watson parts of |HvibCor|.
 
-        :return: The (operators, reducer) pairs of
+        :param kets: The rotational part of the space the term acts on. The
+            term is purely vibrational, so this is not used.
+        :type kets: RotationalAnsatz
+        :return: The products of
             :math:`\\frac{1}{2}\\pivec^T\\muvec^{(n)}\\pivec` for
             :math:`n = 0, 1, 2`, followed by those of
             :math:`-\\frac{1}{8}\\tr(\\muvec^{(n)})` for
-            :math:`n = 0, \\ldots, 4`, in the form expected by
-            :func:`.vibrational_matrix`.
+            :math:`n = 0, \\ldots, 4`, in the form described by
+            :meth:`.HamiltonianTerm.terms`.
         :rtype: tuple
         """
         return self._terms
