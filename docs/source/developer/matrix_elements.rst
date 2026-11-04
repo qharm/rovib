@@ -97,24 +97,25 @@ We need to be able to on-the-fly build elements like
 :math:`c\braket{\vvec'\mid \op{O}^n \mid\vvec}`, where :math:`\op{O}^n` is a
 product of :math:`n` vibrational operators and :math:`c` is a coefficient whose
 value depends on the modes :math:`\op{O}^n` operates on. The input to our
-function will be ``bra_space``, the ``VibrationalAnsatz`` of allowed bra
-states, ``ket_space``, the ``VibrationalAnsatz`` of allowed ket states, ``o``,
-the list of operators, and ``reducer`` a function that combines the
-coefficients. This is implemented by
+function will be ``bras``, the ``VibrationalAnsatz`` of allowed bra states,
+``ops``, the list of operators, ``kets``, the ``VibrationalAnsatz`` of allowed
+ket states, and ``reducer`` a function that combines the coefficients. This is
+implemented by
 :func:`rovib.matrix_elements.vibrational_matrix_elements.vibrational_matrix`.
 The elements in the full basis follow from the direct product of the result
 with the matrix of the rotational part of the term.
 
-Elements in ``o`` are assumed to be ``PotentialOperator``, ``CoriolisOperator``,
-or ``WatsonOperator`` objects.
+Elements in ``ops`` are assumed to be ``PotentialOperator``,
+``CoriolisOperator``, or ``WatsonOperator`` objects.
 
 The first three steps do not depend on the ket, so they are done once.
 
-#. Let ``op_range[i] = o[i].vibrational_operators()``. Loop over the Cartesian
-   product of ``op_range``. Let ``op_list`` be the current list of operators.
+#. Let ``op_range[i] = ops[i].vibrational_operators()``. Loop over the
+   Cartesian product of ``op_range``. Let ``op_list`` be the current list of
+   operators.
 
-#. Let ``c[i] = o[i].coefficient(op_list[i])``. Call ``reducer(c)`` to get the
-   coefficient for this term. If it is zero, skip to the next ``op_list``.
+#. Let ``c[i] = ops[i].coefficient(op_list[i])``. Call ``reducer(c)`` to get
+   the coefficient for this term. If it is zero, skip to the next ``op_list``.
 
 #. Operators on different modes commute, so group ``op_list`` by mode, keeping
    the order of the operators within each mode. Let ``word[i]`` be the
@@ -122,7 +123,7 @@ The first three steps do not depend on the ket, so they are done once.
 
 The remaining steps are done for each ket.
 
-#. Loop over the states in ``ket_space``. Let ``ket`` be the current ket state
+#. Loop over the states in ``kets``. Let ``ket`` be the current ket state
    and ``values`` be an empty map from bra states to matrix elements.
 
 #. For each term from steps 1-3, and each mode ``i`` in ``word``, apply
@@ -136,7 +137,7 @@ The remaining steps are done for each ket.
 #. Shifts in each mode are independent, so loop over the Cartesian product of
    the results of the previous step. Let ``ket_dp`` be ``ket`` with each mode
    in ``word`` replaced by the current :math:`v'_i`. If ``ket_dp`` is not in
-   ``bra_space``, skip to the next shift.
+   ``bras``, skip to the next shift.
 
 #. Add ``c`` times the product of the per-mode matrix elements to
    ``values[ket_dp]``. Different terms can couple the same bra and ket, so the
@@ -144,3 +145,37 @@ The remaining steps are done for each ket.
 
 #. Once all terms are done, set ``H[bra, ket] = values[bra]`` for each ``bra``
    in ``values``.
+
+*****************************
+Rotational Basis: Algorithm 1
+*****************************
+
+The rotational analog of the above builds :math:`\braket{J',K'\mid\op{O}^n\mid J,K}`,
+where :math:`\op{O}^n` is a product of :math:`n` ``JOperator`` objects. The input
+to our function will be ``bras``, the ``RotationalAnsatz`` of allowed bra states,
+``ops``, the list of ``JOperator`` objects, and ``kets``, the ``RotationalAnsatz``
+of allowed ket states. This is implemented by
+:func:`rovib.matrix_elements.rotational_matrix_elements.rotational_matrix`.
+
+Each element of ``ops`` is a single operator, not a sum, so no ``reducer`` is
+needed; coefficients are applied by the caller. The algorithm is:
+
+#. If ``bras`` and ``kets`` have different values of :math:`J`, the matrix is
+   zero, because ``JOperator`` objects conserve :math:`J`.
+
+#. Loop over the states in ``kets``. Let ``ket`` be the current ket state.
+
+#. Apply ``ops`` to the :math:`K` of ``ket``, the rightmost operator first, and
+   sum the amplitudes of each resulting value of :math:`K'`. Set the element for
+   each :math:`K'` to its summed amplitude.
+
+The rigid rotor Hamiltonian is then
+
+.. math::
+
+   \braket{\vvec',J',K'\mid\HRR\mid\vvec,J,K} =
+      \braket{\vvec'\mid\vvec}\sum_{\alpha}\gamma_\alpha
+      \braket{J',K'\mid\jop_\alpha^2\mid J,K}
+
+where :math:`\braket{\vvec'\mid\vvec}` is ``vibrational_matrix`` with no
+operators.

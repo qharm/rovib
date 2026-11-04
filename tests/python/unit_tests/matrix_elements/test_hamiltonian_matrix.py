@@ -33,8 +33,7 @@ from rovib.matrix_elements.harmonic_hamiltonian_elements import (
     harmonic_non_zero_indices,
 )
 from rovib.matrix_elements.rigid_rotor_hamiltonian_elements import (
-    rigid_rotor_matrix_element,
-    rigid_rotor_non_zero_indices,
+    rigid_rotor_matrix,
 )
 from rovib.matrix_elements.vibrational_matrix_elements import (
     vibrational_matrix,
@@ -46,8 +45,8 @@ def _vibrational_matrix(term, bra_ansatz, ket_ansatz):
     matrix = sum(
         vibrational_matrix(
             bra_ansatz.vibrational,
-            ket_ansatz.vibrational,
             operators,
+            ket_ansatz.vibrational,
             reducer,
         )
         for operators, reducer in term.terms()
@@ -87,13 +86,12 @@ class TestNonZeroIndices(unittest.TestCase):
             list(harmonic_non_zero_indices(ansatz, term, ansatz)),
         )
 
-    def test_rigid_rotor(self):
+    def test_rigid_rotor_not_supported(self):
+        # The rigid rotor goes through rotational_matrix.
         term = RigidRotorHamiltonian([1.0, 3.0, 2.0])
         ansatz = RovibrationalAnsatz(3, 1, 2)
-        self.assertEqual(
-            list(non_zero_indices(ansatz, term, ansatz)),
-            list(rigid_rotor_non_zero_indices(ansatz, term, ansatz)),
-        )
+        with self.assertRaises(TypeError):
+            non_zero_indices(ansatz, term, ansatz)
 
     def test_anharmonic_not_supported(self):
         # The anharmonic potential goes through vibrational_matrix.
@@ -139,6 +137,13 @@ class TestBuildMatrix(unittest.TestCase):
         self.assertEqual(matrix.dtype, np.complex128)
         expected = _vibrational_matrix(term, self.ansatz, self.ansatz)
         np.testing.assert_allclose(matrix, expected, atol=1.0e-12)
+
+    def test_rigid_rotor(self):
+        term = RigidRotorHamiltonian([1.0, 3.0, 2.0])
+        matrix = build_matrix(self.ansatz, term, self.ansatz)
+        self.assertEqual(matrix.dtype, np.complex128)
+        expected = rigid_rotor_matrix(self.ansatz, term, self.ansatz)
+        np.testing.assert_array_equal(matrix, expected)
 
     def test_vibrational_term_diagonal_in_K(self):
         term = _anharmonic_potential()
@@ -207,15 +212,9 @@ class TestBuildHamiltonianMatrix(unittest.TestCase):
     def test_rigid_rotor(self):
         term = RigidRotorHamiltonian([1.0, 3.0, 2.0])
         matrix = build_hamiltonian_matrix(Hamiltonian((term,)), self.ansatz)
-        np.testing.assert_array_equal(matrix, matrix.conj().T)
+        np.testing.assert_allclose(matrix, matrix.conj().T)
 
-        expected = np.zeros_like(matrix)
-        for bra, ket in rigid_rotor_non_zero_indices(
-            self.ansatz, term, self.ansatz
-        ):
-            b = self.ansatz.index(bra)
-            k = self.ansatz.index(ket)
-            expected[b, k] = rigid_rotor_matrix_element(bra, term, ket)
+        expected = rigid_rotor_matrix(self.ansatz, term, self.ansatz)
         np.testing.assert_array_equal(matrix, expected)
 
     def test_anharmonic(self):

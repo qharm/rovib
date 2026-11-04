@@ -15,7 +15,8 @@
 
 :func:`build_matrix` dispatches on the type of the term. Terms that are
 products of vibrational operators (e.g., :class:`.AnharmonicPotential`) are
-evaluated with :func:`.vibrational_matrix`. For the remaining terms, the
+evaluated with :func:`.vibrational_matrix`, and |HRR| is evaluated with
+:func:`.rigid_rotor_matrix`. For the remaining terms, the
 elements returned by :func:`non_zero_indices` are evaluated one at a time
 with the term's matrix element function.
 """
@@ -30,10 +31,7 @@ from .harmonic_hamiltonian_elements import (
     harmonic_matrix_element,
     harmonic_non_zero_indices,
 )
-from .rigid_rotor_hamiltonian_elements import (
-    rigid_rotor_matrix_element,
-    rigid_rotor_non_zero_indices,
-)
+from .rigid_rotor_hamiltonian_elements import rigid_rotor_matrix
 from .vibrational_matrix_elements import vibrational_matrix
 
 #: The types of Hamiltonian terms that are sums of products of vibrational
@@ -43,13 +41,11 @@ _VIBRATIONAL_TERMS = (AnharmonicPotential, VibrationalCoriolisHamiltonian)
 #: Maps each type of Hamiltonian term to its non-zero index generator.
 _NON_ZERO_INDICES = {
     HarmonicHamiltonian: harmonic_non_zero_indices,
-    RigidRotorHamiltonian: rigid_rotor_non_zero_indices,
 }
 
 #: Maps each type of Hamiltonian term to its matrix element function.
 _MATRIX_ELEMENTS = {
     HarmonicHamiltonian: harmonic_matrix_element,
-    RigidRotorHamiltonian: rigid_rotor_matrix_element,
 }
 
 
@@ -68,8 +64,8 @@ def non_zero_indices(bra_space, term, ket_space):
 
     Pairs whose matrix element is zero by symmetry or selection rules are
     skipped. The bra and ket spaces may differ, e.g., to build a block of the
-    matrix. Terms that are products of vibrational operators are not
-    supported, see :func:`build_matrix`.
+    matrix. Terms that are products of vibrational or rotational operators
+    are not supported, see :func:`build_matrix`.
 
     :param bra_space: The space the bra basis functions come from.
     :type bra_space: RovibrationalAnsatz
@@ -101,11 +97,11 @@ def _build_vibrational_matrix(bra_ansatz, term, ket_ansatz):
             )
     if bra_ansatz.rotational != ket_ansatz.rotational:
         return np.zeros((len(bra_ansatz), len(ket_ansatz)), dtype=complex)
-    bra_space = bra_ansatz.vibrational
-    ket_space = ket_ansatz.vibrational
-    matrix = np.zeros((len(bra_space), len(ket_space)), dtype=complex)
+    bras = bra_ansatz.vibrational
+    kets = ket_ansatz.vibrational
+    matrix = np.zeros((len(bras), len(kets)), dtype=complex)
     for operators, reducer in term.terms():
-        matrix += vibrational_matrix(bra_space, ket_space, operators, reducer)
+        matrix += vibrational_matrix(bras, operators, kets, reducer)
     return np.kron(matrix, np.eye(len(ket_ansatz.rotational)))
 
 
@@ -129,6 +125,8 @@ def build_matrix(bra_ansatz, term, ket_ansatz):
     """
     if type(term) in _VIBRATIONAL_TERMS:
         return _build_vibrational_matrix(bra_ansatz, term, ket_ansatz)
+    if type(term) is RigidRotorHamiltonian:
+        return rigid_rotor_matrix(bra_ansatz, term, ket_ansatz)
     matrix = np.zeros((len(bra_ansatz), len(ket_ansatz)), dtype=complex)
     for bra, ket in non_zero_indices(bra_ansatz, term, ket_ansatz):
         b = bra_ansatz.index(bra)

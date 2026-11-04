@@ -260,3 +260,22 @@ Rovibrational Coupling Matrix Elements
 ======================================
 
 Main article: :ref:`rovibrational_coupling`.
+
+.. math::
+
+   \braket{\vvec',J',K'\mid \Hrovib\mid\vvec,J,K}=&
+   \frac{1}{2}\sum_{\alpha,\beta=1}^{3}
+      \braket{J',K'\mid\jop_\alpha\jop_\beta\mid J,K}
+      T_{\alpha\beta}^{(\text{RC},0)}
+       -\\
+      &\frac{1}{2}\sum_{\alpha=1}^{3}
+       \braket{J',K'\mid\jop_\alpha\mid J,K}
+       T_{\alpha}^{(\text{RC},1)}\\
+   T_{\alpha\beta}^{(\text{RC},0)}\equiv&
+      \sum_{n=1}^{4}\sum_{\midx_n} \eta^{\midx_n}_{\alpha\beta}
+      \braket{\vvec'\mid\qop_{\midx_n}\mid\vvec}\\
+   T_{\alpha}^{(\text{RC},1)}\equiv&
+   \sum_{\beta=1}^{3}\sum_{n=0}^{3}\sum_{\midx_n}\eta^{\midx_n}_{\alpha\beta}
+       \sum_{i,j} \zeta^\beta_{ij} \left(
+         \braket{\vvec'\mid\qop_{\midx_n}\qop_{i}\pop_{j}\mid\vvec} +\right.\\
+      &\left. \braket{\vvec'\mid\qop_{i}\pop_{j}\qop_{\midx_n}\mid\vvec}\right)

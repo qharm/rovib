@@ -76,6 +76,9 @@ Classes
 .. automodule:: rovib.operators.watson_operator
    :members:
 
+.. automodule:: rovib.operators.j_operator
+   :members:
+
 ***************
 Matrix Elements
 ***************
@@ -83,10 +86,16 @@ Matrix Elements
 .. automodule:: rovib.matrix_elements.harmonic_hamiltonian_elements
    :members:
 
-.. automodule:: rovib.matrix_elements.rigid_rotor_hamiltonian_elements
+.. automodule:: rovib.matrix_elements.apply_operators
    :members:
 
 .. automodule:: rovib.matrix_elements.vibrational_matrix_elements
+   :members:
+
+.. automodule:: rovib.matrix_elements.rotational_matrix_elements
+   :members:
+
+.. automodule:: rovib.matrix_elements.rigid_rotor_hamiltonian_elements
    :members:
 
 .. automodule:: rovib.matrix_elements.hamiltonian_matrix

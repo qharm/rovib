@@ -17,6 +17,7 @@
 import numpy as np
 
 from .hamiltonian_term import HamiltonianTerm
+from .operators.j_operator import JOperator
 
 
 class RigidRotorHamiltonian(HamiltonianTerm):
@@ -54,3 +55,18 @@ class RigidRotorHamiltonian(HamiltonianTerm):
         :rtype: numpy.ndarray
         """
         return self._rotational_constants
+
+    def rotational_operators(self, ket):
+        """The products of angular momentum operators in |HRR|.
+
+        :param ket: The space the operators act on.
+        :type ket: RotationalAnsatz
+        :return: The factors of :math:`\\jop_\\alpha^2`, with one element
+            for each element of :attr:`rotational_constants`, in the same
+            order.
+        :rtype: tuple of list of JOperator
+        """
+        return tuple(
+            [JOperator(ket.J, projection)] * 2
+            for projection in range(self._rotational_constants.size)
+        )

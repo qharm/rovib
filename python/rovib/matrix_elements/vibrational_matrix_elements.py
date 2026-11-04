@@ -35,28 +35,11 @@ import math
 import numpy as np
 
 from ..wavefunction.vibrational_basis_function import VibrationalBasisFunction
+from .apply_operators import apply_operators
 
 
-# N.b. operators are immutable, so the results of _apply and _products can be
-# cached. This matters because both are needed for every ket.
-@functools.cache
-def _apply(operators, v):
-    """Applies a product of single-mode operators to :math:`\\ket{v}`.
-
-    :return: A dict mapping :math:`v'` to
-        :math:`\\braket{v'\\mid\\op{O}_1\\cdots\\op{O}_m\\mid v}`.
-    """
-    state = {v: 1.0}
-    # The rightmost operator acts first.
-    for operator in reversed(operators):
-        result = collections.defaultdict(float)
-        for v_in, amplitude in state.items():
-            for v_out, element in operator.act(v_in):
-                result[v_out] += amplitude * element
-        state = result
-    return dict(state)
-
-
+# N.b. operators are immutable, so the result can be cached. This matters
+# because it is needed for every ket.
 @functools.cache
 def _products(operators, reducer):
     """The non-zero terms of the product of ``operators``.
@@ -79,43 +62,46 @@ def _products(operators, reducer):
     return tuple(products)
 
 
-def vibrational_matrix(bra_space, ket_space, operators, reducer):
+def vibrational_matrix(bras, ops, kets, reducer):
     """Builds the matrix of a product of vibrational operators.
 
-    ``operators`` is a list of objects that each represent a sum of products
-    of single-mode operators, e.g., :class:`.PotentialOperator`. The operator
-    whose matrix is built is the product of the elements of ``operators``, in
-    order, with each term's coefficient given by ``reducer``.
+    ``ops`` is a list of objects that each represent a sum of products of
+    single-mode operators, e.g., :class:`.PotentialOperator`. The operator
+    whose matrix is built is the product of the elements of ``ops``, in order,
+    with each term's coefficient given by ``reducer``. An empty ``ops`` is the
+    identity, scaled by ``reducer([])``.
 
-    :param bra_space: The space the bra basis functions come from.
-    :type bra_space: VibrationalAnsatz
-    :param ket_space: The space the ket basis functions come from.
-    :type ket_space: VibrationalAnsatz
-    :param operators: The factors of the operator.
-    :type operators: list
+    :param bras: The space the bra basis functions come from.
+    :type bras: VibrationalAnsatz
+    :param ops: The factors of the operator.
+    :type ops: list
+    :param kets: The space the ket basis functions come from.
+    :type kets: VibrationalAnsatz
     :param reducer: Combines a list holding the coefficient of one product
-        from each element of ``operators`` into the coefficient of their
-        product. Products whose coefficient is zero are skipped.
+        from each element of ``ops`` into the coefficient of their product.
+        Products whose coefficient is zero are skipped.
     :type reducer: collections.abc.Callable
     :return: The matrix of the operator in atomic units. The shape is
-        (``len(bra_space)``, ``len(ket_space)``).
+        (``len(bras)``, ``len(kets)``).
     :rtype: numpy.ndarray
     """
-    matrix = np.zeros((len(bra_space), len(ket_space)), dtype=complex)
-    products = _products(tuple(operators), reducer)
-    for ket in ket_space:
-        k = ket_space.index(ket)
+    matrix = np.zeros((len(bras), len(kets)), dtype=complex)
+    products = _products(tuple(ops), reducer)
+    for ket in kets:
+        k = kets.index(ket)
         # Different products can couple the same bra and ket, so their
         # contributions are summed.
         for coefficient, words in products:
-            per_mode = [_apply(word, ket.v[n]).items() for n, word in words]
+            per_mode = [
+                apply_operators(word, ket.v[n]).items() for n, word in words
+            ]
             for elements in itertools.product(*per_mode):
                 v = list(ket.v)
                 for (n, _), (v_n, _) in zip(words, elements):
                     v[n] = v_n
                 bra = VibrationalBasisFunction(tuple(v))
-                if bra not in bra_space:
+                if bra not in bras:
                     continue
                 value = coefficient * math.prod(e for _, e in elements)
-                matrix[bra_space.index(bra), k] += value
+                matrix[bras.index(bra), k] += value
     return matrix

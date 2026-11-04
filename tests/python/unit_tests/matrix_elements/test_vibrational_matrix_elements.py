@@ -108,7 +108,7 @@ class TestVibrationalMatrix(unittest.TestCase):
 
     def test_matches_brute_force(self):
         matrix = vibrational_matrix(
-            self.ansatz, self.ansatz, self.operators, _product
+            self.ansatz, self.operators, self.ansatz, _product
         )
         self.assertEqual(matrix.dtype, np.complex128)
         np.testing.assert_allclose(
@@ -120,7 +120,7 @@ class TestVibrationalMatrix(unittest.TestCase):
     def test_matches_brute_force_imaginary(self):
         # A single momentum per term makes the elements imaginary.
         matrix = vibrational_matrix(
-            self.ansatz, self.ansatz, [self.coriolis], _product
+            self.ansatz, [self.coriolis], self.ansatz, _product
         )
         self.assertGreater(np.abs(matrix.imag).max(), 0.0)
         np.testing.assert_allclose(
@@ -129,19 +129,28 @@ class TestVibrationalMatrix(unittest.TestCase):
             atol=1.0e-12,
         )
 
+    def test_no_operators_is_overlap(self):
+        # The two spaces number the basis functions differently.
+        bra_space = VibrationalAnsatz(2, 1)
+        matrix = vibrational_matrix(bra_space, [], self.ansatz, _product)
+        expected = [
+            [float(bra == ket) for ket in self.ansatz] for bra in bra_space
+        ]
+        np.testing.assert_array_equal(matrix, expected)
+
     def test_zero_coefficients_skipped(self):
         zero = _ProductOperator({(NormalMode(0, 1.0),): 0.0})
-        matrix = vibrational_matrix(self.ansatz, self.ansatz, [zero], _product)
+        matrix = vibrational_matrix(self.ansatz, [zero], self.ansatz, _product)
         np.testing.assert_array_equal(matrix, 0.0)
 
     def test_different_spaces(self):
         bra_space = VibrationalAnsatz(2, 1)
         block = vibrational_matrix(
-            bra_space, self.ansatz, self.operators, _product
+            bra_space, self.operators, self.ansatz, _product
         )
         self.assertEqual(block.shape, (len(bra_space), len(self.ansatz)))
         full = vibrational_matrix(
-            self.ansatz, self.ansatz, self.operators, _product
+            self.ansatz, self.operators, self.ansatz, _product
         )
         rows = [self.ansatz.index(bra) for bra in bra_space]
         np.testing.assert_allclose(block, full[rows, :], atol=1.0e-12)

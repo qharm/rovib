@@ -16,7 +16,8 @@ import unittest
 
 import numpy as np
 
-from rovib import HamiltonianTerm, RigidRotorHamiltonian
+from rovib import HamiltonianTerm, RigidRotorHamiltonian, RotationalAnsatz
+from rovib.operators.j_operator import JOperator
 
 
 class TestRigidRotorHamiltonian(unittest.TestCase):
@@ -31,6 +32,11 @@ class TestRigidRotorHamiltonian(unittest.TestCase):
         np.testing.assert_array_equal(
             self.term.rotational_constants, self.constants
         )
+
+    def test_rotational_operators(self):
+        products = self.term.rotational_operators(RotationalAnsatz(2))
+        expected = tuple([JOperator(2, a)] * 2 for a in range(3))
+        self.assertEqual(products, expected)
 
     def test_rotational_constants_are_read_only(self):
         with self.assertRaises(ValueError):
