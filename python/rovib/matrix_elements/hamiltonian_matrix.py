@@ -87,19 +87,26 @@ def non_zero_indices(bra_space, term, ket_space):
 
 
 def _build_vibrational_matrix(bra_ansatz, term, ket_ansatz):
-    """Builds the matrix of a sum of products of vibrational operators."""
+    """Builds the matrix of a sum of products of vibrational operators.
+
+    The operators do not act on the rotational basis functions, so the matrix
+    is the direct product of the matrix in the vibrational basis and the
+    identity in the rotational basis.
+    """
     for ansatz in (bra_ansatz, ket_ansatz):
         if ansatz.nvib != term.nvib:
             raise ValueError(
                 f"The Hamiltonian has {term.nvib} modes, but the space has "
                 f"{ansatz.nvib}."
             )
-    matrix = np.zeros((len(bra_ansatz), len(ket_ansatz)), dtype=complex)
+    if bra_ansatz.rotational != ket_ansatz.rotational:
+        return np.zeros((len(bra_ansatz), len(ket_ansatz)), dtype=complex)
+    bra_space = bra_ansatz.vibrational
+    ket_space = ket_ansatz.vibrational
+    matrix = np.zeros((len(bra_space), len(ket_space)), dtype=complex)
     for operators, reducer in term.terms():
-        matrix += vibrational_matrix(
-            bra_ansatz, ket_ansatz, operators, reducer
-        )
-    return matrix
+        matrix += vibrational_matrix(bra_space, ket_space, operators, reducer)
+    return np.kron(matrix, np.eye(len(ket_ansatz.rotational)))
 
 
 def build_matrix(bra_ansatz, term, ket_ansatz):

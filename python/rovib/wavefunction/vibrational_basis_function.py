@@ -12,42 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Defines the RovibrationalBasisFunction class."""
+"""Defines the VibrationalBasisFunction class."""
 
 from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class RovibrationalBasisFunction:
-    """A rovibrational basis function :math:`\\ket{\\vvec,J,K}`.
+class VibrationalBasisFunction:
+    """A vibrational basis function :math:`\\ket{\\vvec}`.
 
     The basis function is the product of one harmonic oscillator
-    eigenfunction per vibrational mode and an angular momentum eigenstate.
-    Instances are immutable and hashable.
+    eigenfunction per vibrational mode. Instances are immutable and hashable.
 
     :param v: The vibrational quantum number of each mode.
     :type v: tuple of int
-    :param J: The total angular momentum quantum number.
-    :type J: int
-    :param K: The projection of the total angular momentum on to the
-        molecule-fixed z-axis.
-    :type K: int
-    :raises ValueError: If any vibrational quantum number is negative, if
-        ``J`` is negative, or if :math:`|K| > J`.
+    :raises ValueError: If any vibrational quantum number is negative.
     """
 
     v: tuple
-    J: int
-    K: int
 
     def __post_init__(self):
         object.__setattr__(self, "v", tuple(int(vk) for vk in self.v))
         if any(vk < 0 for vk in self.v):
             raise ValueError(f"Quantum numbers must be >= 0, got {self.v}.")
-        if self.J < 0:
-            raise ValueError(f"J must be >= 0, got {self.J}.")
-        if abs(self.K) > self.J:
-            raise ValueError(f"|K| must be <= J, got J={self.J}, K={self.K}.")
 
     @property
     def nvib(self):

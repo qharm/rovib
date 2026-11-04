@@ -15,44 +15,33 @@
 import dataclasses
 import unittest
 
-from rovib import RovibrationalBasisFunction
+from rovib import RotationalBasisFunction
 
 
-class TestRovibrationalBasisFunction(unittest.TestCase):
+class TestRotationalBasisFunction(unittest.TestCase):
     def test_state(self):
-        bf = RovibrationalBasisFunction((1, 0, 2), 3, -2)
-        self.assertEqual(bf.v, (1, 0, 2))
+        bf = RotationalBasisFunction(3, -2)
         self.assertEqual(bf.J, 3)
         self.assertEqual(bf.K, -2)
-        self.assertEqual(bf.nvib, 3)
-
-    def test_v_is_converted_to_tuple(self):
-        bf = RovibrationalBasisFunction([1, 0, 2], 0, 0)
-        self.assertEqual(bf.v, (1, 0, 2))
-
-    def test_negative_v(self):
-        with self.assertRaises(ValueError):
-            RovibrationalBasisFunction((0, -1, 0), 0, 0)
 
     def test_negative_J(self):
         with self.assertRaises(ValueError):
-            RovibrationalBasisFunction((0, 0, 0), -1, 0)
+            RotationalBasisFunction(-1, 0)
 
     def test_K_out_of_range(self):
         with self.assertRaises(ValueError):
-            RovibrationalBasisFunction((0, 0, 0), 1, 2)
+            RotationalBasisFunction(1, 2)
         with self.assertRaises(ValueError):
-            RovibrationalBasisFunction((0, 0, 0), 1, -2)
+            RotationalBasisFunction(1, -2)
 
     def test_immutable(self):
-        bf = RovibrationalBasisFunction((0, 0, 0), 1, 0)
+        bf = RotationalBasisFunction(1, 0)
         with self.assertRaises(dataclasses.FrozenInstanceError):
             bf.J = 2
 
     def test_equality_and_hash(self):
-        bf = RovibrationalBasisFunction((1, 0, 2), 1, 1)
-        same = RovibrationalBasisFunction([1, 0, 2], 1, 1)
+        bf = RotationalBasisFunction(1, 1)
+        same = RotationalBasisFunction(1, 1)
         self.assertEqual(bf, same)
         self.assertEqual(hash(bf), hash(same))
-        self.assertNotEqual(bf, RovibrationalBasisFunction((1, 0, 2), 1, 0))
-        self.assertEqual(len({bf, same}), 1)
+        self.assertNotEqual(bf, RotationalBasisFunction(1, 0))

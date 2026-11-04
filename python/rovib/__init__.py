@@ -31,8 +31,6 @@ from .matrix_elements.hamiltonian_matrix import (
 )
 from .molecule import Molecule
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
-from .rovibrational_ansatz import RovibrationalAnsatz
-from .rovibrational_basis_function import RovibrationalBasisFunction
 from .vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
 from .water_params import (
     anharmonic_force_constants,
@@ -40,6 +38,14 @@ from .water_params import (
     is_water,
     water_molecule,
 )
+from .wavefunction.rotational_ansatz import RotationalAnsatz
+from .wavefunction.rotational_basis_function import RotationalBasisFunction
+from .wavefunction.rovibrational_ansatz import RovibrationalAnsatz
+from .wavefunction.rovibrational_basis_function import (
+    RovibrationalBasisFunction,
+)
+from .wavefunction.vibrational_ansatz import VibrationalAnsatz
+from .wavefunction.vibrational_basis_function import VibrationalBasisFunction
 
 __all__ = [
     "AnharmonicPotential",
@@ -48,8 +54,12 @@ __all__ = [
     "HarmonicHamiltonian",
     "Molecule",
     "RigidRotorHamiltonian",
+    "RotationalAnsatz",
+    "RotationalBasisFunction",
     "RovibrationalAnsatz",
     "RovibrationalBasisFunction",
+    "VibrationalAnsatz",
+    "VibrationalBasisFunction",
     "VibrationalCoriolisHamiltonian",
     "anharmonic_force_constants",
     "build_hamiltonian_matrix",

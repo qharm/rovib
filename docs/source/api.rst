@@ -25,10 +25,22 @@ Classes
 .. automodule:: rovib.molecule
    :members:
 
-.. automodule:: rovib.rovibrational_basis_function
+.. automodule:: rovib.wavefunction.vibrational_basis_function
    :members:
 
-.. automodule:: rovib.rovibrational_ansatz
+.. automodule:: rovib.wavefunction.rotational_basis_function
+   :members:
+
+.. automodule:: rovib.wavefunction.rovibrational_basis_function
+   :members:
+
+.. automodule:: rovib.wavefunction.vibrational_ansatz
+   :members:
+
+.. automodule:: rovib.wavefunction.rotational_ansatz
+   :members:
+
+.. automodule:: rovib.wavefunction.rovibrational_ansatz
    :members:
 
 .. automodule:: rovib.hamiltonian_term

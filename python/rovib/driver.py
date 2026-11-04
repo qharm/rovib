@@ -23,9 +23,9 @@ from .harmonic_hamiltonian import HarmonicHamiltonian
 from .inertia import inertia_derivatives, rotational_constants
 from .matrix_elements.hamiltonian_matrix import build_hamiltonian_matrix
 from .rigid_rotor_hamiltonian import RigidRotorHamiltonian
-from .rovibrational_ansatz import RovibrationalAnsatz
 from .vibrational_coriolis_hamiltonian import VibrationalCoriolisHamiltonian
 from .water_params import anharmonic_force_constants, harmonic_analysis
+from .wavefunction.rovibrational_ansatz import RovibrationalAnsatz
 
 
 def rovibrational_energies(molecule, vmax, J=0):

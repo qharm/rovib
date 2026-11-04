@@ -18,7 +18,7 @@ import unittest
 
 import numpy as np
 
-from rovib import RovibrationalAnsatz
+from rovib import VibrationalAnsatz
 from rovib.matrix_elements.vibrational_matrix_elements import (
     vibrational_matrix,
 )
@@ -104,7 +104,7 @@ class TestVibrationalMatrix(unittest.TestCase):
         # ... and a Watson-like factor, sum_k c_k Q_k.
         self.watson = _ProductOperator({(q[0],): 1.5, (q[1],): -0.5})
         self.operators = [self.coriolis, self.watson, self.coriolis]
-        self.ansatz = RovibrationalAnsatz(2, 3, 0)
+        self.ansatz = VibrationalAnsatz(2, 3)
 
     def test_matches_brute_force(self):
         matrix = vibrational_matrix(
@@ -129,22 +129,13 @@ class TestVibrationalMatrix(unittest.TestCase):
             atol=1.0e-12,
         )
 
-    def test_diagonal_in_J_and_K(self):
-        ansatz = RovibrationalAnsatz(2, 2, 1)
-        matrix = vibrational_matrix(ansatz, ansatz, [self.watson], _product)
-        self.assertGreater(np.count_nonzero(matrix), 0)
-        for b, k in zip(*np.nonzero(matrix)):
-            bra = ansatz.basis_function(b)
-            ket = ansatz.basis_function(k)
-            self.assertEqual((bra.J, bra.K), (ket.J, ket.K))
-
     def test_zero_coefficients_skipped(self):
         zero = _ProductOperator({(NormalMode(0, 1.0),): 0.0})
         matrix = vibrational_matrix(self.ansatz, self.ansatz, [zero], _product)
         np.testing.assert_array_equal(matrix, 0.0)
 
     def test_different_spaces(self):
-        bra_space = RovibrationalAnsatz(2, 1, 0)
+        bra_space = VibrationalAnsatz(2, 1)
         block = vibrational_matrix(
             bra_space, self.ansatz, self.operators, _product
         )

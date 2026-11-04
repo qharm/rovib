@@ -43,10 +43,16 @@ from rovib.matrix_elements.vibrational_matrix_elements import (
 
 def _vibrational_matrix(term, bra_ansatz, ket_ansatz):
     """The matrix of ``term`` summed from its products."""
-    return sum(
-        vibrational_matrix(bra_ansatz, ket_ansatz, operators, reducer)
+    matrix = sum(
+        vibrational_matrix(
+            bra_ansatz.vibrational,
+            ket_ansatz.vibrational,
+            operators,
+            reducer,
+        )
         for operators, reducer in term.terms()
     )
+    return np.kron(matrix, np.eye(len(ket_ansatz.rotational)))
 
 
 def _anharmonic_potential():
@@ -133,6 +139,22 @@ class TestBuildMatrix(unittest.TestCase):
         self.assertEqual(matrix.dtype, np.complex128)
         expected = _vibrational_matrix(term, self.ansatz, self.ansatz)
         np.testing.assert_allclose(matrix, expected, atol=1.0e-12)
+
+    def test_vibrational_term_diagonal_in_K(self):
+        term = _anharmonic_potential()
+        matrix = build_matrix(self.ansatz, term, self.ansatz)
+        self.assertGreater(np.count_nonzero(matrix), 0)
+        for b, k in zip(*np.nonzero(matrix)):
+            bra = self.ansatz.basis_function(b)
+            ket = self.ansatz.basis_function(k)
+            self.assertEqual(bra.K, ket.K)
+
+    def test_vibrational_term_different_J(self):
+        term = _anharmonic_potential()
+        bra_space = RovibrationalAnsatz(3, 2, 0)
+        block = build_matrix(bra_space, term, self.ansatz)
+        self.assertEqual(block.shape, (len(bra_space), len(self.ansatz)))
+        np.testing.assert_array_equal(block, 0.0)
 
     def test_vibrational_coriolis_mode_mismatch(self):
         term = _vibrational_coriolis_hamiltonian()

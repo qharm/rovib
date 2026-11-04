@@ -34,7 +34,7 @@ import math
 
 import numpy as np
 
-from ..rovibrational_basis_function import RovibrationalBasisFunction
+from ..wavefunction.vibrational_basis_function import VibrationalBasisFunction
 
 
 # N.b. operators are immutable, so the results of _apply and _products can be
@@ -85,14 +85,12 @@ def vibrational_matrix(bra_space, ket_space, operators, reducer):
     ``operators`` is a list of objects that each represent a sum of products
     of single-mode operators, e.g., :class:`.PotentialOperator`. The operator
     whose matrix is built is the product of the elements of ``operators``, in
-    order, with each term's coefficient given by ``reducer``. The operator is
-    assumed to be purely vibrational, so it only couples basis functions with
-    the same :math:`J` and :math:`K`.
+    order, with each term's coefficient given by ``reducer``.
 
     :param bra_space: The space the bra basis functions come from.
-    :type bra_space: RovibrationalAnsatz
+    :type bra_space: VibrationalAnsatz
     :param ket_space: The space the ket basis functions come from.
-    :type ket_space: RovibrationalAnsatz
+    :type ket_space: VibrationalAnsatz
     :param operators: The factors of the operator.
     :type operators: list
     :param reducer: Combines a list holding the coefficient of one product
@@ -115,7 +113,7 @@ def vibrational_matrix(bra_space, ket_space, operators, reducer):
                 v = list(ket.v)
                 for (n, _), (v_n, _) in zip(words, elements):
                     v[n] = v_n
-                bra = RovibrationalBasisFunction(tuple(v), ket.J, ket.K)
+                bra = VibrationalBasisFunction(tuple(v))
                 if bra not in bra_space:
                     continue
                 value = coefficient * math.prod(e for _, e in elements)

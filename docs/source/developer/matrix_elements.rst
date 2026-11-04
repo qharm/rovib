@@ -97,10 +97,13 @@ We need to be able to on-the-fly build elements like
 :math:`c\braket{\vvec'\mid \op{O}^n \mid\vvec}`, where :math:`\op{O}^n` is a
 product of :math:`n` vibrational operators and :math:`c` is a coefficient whose
 value depends on the modes :math:`\op{O}^n` operates on. The input to our
-function will be ``bra_space``, the list of allowed bra states, ``ket_space``,
-the list of allowed ket states, ``o``, the list of operators, and ``reducer``
-a function that combines the coefficients. This is implemented by
+function will be ``bra_space``, the ``VibrationalAnsatz`` of allowed bra
+states, ``ket_space``, the ``VibrationalAnsatz`` of allowed ket states, ``o``,
+the list of operators, and ``reducer`` a function that combines the
+coefficients. This is implemented by
 :func:`rovib.matrix_elements.vibrational_matrix_elements.vibrational_matrix`.
+The elements in the full basis follow from the direct product of the result
+with the matrix of the rotational part of the term.
 
 Elements in ``o`` are assumed to be ``PotentialOperator``, ``CoriolisOperator``,
 or ``WatsonOperator`` objects.

@@ -14,11 +14,15 @@
 
 import unittest
 
-from rovib import RovibrationalAnsatz, RovibrationalBasisFunction
+from rovib import (
+    RotationalAnsatz,
+    RovibrationalAnsatz,
+    RovibrationalBasisFunction,
+    VibrationalAnsatz,
+)
 
 
 class TestRovibrationalAnsatz(unittest.TestCase):
-
     def setUp(self):
         self.ansatz = RovibrationalAnsatz(3, 2, 1)
 
@@ -26,6 +30,8 @@ class TestRovibrationalAnsatz(unittest.TestCase):
         self.assertEqual(self.ansatz.nvib, 3)
         self.assertEqual(self.ansatz.vmax, 2)
         self.assertEqual(self.ansatz.J, 1)
+        self.assertEqual(self.ansatz.vibrational, VibrationalAnsatz(3, 2))
+        self.assertEqual(self.ansatz.rotational, RotationalAnsatz(1))
 
     def test_len(self):
         self.assertEqual(len(self.ansatz), 3**3 * 3)
@@ -36,7 +42,8 @@ class TestRovibrationalAnsatz(unittest.TestCase):
         functions = list(RovibrationalAnsatz(2, 1, 1))
         expected = [
             RovibrationalBasisFunction(v, 1, K)
-            for v in [(0, 0), (0, 1), (1, 0), (1, 1)] for K in (-1, 0, 1)
+            for v in [(0, 0), (0, 1), (1, 0), (1, 1)]
+            for K in (-1, 0, 1)
         ]
         self.assertEqual(functions, expected)
 
@@ -57,14 +64,17 @@ class TestRovibrationalAnsatz(unittest.TestCase):
             self.ansatz.basis_function(len(self.ansatz))
 
     def test_contains(self):
-        self.assertIn(RovibrationalBasisFunction((2, 0, 2), 1, -1),
-                      self.ansatz)
+        self.assertIn(
+            RovibrationalBasisFunction((2, 0, 2), 1, -1), self.ansatz
+        )
         # vmax exceeded
-        self.assertNotIn(RovibrationalBasisFunction((3, 0, 0), 1, 0),
-                         self.ansatz)
+        self.assertNotIn(
+            RovibrationalBasisFunction((3, 0, 0), 1, 0), self.ansatz
+        )
         # Wrong J
-        self.assertNotIn(RovibrationalBasisFunction((0, 0, 0), 2, 0),
-                         self.ansatz)
+        self.assertNotIn(
+            RovibrationalBasisFunction((0, 0, 0), 2, 0), self.ansatz
+        )
         # Wrong number of modes
         self.assertNotIn(RovibrationalBasisFunction((0, 0), 1, 0), self.ansatz)
         self.assertNotIn("not a basis function", self.ansatz)
